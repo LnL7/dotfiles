@@ -1,0 +1,19 @@
+alias mv="nocorrect mv"
+alias cp="nocorrect cp"
+alias racket="rlwrap racket"
+alias rsync="rsync -P -avz"
+alias sudo="nocorrect sudo"
+alias time="/usr/bin/time -l"
+
+alias ..="cd .."
+alias ...="cd ../.."
+alias ....="cd ../../.."
+alias .....="cd ../../../.."
+
+alias b="bundle"                   # Bundler
+alias e="$EDITOR"                  # Editor
+alias l="ls -lh"                   # Pritty ls
+alias la="ls -alh"                 # Pritty ls with hidden files
+alias ql="qlmanage -p 2>/dev/null" # Quick Look
+alias tx="tmux attach || tenv"     # Attach or create tmux environment
+alias v="$VISUAL"                  # Vim

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+
+# Extract current commit message
+subject=$(git log -1 --format="%s" 2> /dev/null)
+
+# Stage all changes
+git add --all .
+
+# Amend if currently WIP
+if [ "$subject" == "WIP" ]; then
+  body = $(git log -1 --format="%B" 2> /dev/null)
+  git commit --amend --message "$body"
+else
+  git commit --message "WIP"
+fi

@@ -1,0 +1,125 @@
+[include]
+  path = .gitconfig.local
+
+[color]
+  ui = auto
+
+[core]
+  excludesfile = ~/.gitignore
+  autocrlf     = input
+
+[merge]
+  ff = only
+
+[pager]
+  reflog = false
+  diff   = false
+  log    = false
+
+[pretty]
+  colored = format:%C(yellow)%h%Cblue%d%Creset %s %C(white)  %an, %ar%Creset\n
+
+[push]
+  default = current
+
+[alias]
+  create-branch = !sh -c 'git push origin HEAD:refs/heads/$1 && git fetch origin && git branch --track $1 origin/$1 && cd . && git checkout $1' -
+  delete-branch = !sh -c 'git push origin :refs/heads/$1 && git remote prune origin && git branch -D $1' -
+  lsch          = "!f() { git diff --name-status -r "HEAD~$1"; }; f"
+  merge-branch  = !git checkout master && git merge @{-1}
+  up            = !git fetch origin && git rebase origin/master
+
+  ## Add
+  a  = add
+  aa = add --all
+  au = add --update
+
+  ## Branch
+  b  = branch
+  ba = branch --all --verbose
+
+  ## Clone
+  c1 = clone --depth 1
+
+  ## Commit
+  c  = commit --verbose
+  ca = commit --verbose --amend
+  cm = commit --verbose -m
+
+  ## Checkout
+  co = checkout
+  cb = checkout -B
+
+  ## Cherry-Pick
+  cp = cherry-pick
+
+  ## Diff
+  d  = diff --minimal --ignore-space-change --ignore-all-space --ignore-blank-lines --word-diff=color
+  dc = diff --minimal --ignore-space-change --ignore-all-space --ignore-blank-lines --word-diff=color --cached
+  dn = diff --name-status
+
+  ## Fetch
+  f  = fetch --all
+
+  ## Grep
+
+  ## Init
+  i  = init
+
+  ## Log
+  l  = log -32 --pretty=colored --graph
+  la = log -32 --pretty=colored --simplify-by-decoration --all
+  ll = log -32 --pretty=format':%h %s   %an, %ar\n'
+  ln = log -32 --pretty=colored --name-only
+
+  ## Merge
+  m  = merge
+  ms = merge --squash
+
+  ## Move
+
+  ## Push
+  p  = push
+  pu = push -u
+  pt = push --tags
+
+  ## Pull
+  pl = pull
+  pr = pull --rebase
+
+  ## Rebase
+  rb = rebase
+  ri = rebase --interactive
+
+  ## Reflog
+  rl = reflog -32
+
+  ## Remote
+  r  = remote
+  rv = remote --verbose
+
+  ## Reset
+  rs = reset
+  rh = reset --hard
+  rs = reset --soft
+
+  ## Remove
+  rc = rm --cached
+
+  ## Show
+
+  ## Stash
+  sa = stash apply
+  sl = stash list
+  sp = stash pop
+  ss = stash save
+
+  ## Status
+  st = status
+  s  = status --short
+
+  ## SubModule
+  sm = submodule
+
+  ## Tag
+  t = tag

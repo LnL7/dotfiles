@@ -1,0 +1,10 @@
+# Finds a file, looking up through parent directories until it finds one.
+
+function up() {
+  local DIR=$PWD
+  local TARGET=$1
+  while [ ! -e $DIR/$TARGET -a $DIR != "/" ]; do
+    DIR=$(dirname $DIR)
+  done
+  test $DIR != "/" && echo $DIR/$TARGET
+}

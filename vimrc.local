@@ -1,0 +1,119 @@
+nnoremap <Leader>( :tabprev<cr>
+nnoremap <Leader>) :tabnext<cr>
+nnoremap <Leader>0 :set guifont=Anonymous\ Pro\ For\ Powerline:h13<cr>
+nnoremap <Leader>1 :set background=dark<cr> :colorscheme solarized<cr>
+nnoremap <Leader>2 :set background=light<cr> :colorscheme solarized<cr>
+nnoremap <Leader>3 :set background=dark<cr> :colorscheme hybrid<cr>
+nnoremap <Leader>4 :set background=light<cr> :colorscheme hybrid-light<cr>
+nnoremap <Leader>9 :set guifont=Anonymous\ Pro\ For\ Powerline:h23<cr>
+nnoremap <Leader><Leader> <C-^>
+nnoremap <Leader>e :e <C-r>=expand('%:h') . '/'<cr>
+nnoremap <Leader>f :Dispatch<cr>
+nnoremap <Leader>t :Dispatch make test<cr>
+
+vnoremap <Leader>so y:execute @@<cr>
+nnoremap <Leader>so ^vg_y:execute @@<cr>
+
+nnoremap <Leader>sr vip:!sort<cr>
+vnoremap <Leader>sr :!sort<cr>
+
+function! <SID>SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
+nmap <Leader>sy :call <SID>SynStack()<cr>
+nnoremap <silent> <Leader>/ :execute 'vimgrep /'.@/.'/g %'<cr>:copen<cr>
+nnoremap <silent> <Leader>? :execute 'vimgrep /'.@/.'/g *'<cr>:copen<cr>
+
+nnoremap <silent> <C-w>+ :exe "resize " . (winheight(0) * 3/2)<cr>
+nnoremap <silent> <C-w>- :exe "resize " . (winheight(0) * 2/3)<cr>
+nnoremap <silent> <C-w>< :exe "vertical resize " . (winwidth(0) * 2/3)<cr>
+nnoremap <silent> <C-w>> :exe "vertical resize " . (winwidth(0) * 3/2)<cr>
+
+function! WinMove(key)
+  let t:curwin = winnr()
+  exec "wincmd ".a:key
+  if (t:curwin == winnr())
+    if (match(a:key,'[jk]'))
+      wincmd v
+    else
+      wincmd s
+    endif
+    exec "wincmd ".a:key
+  endif
+endfunction
+
+noremap <silent> <C-w><C-h> :call WinMove('h')<cr>
+noremap <silent> <C-w><C-j> :call WinMove('j')<cr>
+noremap <silent> <C-w><C-k> :call WinMove('k')<cr>
+noremap <silent> <C-w><C-l> :call WinMove('l')<cr>
+
+let g:airline_left_sep                   = ''
+let g:airline_powerline_fonts            = 1
+let g:airline_right_sep                  = ''
+let g:ctrlp_user_command                 = 'ag %s -l --nocolor -g ""'
+let g:syntastic_error_symbol             = '✗'
+let g:syntastic_warning_symbol           = '⚠'
+let g:easytags_autorecurse = 1
+let g:easytags_by_filetype = 1
+let g:easytags_cmd = '/usr/local/bin/ctags --exclude "include"'
+let g:easytags_dynamic_files = 2
+let g:easytags_events = []
+
+let g:syntastic_mode_map = { 'mode': 'passive',
+      \ 'active_filetypes': [],
+      \ 'passive_filetypes': [] }
+
+autocmd BufReadPost fugitive://* set bufhidden=delete
+
+autocmd FileType haskell nmap <buffer>__ :GhcModTypeClear<cr>
+autocmd FileType haskell nmap <buffer>_t :GhcModType!<cr>
+autocmd FileType haskell nmap <buffer>_T :GhcModTypeInsert!<cr>
+autocmd FileType haskell nmap <buffer>_i :GhcModInfo!<cr>
+autocmd FileType haskell nmap <buffer>_I :GhcModInfoPreview!<cr>
+
+autocmd FileType go            setl commentstring = //\ %s
+autocmd FileType masm          setl commentstring = ;\ %s
+autocmd FileType scheme,racket setl commentstring = ;\ %s
+
+autocmd FileType coffee        setl makeprg=coffee\ %
+autocmd FileType elixir        setl makeprg=elixir\ %
+autocmd FileType javascript    setl makeprg=node\ %
+autocmd FileType llvm          setl makeprg=lli\ %
+autocmd FileType lua           setl makeprg=lua\ %
+autocmd FileType markdown      setl makeprg=open\ -a\ Marked\ %
+autocmd FileType pico          setl makeprg=tpico\ -b\ -i\ -s\ %
+autocmd FileType racket,scheme setl makeprg=racket\ %
+
+autocmd FileType cpp
+      \ if expand('%') =~# 'Test.cpp$' |
+      \   setl makeprg=make\ test\ TEST_SOURCES=\"%:p\ test/main.cpp\" |
+      \ else |
+      \   setl makeprg=make\ test |
+      \ endif
+
+autocmd FileType go
+      \ if expand('%') =~# 'Test.go$' |
+      \   setl makeprg=go\ test\ \"%:p\" |
+      \ else |
+      \   setl makeprg=go\ run\ \"%:p\" |
+      \ endif
+
+autocmd FileType haskell
+      \ if expand('%') =~# 'Spec.hs$' |
+      \   setl makeprg=runhaskell\ \"%:p\"\ --color\ --format\ progress |
+      \ else |
+      \   setl makeprg=runhaskell\ \"%:p\" |
+      \ endif
+
+autocmd FileType ruby
+      \ if expand('%') =~# '_test\.rb$' |
+      \   compiler rubyunit | setl makeprg=testrb\ \"%:p\" |
+      \ elseif expand('%') =~# '_spec\.rb$' |
+      \   compiler rspec | setl makeprg=rspec\ \"%:p\"\ --tty\ --color |
+      \ else |
+      \   compiler ruby | setl makeprg=ruby\ -w\ \"%:p\" |
+      \ endif

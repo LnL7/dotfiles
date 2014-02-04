@@ -1,0 +1,13 @@
+autoload -U down-line-or-beginning-search
+autoload -U up-line-or-beginning-search
+
+bindkey -e
+
+bindkey "^N" insert-last-word
+bindkey "^Y" accept-and-hold
+bindkey -s "^T" "^Asudo ^E"
+
+bindkey "^[[A" up-line-or-beginning-search   # Up
+bindkey "^[[B" down-line-or-beginning-search # Down
+zle -N down-line-or-beginning-search
+zle -N up-line-or-beginning-search

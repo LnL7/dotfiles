@@ -1,0 +1,31 @@
+autoload -Uz colors && colors
+
+error_prompt_info() {
+  echo "%(?..%{$fg_bold[red]%}=> %?\n%{$reset_color%})"''
+}
+
+git_prompt_info() {
+  ref=$(git symbolic-ref HEAD 2> /dev/null)
+  if [[ -n $ref ]]; then
+    echo "[%{$fg_bold[green]%}${ref#refs/heads/}%{$reset_color%}]"
+  fi
+}
+
+ruby_prompt_info() {
+  eval `ruby - <<EOF
+engine  = defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby'
+version = engine == 'rbx' ? RUBY_VERSION.slice(0,3) : RUBY_VERSION
+puts "engine=#{engine}"
+puts "version=#{version}"
+EOF`
+  if [ -f '.ruby-version' ] || [[ -n $RBENV_VERSION ]]; then
+    echo "[%{$fg[yellow]%}${engine}@${version}%{$reset_color%}]"
+  fi
+}
+
+PROMPT_PREFIX="%B>%{$reset_color%} "
+PROMPT_SHELL="%{$fg_bold[green]%}$(basename $SHELL)%{$reset_color%}"
+PROMPT_DIR="[${SSH_CONNECTION+"%n@%m:"}%{$fg[blue]%}%~%{$reset_color%}]"
+
+PS1='$(error_prompt_info)$PROMPT_SHELL$PROMPT_PREFIX'
+RPS1='$(ruby_prompt_info)$(git_prompt_info)$PROMPT_DIR'
