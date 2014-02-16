@@ -104,7 +104,7 @@ autocmd FileType go
 
 autocmd FileType haskell
       \ if expand('%') =~# 'Spec.hs$' |
-      \   setl makeprg=runhaskell\ \"%:p\"\ --color\ --format\ progress |
+      \   setl makeprg=hspec\ \"%:p\" |
       \ else |
       \   setl makeprg=runhaskell\ \"%:p\" |
       \ endif
