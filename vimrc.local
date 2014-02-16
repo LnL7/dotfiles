@@ -75,9 +75,9 @@ autocmd FileType haskell nmap <buffer>_T :GhcModTypeInsert!<cr>
 autocmd FileType haskell nmap <buffer>_i :GhcModInfo!<cr>
 autocmd FileType haskell nmap <buffer>_I :GhcModInfoPreview!<cr>
 
-autocmd FileType go            setl commentstring = //\ %s
-autocmd FileType masm          setl commentstring = ;\ %s
-autocmd FileType scheme,racket setl commentstring = ;\ %s
+autocmd FileType go            setl commentstring=//\ %s
+autocmd FileType masm          setl commentstring=;\ %s
+autocmd FileType scheme,racket setl commentstring=;\ %s
 
 autocmd FileType coffee        setl makeprg=coffee\ %
 autocmd FileType elixir        setl makeprg=elixir\ %
