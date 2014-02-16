@@ -51,17 +51,34 @@ noremap <silent> <C-w><C-j> :call WinMove('j')<cr>
 noremap <silent> <C-w><C-k> :call WinMove('k')<cr>
 noremap <silent> <C-w><C-l> :call WinMove('l')<cr>
 
-let g:airline_left_sep                   = ''
-let g:airline_powerline_fonts            = 1
-let g:airline_right_sep                  = ''
-let g:ctrlp_user_command                 = 'ag %s -l --nocolor -g ""'
-let g:syntastic_error_symbol             = '✗'
-let g:syntastic_warning_symbol           = '⚠'
-let g:easytags_autorecurse = 1
-let g:easytags_by_filetype = 1
-let g:easytags_cmd = '/usr/local/bin/ctags --exclude "include"'
-let g:easytags_dynamic_files = 2
-let g:easytags_events = []
+autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType java          setlocal omnifunc=javacomplete#Complete
+autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python        setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
+
+" inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+
+inoremap <expr><Esc>   pumvisible() ? neocomplete#commands#_lock()."\<BS>\<Esc>" : "\<Esc>"
+inoremap <expr><TAB>   pumvisible() ? "\<C-n>" : neocomplete#commands#_unlock()."\<BS>"
+inoremap <expr><CR>    pumvisible() ? neocomplete#commands#_lock()."\<BS>\<CR>" : "\<CR>"
+inoremap <expr><Space> pumvisible() ? neocomplete#commands#_lock()."\<BS>\<Space>" : "\<Space>"
+
+let g:airline_left_sep               = ''
+let g:airline_powerline_fonts        = 1
+let g:airline_right_sep              = ''
+let g:ctrlp_user_command             = 'ag %s -l --nocolor -g ""'
+let g:easytags_autorecurse           = 1
+let g:easytags_by_filetype           = 1
+let g:easytags_cmd                   = '/usr/local/bin/ctags --exclude "include"'
+let g:easytags_dynamic_files         = 2
+let g:easytags_events                = []
+let g:neocomplete#enable_at_startup  = 1
+let g:neocomplete#enable_smart_case  = 1
+let g:syntastic_error_symbol         = '✗'
+let g:syntastic_warning_symbol       = '⚠'
+" let g:neocomplete#disable_auto_complete = 0
 
 let g:syntastic_mode_map = { 'mode': 'passive',
       \ 'active_filetypes': [],
