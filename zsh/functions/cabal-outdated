@@ -1,0 +1,3 @@
+function cabal-outdated() {
+  cabal list --installed  | egrep -iv '(synopsis|homepage|license)'
+}

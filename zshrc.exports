@@ -6,6 +6,8 @@ export VISUAL="vim"
 
 export GOPATH="$HOME/dev/Go"
 
+export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+
 if which rbenv &> /dev/null; then
   eval "$(rbenv init -  --no-rehash)"
 fi
@@ -14,8 +16,8 @@ if which brew &> /dev/null; then
   export PATH="$PATH:$(brew --prefix)/share/npm/bin"
 fi
 
-export PATH="$HOME/.bin:$HOME/.sbin:/usr/local/bin:/usr/local/sbin:$PATH"
-export PATH=".git/safe/../../bin:.git/safe/../../node_modules/bin:$PATH"
+export PATH="$HOME/.bin:$HOME/.sbin:$PATH"
+export PATH=".git/safe/../../bin:.git/safe/../../.cabal-sandbox/bin:.git/safe/../../node_modules/bin:$PATH"
 
 [[ -d $HOME/.cabal/bin  ]] && export PATH="$PATH:$HOME/.cabal/bin"
 [[ -d $HOME/.racket/bin ]] && export PATH="$PATH:$HOME/.racket/bin"

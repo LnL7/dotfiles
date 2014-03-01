@@ -17,3 +17,5 @@ alias la="ls -alh"                 # Pritty ls with hidden files
 alias ql="qlmanage -p 2>/dev/null" # Quick Look
 alias tx="tmux attach || tenv"     # Attach or create tmux environment
 alias v="$VISUAL"                  # Vim
+
+alias webrick='ruby -run -e httpd . -p 3000'

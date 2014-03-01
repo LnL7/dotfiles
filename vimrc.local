@@ -55,7 +55,9 @@ autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType java          setlocal omnifunc=javacomplete#Complete
 autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType ls            setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python        setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType roy           setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
 
 " inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -64,6 +66,12 @@ inoremap <expr><Esc>   pumvisible() ? neocomplete#commands#_lock()."\<BS>\<Esc>"
 inoremap <expr><TAB>   pumvisible() ? "\<C-n>" : neocomplete#commands#_unlock()."\<BS>"
 inoremap <expr><CR>    pumvisible() ? neocomplete#commands#_lock()."\<BS>\<CR>" : "\<CR>"
 inoremap <expr><Space> pumvisible() ? neocomplete#commands#_lock()."\<BS>\<Space>" : "\<Space>"
+
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+let g:neocomplete#sources#omni#input_patterns.coffee = '[^. \t]\.\%(\h\w*\)\?'
+let g:neocomplete#sources#omni#input_patterns.ls     = '[^. \t]\.\%(\h\w*\)\?'
 
 let g:airline_left_sep               = ''
 let g:airline_powerline_fonts        = 1
@@ -86,6 +94,10 @@ let g:syntastic_mode_map = { 'mode': 'passive',
 
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
+autocmd BufRead,BufNewFile *.purs,*.ps
+      \   setfiletype purescript
+      \ | setl syntax=haskell
+
 autocmd FileType haskell nmap <buffer>__ :GhcModTypeClear<cr>
 autocmd FileType haskell nmap <buffer>_t :GhcModType!<cr>
 autocmd FileType haskell nmap <buffer>_T :GhcModTypeInsert!<cr>
@@ -100,10 +112,13 @@ autocmd FileType coffee        setl makeprg=coffee\ %
 autocmd FileType elixir        setl makeprg=elixir\ %
 autocmd FileType javascript    setl makeprg=node\ %
 autocmd FileType llvm          setl makeprg=lli\ %
+autocmd FileType ls            setl makeprg=livescript\ -p\ -d\ %
 autocmd FileType lua           setl makeprg=lua\ %
 autocmd FileType markdown      setl makeprg=open\ -a\ Marked\ %
 autocmd FileType pico          setl makeprg=tpico\ -b\ -i\ -s\ %
+autocmd FileType purescript    setl makeprg=psce\ %
 autocmd FileType racket,scheme setl makeprg=racket\ %
+autocmd FileType roy           setl makeprg=roy\ -r\ %
 
 autocmd FileType cpp
       \ if expand('%') =~# 'Test.cpp$' |
