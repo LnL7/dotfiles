@@ -52,6 +52,7 @@ noremap <silent> <C-w><C-k> :call WinMove('k')<cr>
 noremap <silent> <C-w><C-l> :call WinMove('l')<cr>
 
 autocmd FileType css           setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType haskell       setlocal omnifunc=necoghc#omnifunc
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType java          setlocal omnifunc=javacomplete#Complete
 autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
@@ -60,33 +61,43 @@ autocmd FileType python        setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType roy           setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
 
-" inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><C-e> neocomplete#cancel_popup()
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><C-l> neocomplete#complete_common_string()
+inoremap <expr><C-y> neocomplete#close_popup()
+inoremap <expr><CR> neocomplete#close_popup() . "\<CR>"
+" inoremap <expr><CR> pumvisible() ? neocomplete#close_popup()."\<Esc>a" : "\<CR>"
+" inoremap <expr><Space> pumvisible() ? neocomplete#close_popup()."\<Esc>a" : "\<Space>\<Esc>a"
 
-inoremap <expr><Esc>   pumvisible() ? neocomplete#commands#_lock()."\<BS>\<Esc>" : "\<Esc>"
-inoremap <expr><TAB>   pumvisible() ? "\<C-n>" : neocomplete#commands#_unlock()."\<BS>"
-inoremap <expr><CR>    pumvisible() ? neocomplete#commands#_lock()."\<BS>\<CR>" : "\<CR>"
-inoremap <expr><Space> pumvisible() ? neocomplete#commands#_lock()."\<BS>\<Space>" : "\<Space>"
+" if !exists('g:neocomplete#keyword_patterns')
+"   let g:neocomplete#keyword_patterns = {}
+" endif
+" let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-let g:neocomplete#sources#omni#input_patterns.coffee = '[^. \t]\.\%(\h\w*\)\?'
-let g:neocomplete#sources#omni#input_patterns.ls     = '[^. \t]\.\%(\h\w*\)\?'
+" if !exists('g:neocomplete#sources#omni#input_patterns')
+"   let g:neocomplete#sources#omni#input_patterns = {}
+" endif
+" let g:neocomplete#sources#omni#input_patterns.coffee = '[^. \t]\.\%(\h\w*\)\?'
+" let g:neocomplete#sources#omni#input_patterns.ls     = '[^. \t]\.\%(\h\w*\)\?'
 
-let g:airline_left_sep               = ''
-let g:airline_powerline_fonts        = 1
-let g:airline_right_sep              = ''
-let g:ctrlp_user_command             = 'ag %s -l --nocolor -g ""'
-let g:easytags_autorecurse           = 1
-let g:easytags_by_filetype           = 1
-let g:easytags_cmd                   = '/usr/local/bin/ctags --exclude "include"'
-let g:easytags_dynamic_files         = 2
-let g:easytags_events                = []
-let g:neocomplete#enable_at_startup  = 1
-let g:neocomplete#enable_smart_case  = 1
-let g:syntastic_error_symbol         = '✗'
-let g:syntastic_warning_symbol       = '⚠'
-" let g:neocomplete#disable_auto_complete = 0
+let g:acp_enableAtStartup                      = 0
+let g:airline_left_sep                         = ''
+let g:airline_powerline_fonts                  = 1
+let g:airline_right_sep                        = ''
+let g:ctrlp_user_command                       = 'ag %s -l --nocolor -g ""'
+let g:easytags_autorecurse                     = 1
+let g:easytags_by_filetype                     = 1
+let g:easytags_cmd                             = '/usr/local/bin/ctags --exclude "include"'
+let g:easytags_dynamic_files                   = 2
+let g:easytags_events                          = []
+let g:haskell_conceal                          = 0
+let g:neocomplete#auto_completion_start_length = 1
+" let g:neocomplete#disable_auto_complete        = 1
+let g:neocomplete#enable_at_startup            = 1
+let g:neocomplete#enable_smart_case            = 1
+let g:syntastic_error_symbol                   = '✗'
+let g:syntastic_warning_symbol                 = '⚠'
 
 let g:syntastic_mode_map = { 'mode': 'passive',
       \ 'active_filetypes': [],

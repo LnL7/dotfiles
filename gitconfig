@@ -11,6 +11,9 @@
 [merge]
   ff = only
 
+[mergetool]
+  keepBackup = true
+
 [pager]
   reflog = false
   diff   = false

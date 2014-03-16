@@ -15,7 +15,7 @@ case $# in
     fi
     ;;
   *)
-    [ -d 'src' ] && flags+='-isrc'
+    [ -d 'src' ] && flags+=' -isrc'
     while [ "$1" != "" ]; do
       if [ -f $1 ]; then
         runhaskell $flags $1 $opts

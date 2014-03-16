@@ -12,6 +12,12 @@ done
 set completion-ignore-case on
 set show-all-if-ambiguous on
 
+# source $HOME/.zsh/autosuggestions/autosuggestions.zsh
+# zle-line-init() {
+#   zle autosuggest-start
+# }
+# zle -N zle-line-init
+
 source $HOME/.zshrc.aliases
 source $HOME/.zshrc.bindkeys
 source $HOME/.zshrc.exports

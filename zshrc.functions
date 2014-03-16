@@ -1,9 +1,0 @@
-g() {
-  if [[ $# > 0 ]]; then
-    git $@
-  else
-    git log -3
-    echo "\n"
-    git status --short
-  fi
-}

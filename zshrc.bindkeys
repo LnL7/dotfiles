@@ -3,6 +3,7 @@ autoload -U up-line-or-beginning-search
 
 bindkey -e
 
+bindkey '^F' vi-forward-blank-word
 bindkey "^N" insert-last-word
 bindkey "^Y" accept-and-hold
 bindkey -s "^T" "^Asudo ^E"

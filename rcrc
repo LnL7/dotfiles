@@ -1,1 +1,1 @@
-EXCLUDES="README.md Brewfile"
+EXCLUDES="README.md Brewfile LICENSE-MIT README.mkd"
