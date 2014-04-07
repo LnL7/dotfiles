@@ -1,6 +1,6 @@
 #!/bin/sh
 
-opts='--color --format=progress'
+opts='--format=progress'
 flags='-isrc -itest -fdefer-type-errors'
 
 case $# in
