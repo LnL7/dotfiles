@@ -22,7 +22,7 @@ world-file: /Users/lnl/.cabal/world
 -- program-suffix: 
 -- library-vanilla: True
 -- library-profiling: False
-shared: True
+-- shared: False
 -- executable-dynamic: False
 -- executable-profiling: False
 -- optimization: True

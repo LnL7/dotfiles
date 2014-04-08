@@ -79,15 +79,16 @@ command! -range Md5 :echo system('echo '.shellescape(join(getline(<line1>, <line
 set background=dark
 colorscheme solarized
 
-let g:SuperTabDefaultCompletionType        = '<C-x><C-u>'
-let g:ctrlp_cmd                            = 'CtrlP'
-let g:ctrlp_map                            = '<Leader>p'
-let g:ctrlp_use_caching                    = 0
-let g:indent_guides_auto_colors            = 1
-let g:indent_guides_color_change_percent   = 2
-let g:indent_guides_exclude_filetypes      = ['go', 'help']
-let g:indent_guides_guide_size             = 1
-let g:indent_guides_start_level            = 1
+let g:ctrlp_cmd         = 'CtrlP'
+let g:ctrlp_map         = '<Leader>p'
+let g:ctrlp_use_caching = 0
+let g:indent_guides_auto_colors          = 1
+let g:indent_guides_color_change_percent = 2
+let g:indent_guides_exclude_filetypes    = ['go', 'help']
+let g:indent_guides_guide_size           = 1
+let g:indent_guides_start_level          = 1
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_semantic_triggers            = []
 
 autocmd VimEnter,Colorscheme * highlight Search    guibg=NONE guifg=NONE gui=underline ctermfg=NONE ctermbg=NONE term=underline
 autocmd VimEnter,Colorscheme * highlight IncSearch guibg=NONE guifg=NONE gui=underline ctermfg=NONE ctermbg=NONE term=underline

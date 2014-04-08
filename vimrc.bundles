@@ -10,7 +10,7 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-dispatch'
 Plugin 'tpope/vim-surround'
-Plugin 'ervandew/supertab'
+Plugin 'Valloric/YouCompleteMe'
 
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'bling/vim-airline'

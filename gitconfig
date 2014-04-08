@@ -7,6 +7,10 @@
 [core]
   excludesfile = ~/.gitignore
   autocrlf     = input
+  whitespace   = trailing-space,space-before-tab
+
+[apply]
+  whitespace = fix
 
 [merge]
   ff = only
@@ -58,7 +62,7 @@
 
   ## Diff
   d  = diff --minimal --ignore-space-change --ignore-all-space --ignore-blank-lines --word-diff=color
-  dc = diff --minimal --ignore-space-change --ignore-all-space --ignore-blank-lines --word-diff=color --cached
+  dc = diff --cached
   dn = diff --name-status
 
   ## Fetch

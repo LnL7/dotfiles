@@ -18,6 +18,9 @@ set show-all-if-ambiguous on
 # }
 # zle -N zle-line-init
 
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
 source $HOME/.zshrc.aliases
 source $HOME/.zshrc.bindkeys
 source $HOME/.zshrc.exports

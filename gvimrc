@@ -1,5 +1,5 @@
 set guioptions=gmc
-set guifont=Anonymous\ Pro\ For\ Powerline:h13
+set guifont=Anonymous\ Pro\ For\ Powerline:h14
 
 noremap <silent> <C-h> <C-w><C-h> <CR>
 noremap <silent> <C-j> <C-w><C-j> <CR>

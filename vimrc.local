@@ -1,15 +1,16 @@
+nnoremap <Leader>! :Dispatch<cr>
 nnoremap <Leader>( :tabprev<cr>
 nnoremap <Leader>) :tabnext<cr>
-nnoremap <Leader>0 :set guifont=Anonymous\ Pro\ For\ Powerline:h13<cr>
+nnoremap <Leader>. :CtrlPTag<cr>
 nnoremap <Leader>1 :set background=dark<cr> :colorscheme solarized<cr>
 nnoremap <Leader>2 :set background=light<cr> :colorscheme solarized<cr>
-nnoremap <Leader>3 :set background=dark<cr> :colorscheme hybrid<cr>
-nnoremap <Leader>4 :set background=light<cr> :colorscheme hybrid-light<cr>
-nnoremap <Leader>9 :set guifont=Anonymous\ Pro\ For\ Powerline:h23<cr>
+nnoremap <Leader>3 :set guifont=Anonymous\ Pro\ For\ Powerline:h14<cr>
+nnoremap <Leader>4 :set guifont=Anonymous\ Pro\ For\ Powerline:h28<cr>
+nnoremap <Leader>5 :set transparency=3<cr>
+nnoremap <Leader>6 :set transparency=63<cr>
 nnoremap <Leader><Leader> <C-^>
 nnoremap <Leader>e :e <C-r>=expand('%:h') . '/'<cr>
-nnoremap <Leader>f :Dispatch<cr>
-nnoremap <Leader>t :Dispatch make test<cr>
+nnoremap <Leader>s :SyntasticToggleMode<cr>
 
 vnoremap <Leader>so y:execute @@<cr>
 nnoremap <Leader>so ^vg_y:execute @@<cr>
@@ -56,80 +57,56 @@ autocmd FileType haskell       setlocal omnifunc=necoghc#omnifunc
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType java          setlocal omnifunc=javacomplete#Complete
 autocmd FileType javascript    setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType ls            setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python        setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType roy           setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
 
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-e> neocomplete#cancel_popup()
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><C-l> neocomplete#complete_common_string()
-inoremap <expr><C-y> neocomplete#close_popup()
-inoremap <expr><CR> neocomplete#close_popup() . "\<CR>"
-" inoremap <expr><CR> pumvisible() ? neocomplete#close_popup()."\<Esc>a" : "\<CR>"
-" inoremap <expr><Space> pumvisible() ? neocomplete#close_popup()."\<Esc>a" : "\<Space>\<Esc>a"
+let g:airline_left_sep        = ''
+let g:airline_powerline_fonts = 1
+let g:airline_right_sep       = ''
+let g:easytags_by_filetype   = '~/.vim/tmp/tags'
+let g:easytags_cmd           = '/usr/local/bin/ctags'
+let g:easytags_dynamic_files = 1
+let g:easytags_events        = []
+let g:haskell_conceal = 1
+let g:syntastic_error_symbol         = '✗'
+let g:syntastic_java_javac_classpath = '.:.shake:.shake/src:.shake/test:lib/*.jar'
+let g:syntastic_warning_symbol       = '⚠'
+let g:ycm_path_to_python_interpreter = '/usr/bin/python'
 
-" if !exists('g:neocomplete#keyword_patterns')
-"   let g:neocomplete#keyword_patterns = {}
-" endif
-" let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+let g:ctrlp_user_command = {
+      \ 'types': {
+      \ 1: ['.git', 'cd %s && git ls-files'],
+      \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+      \ 3: ['_darcs', 'cd %s && darcs show files --no-directories'] },
+      \ 'fallback': 'find %s -type f' }
 
-" if !exists('g:neocomplete#sources#omni#input_patterns')
-"   let g:neocomplete#sources#omni#input_patterns = {}
-" endif
-" let g:neocomplete#sources#omni#input_patterns.coffee = '[^. \t]\.\%(\h\w*\)\?'
-" let g:neocomplete#sources#omni#input_patterns.ls     = '[^. \t]\.\%(\h\w*\)\?'
-
-let g:acp_enableAtStartup                      = 0
-let g:airline_left_sep                         = ''
-let g:airline_powerline_fonts                  = 1
-let g:airline_right_sep                        = ''
-let g:ctrlp_user_command                       = 'ag %s -l --nocolor -g ""'
-let g:easytags_autorecurse                     = 1
-let g:easytags_by_filetype                     = 1
-let g:easytags_cmd                             = '/usr/local/bin/ctags --exclude "include"'
-let g:easytags_dynamic_files                   = 2
-let g:easytags_events                          = []
-let g:haskell_conceal                          = 0
-let g:neocomplete#auto_completion_start_length = 1
-" let g:neocomplete#disable_auto_complete        = 1
-let g:neocomplete#enable_at_startup            = 1
-let g:neocomplete#enable_smart_case            = 1
-let g:syntastic_error_symbol                   = '✗'
-let g:syntastic_warning_symbol                 = '⚠'
-
-let g:syntastic_mode_map = { 'mode': 'passive',
+let g:syntastic_mode_map = {
+      \ 'mode': 'passive',
       \ 'active_filetypes': [],
       \ 'passive_filetypes': [] }
 
+autocmd BufNewFile,BufRead Shakefile set filetype=haskell
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
-autocmd BufRead,BufNewFile *.purs,*.ps
-      \   setfiletype purescript
-      \ | setl syntax=haskell
-
-autocmd FileType haskell nmap <buffer>__ :GhcModTypeClear<cr>
-autocmd FileType haskell nmap <buffer>_t :GhcModType!<cr>
-autocmd FileType haskell nmap <buffer>_T :GhcModTypeInsert!<cr>
-autocmd FileType haskell nmap <buffer>_i :GhcModInfo!<cr>
-autocmd FileType haskell nmap <buffer>_I :GhcModInfoPreview!<cr>
+autocmd FileType haskell noremap <buffer>__ :GhcModTypeClear<cr>
+autocmd FileType haskell noremap <buffer>_t :GhcModType!<cr>
+autocmd FileType haskell noremap <buffer>_T :GhcModTypeInsert!<cr>
+autocmd FileType haskell noremap <buffer>_i :GhcModInfo!<cr>
+autocmd FileType haskell noremap <buffer>_I :GhcModInfoPreview!<cr>
 
 autocmd FileType go            setl commentstring=//\ %s
 autocmd FileType masm          setl commentstring=;\ %s
 autocmd FileType scheme,racket setl commentstring=;\ %s
 
+autocmd FileType llvm          setl makeprg=lli\ %
 autocmd FileType coffee        setl makeprg=coffee\ %
 autocmd FileType elixir        setl makeprg=elixir\ %
 autocmd FileType javascript    setl makeprg=node\ %
-autocmd FileType llvm          setl makeprg=lli\ %
-autocmd FileType ls            setl makeprg=livescript\ -p\ -d\ %
-autocmd FileType lua           setl makeprg=lua\ %
 autocmd FileType markdown      setl makeprg=open\ -a\ Marked\ %
 autocmd FileType pico          setl makeprg=tpico\ -b\ -i\ -s\ %
-autocmd FileType purescript    setl makeprg=psce\ %
 autocmd FileType racket,scheme setl makeprg=racket\ %
-autocmd FileType roy           setl makeprg=roy\ -r\ %
+autocmd FileType swift         setl makeprg=xcrun\ swift\ -i\ %
+autocmd FileType potion        setl makeprg=potion\ %
 
 autocmd FileType cpp
       \ if expand('%') =~# 'Test.cpp$' |
