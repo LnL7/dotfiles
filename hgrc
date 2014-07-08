@@ -1,0 +1,21 @@
+[ui]
+ignore = ~/.hgignore
+username = Daiderd Jordan <daiderd@gmail.com>
+merge = Kaleidoscope
+commitsubrepos = no
+%include .hgrc.local
+[diff]
+git = True
+[merge-tools]
+Kaleidoscope.executable = /usr/local/bin/ksdiff
+Kaleidoscope.args = --merge --output $output --base $base -- $local $other
+[extdiff]
+cmd.ksdiff = /usr/local/bin/ksdiff
+opts.ksdiff = --changeset --wait --filelist
+[extensions]
+rebase =
+record =
+shelve =
+strip =
+[alias]
+l = log -l 32 --style="$HOME/.hg/map-cmdline"
