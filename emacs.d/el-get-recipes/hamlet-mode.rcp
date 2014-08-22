@@ -1,0 +1,5 @@
+(:name hamlet-mode
+       :description "Major mode for editing files written in Hamlet"
+       :type github
+       :pkgname "chrisdone/hamlet-mode"
+       :depends (cl-lib dash s))

@@ -1,7 +1,6 @@
 setopt appendhistory autocd extendedglob
 unsetopt beep
 
-setopt append_history       # Share history for all sessions
 setopt auto_pushd           # Make cd push the old directory onto the directory stack
 setopt auto_name_dirs       # Any parameter that is set to the absolute name of a directory immediately becomes a name for that directory
 setopt cdablevars           # Expand variables in path
@@ -16,4 +15,5 @@ setopt pushd_silent         # Do not print the directory stack after pushd or po
 setopt pushd_to_home        # Have pushd with no arguments act like `pushd $HOME'
 setopt share_history        # Imports new commands to history
 setopt transient_rprompt    # only show the rprompt on the current prompt
+unsetopt flow_control       # If this option is unset, output flow control via start/stop characters
 unsetopt nomatch            # Allow [ or ] whereever you want

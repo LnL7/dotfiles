@@ -17,7 +17,7 @@ if which brew &> /dev/null; then
 fi
 
 [[ -d $HOME/.cabal/bin  ]] && export PATH="$PATH:$HOME/.cabal/bin"
-[[ -d $HOME/.racket/bin ]] && export PATH="$PATH:$HOME/.racket/bin"
+# [[ -d $HOME/.racket/bin ]] && export PATH="$PATH:$HOME/.racket/bin"
 
 export PATH="$HOME/.bin:$HOME/.sbin:$PATH"
 export PATH=".git/safe/../../bin:.git/safe/../../.cabal-sandbox/bin:.git/safe/../../node_modules/bin:$PATH"

@@ -1,21 +1,27 @@
 [ui]
-ignore = ~/.hgignore
-username = Daiderd Jordan <daiderd@gmail.com>
-merge = Kaleidoscope
 commitsubrepos = no
+ignore         = ~/.hgignore
+username       = Daiderd Jordan <daiderd@gmail.com>
+
 %include .hgrc.local
+
 [diff]
 git = True
+
 [merge-tools]
-Kaleidoscope.executable = /usr/local/bin/ksdiff
-Kaleidoscope.args = --merge --output $output --base $base -- $local $other
-[extdiff]
-cmd.ksdiff = /usr/local/bin/ksdiff
-opts.ksdiff = --changeset --wait --filelist
+splice.args       = -f $base $local $other $output -c 'SpliceInit'
+splice.executable = mvim
+splice.premerge   = keep
+splice.priority   = 1
+
 [extensions]
+color  =
+fetch  =
+purge  =
 rebase =
 record =
 shelve =
-strip =
+strip  =
+
 [alias]
-l = log -l 32 --style="$HOME/.hg/map-cmdline"
+l = log -l 16 --style="$HOME/.hg/map-cmdline"

@@ -13,10 +13,12 @@
   whitespace = fix
 
 [merge]
-  ff = only
+  ff   = only
+  tool = splice
 
-[mergetool]
-  keepBackup = true
+[mergetool "splice"]
+  cmd           = "mvim -f $BASE $LOCAL $REMOTE $MERGED -c 'SpliceInit'"
+  trustExitCode = true
 
 [pager]
   reflog = false

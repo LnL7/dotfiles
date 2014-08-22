@@ -3,12 +3,18 @@
 opts='--format=progress'
 flags='-isrc -itest -fdefer-type-errors'
 
+if [ -f 'cabal.sandbox.config' ]; then
+  run='cabal exec -- runhaskell'
+else
+  run='runhaskell'
+fi
+
 case $# in
   0)
     if [ -f 'Spec.hs' ]; then
-      runhaskell $flags Spec.hs $opts
+      exec $run $flags Spec.hs $opts
     elif [ -f 'test/Spec.hs' ]; then
-      runhaskell $flags test/Spec.hs $opts
+      exec $run $flags test/Spec.hs $opts
     else
       echo "No tests found"
       exit 1
@@ -18,7 +24,7 @@ case $# in
     [ -d 'src' ] && flags+=' -isrc'
     while [ "$1" != "" ]; do
       if [ -f "$1" ]; then
-        runhaskell $flags "$1" $opts
+        exec $run $flags "$1" $opts
         shift
       else
         echo "$1: No such file"

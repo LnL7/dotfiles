@@ -11,6 +11,7 @@ nnoremap <Leader>6 :set transparency=63<cr>
 nnoremap <Leader><Leader> <C-^>
 nnoremap <Leader>e :e <C-r>=expand('%:h') . '/'<cr>
 nnoremap <Leader>s :SyntasticToggleMode<cr>
+nnoremap <Leader>z zMzv
 
 vnoremap <Leader>so y:execute @@<cr>
 nnoremap <Leader>so ^vg_y:execute @@<cr>
@@ -63,6 +64,7 @@ autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
 let g:airline_left_sep        = ''
 let g:airline_powerline_fonts = 1
 let g:airline_right_sep       = ''
+let g:easytags_autorecurse   = 1
 let g:easytags_by_filetype   = '~/.vim/tmp/tags'
 let g:easytags_cmd           = '/usr/local/bin/ctags'
 let g:easytags_dynamic_files = 1
@@ -72,13 +74,18 @@ let g:syntastic_error_symbol         = '✗'
 let g:syntastic_java_javac_classpath = '.:.shake:.shake/src:.shake/test:lib/*.jar'
 let g:syntastic_warning_symbol       = '⚠'
 let g:ycm_path_to_python_interpreter = '/usr/bin/python'
+let g:DisableAutoPHPFolding = 1
 
-let g:ctrlp_user_command = {
-      \ 'types': {
-      \ 1: ['.git', 'cd %s && git ls-files'],
-      \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-      \ 3: ['_darcs', 'cd %s && darcs show files --no-directories'] },
-      \ 'fallback': 'find %s -type f' }
+let g:ctrlp_max_files = 0
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_use_caching = 1
+let g:ctrlp_clear_cache_on_exit = 1
+" let g:ctrlp_user_command = {
+"       \ 'types': {
+"       \ 1: ['.git', 'cd %s && git ls-files'],
+"       \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+"       \ 3: ['_darcs', 'cd %s && darcs show files --no-directories'] },
+"       \ 'fallback': 'find %s -type f' }
 
 let g:syntastic_mode_map = {
       \ 'mode': 'passive',
@@ -98,37 +105,65 @@ autocmd FileType go            setl commentstring=//\ %s
 autocmd FileType masm          setl commentstring=;\ %s
 autocmd FileType scheme,racket setl commentstring=;\ %s
 
-autocmd FileType llvm          setl makeprg=lli\ %
-autocmd FileType coffee        setl makeprg=coffee\ %
-autocmd FileType elixir        setl makeprg=elixir\ %
-autocmd FileType javascript    setl makeprg=node\ %
-autocmd FileType markdown      setl makeprg=open\ -a\ Marked\ %
-autocmd FileType pico          setl makeprg=tpico\ -b\ -i\ -s\ %
-autocmd FileType racket,scheme setl makeprg=racket\ %
-autocmd FileType swift         setl makeprg=xcrun\ swift\ -i\ %
-autocmd FileType potion        setl makeprg=potion\ %
+autocmd FileType php set tabstop=4
+autocmd FileType php set shiftwidth=4
 
+autocmd FileType clojure
+      \ setl makeprg=lein\ exec\ \"%:p\" |
+      \ setl errorformat=%+I%.%#
+autocmd FileType coffee
+      \ setl makeprg=coffee\ \"%:p\" |
+      \ setl errorformat=%+I%.%#
+autocmd FileType elixir
+      \ setl makeprg=elixir\ \"%:p\" |
+      \ setl errorformat=%+I%.%#
+autocmd FileType idris
+      \ setl makeprg=idris\ \"%:p\"\ --exec\ main |
+      \ setl errorformat=%+I%.%#
+autocmd FileType javascript
+      \ setl makeprg=node\ \"%:p\" |
+      \ setl errorformat=%+I%.%#
+autocmd FileType llvm
+      \ setl makeprg=lli\ \"%:p\" |
+      \ setl errorformat=%+I%.%#
+autocmd FileType markdown
+      \ setl makeprg=open\ -a\ Marked\ \"%:p\" |
+      \ setl errorformat=%+I%.%#
+autocmd FileType pico
+      \ setl makeprg=tpico\ -b\ -i\ -s\ \"%:p\" |
+      \ setl errorformat=%+I%.%#
+autocmd FileType racket,scheme
+      \ setl makeprg=racket\ \"%:p\" |
+      \ setl errorformat=%+I%.%#
+autocmd FileType swift
+      \ setl makeprg=xcrun\ swift\ -i\ \"%:p\" |
+      \ setl errorformat=%+I%.%#
+autocmd FileType potion
+      \ setl makeprg=potion\ \"%:p\" |
+      \ setl errorformat=%+I%.%#
 autocmd FileType cpp
       \ if expand('%') =~# 'Test.cpp$' |
       \   setl makeprg=make\ test\ TEST_SOURCES=\"%:p\ test/main.cpp\" |
+      \   setl errorformat=%+I%.%# |
       \ else |
       \   setl makeprg=make\ test |
+      \   setl errorformat=%+I%.%# |
       \ endif
-
 autocmd FileType go
       \ if expand('%') =~# 'Test.go$' |
       \   setl makeprg=go\ test\ \"%:p\" |
       \ else |
       \   setl makeprg=go\ run\ \"%:p\" |
+      \   setl errorformat=%+I%.%# |
       \ endif
-
 autocmd FileType haskell
       \ if expand('%') =~# 'Spec.hs$' |
       \   setl makeprg=hspec\ \"%:p\" |
+      \   setl errorformat=%+I%.%# |
       \ else |
       \   setl makeprg=runhaskell\ \"%:p\" |
+      \   setl errorformat=%+I%.%# |
       \ endif
-
 autocmd FileType ruby
       \ if expand('%') =~# '_test\.rb$' |
       \   compiler rubyunit | setl makeprg=testrb\ \"%:p\" |
@@ -136,4 +171,5 @@ autocmd FileType ruby
       \   compiler rspec | setl makeprg=rspec\ \"%:p\" |
       \ else |
       \   compiler ruby | setl makeprg=ruby\ -w\ \"%:p\" |
+      \   setl errorformat=%+I%.%# |
       \ endif

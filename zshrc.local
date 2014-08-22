@@ -1,9 +1,11 @@
 export d="$HOME/Desktop"
 export dn="$HOME/Downloads"
 export git="$HOME/Dropbox/git"
+export mamp="/Applications/MAMP/htdocs"
 
 export asm="$HOME/dev/Asm"
 export c="$HOME/dev/C"
+export clj="$HOME/dev/Closure"
 export cpp="$HOME/dev/C++"
 export erl="$HOME/dev/Erlang"
 export ex="$HOME/dev/Elixir"
@@ -43,10 +45,3 @@ export newmedia="$HOME/Dropbox/Shared/Computer Science/Ontwikkeling, beleid en g
 export oomodel="$HOME/Dropbox/Shared/Computer Science/Objectgericht modelleertechnieken"
 export scp1="$HOME/Dropbox/Shared/Computer Science/Structuur van Computerprogramma's 1"
 export scp2="$HOME/Dropbox/Shared/Computer Science/Structuur van Computerprogramma's 2"
-
-alias reex="supervisor -n exit -x coffee -e coffee --"
-alias reex="supervisor -n exit -x elixir -e 'ex|exs' --"
-alias rehs="supervisor -n exit -x runhaskell -e 'hs|lhs' --"
-alias repco="supervisor -n exit -x pico -e pco --"
-alias rerb="supervisor -n exit -x ruby -e rb --"
-alias rerkt="supervisor -n exit -x racket -e 'rkt|scm' --"

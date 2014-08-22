@@ -5,6 +5,9 @@ if [ ! -e $HOME/.zsh/cache ]; then
 fi
 
 if [ ! -e $HOME/.vim/bundle/vundle ]; then
-  git clone https://github.com/gmarik/vundle.git $HOME/.vim/bundle/vundle
+  git clone git@github.com:gmarik/vundle.git $HOME/.vim/bundle/vundle
 fi
-vim -u $HOME/.vimrc.bundles +PluginInstall +qa
+
+if [ ! -e $HOME/.emacs.d/el-get ]; then
+  git clone git@github.com:dimitri/el-get.git $HOME/.emacs.d/el-get
+fi

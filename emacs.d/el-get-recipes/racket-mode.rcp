@@ -1,0 +1,4 @@
+(:name racket-mode
+       :description "Major mode for editing files written in Racket"
+       :type github
+       :pkgname "greghendershott/racket-mode")
