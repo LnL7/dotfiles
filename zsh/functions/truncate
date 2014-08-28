@@ -1,0 +1,5 @@
+
+
+truncate() {
+  dd if=/dev/zero of="$2" bs=1m count="$1"
+}

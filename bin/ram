@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -e
+
+case $1 in
+  "" | "-h" | "--help" | "help")
+    echo "usage: ram <command>"
+    echo ""
+    echo "  [un]dev # create/destroy empty device"
+    echo "  [un]hfs # create/destroy hfs+ volume"
+    echo "  [un]zfs # create/destroy zfs pool"
+    ;;
+
+  "dev")
+    [ -b "/dev/disk1" ] || hdiutil attach -nomount ram://16777216
+    ;;
+  "undev")
+    [ -b "/dev/disk1" ] && hdiutil detach /dev/disk1
+    ;;
+
+  "hfs")
+    [ -b "/dev/disk1" ] || hdiutil attach -nomount ram://16777216
+    diskutil partitiondisk /dev/disk1 GPTFormat HFS+ "Ram" 100%
+    ;;
+  "unhfs")
+    diskutil unmount force /Volumes/Ram
+    [ -b "/dev/disk1" ] && hdiutil detach /dev/disk1
+    ;;
+
+  "zfs")
+    [ -b "/dev/disk1" ] || hdiutil attach -nomount ram://16777216
+    diskutil partitiondisk /dev/disk1 GPTFormat ZFS %noformat% 100%
+    zpool create -f -o ashift=13 -m /mnt/Ram ram "/dev/disk1s2"
+    sudo chown -R $USER:staff /mnt/Ram
+    sudo mdutil -i off /mnt/Ram
+    sudo rm -rf /mnt/Ram/.fseventsd/
+    mkdir /mnt/Ram/.fseventsd
+    touch /mnt/Ram/.fseventsd/no_log
+    ;;
+  "unzfs")
+    zpool export -f ram
+    [ -b "/dev/disk1" ] && hdiutil detach /dev/disk1
+    ;;
+
+  *)
+    echo "ram: '$1' is not a command."
+    exit 1;
+esac

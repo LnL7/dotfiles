@@ -76,10 +76,10 @@
   i  = init
 
   ## Log
-  l  = log -32 --pretty=colored --graph
-  la = log -32 --pretty=colored --simplify-by-decoration --all
-  ll = log -32 --pretty=format':%h %s   %an, %ar\n'
-  ln = log -32 --pretty=colored --name-only
+  l  = log -16 --pretty=colored --graph
+  la = log -16 --pretty=colored --simplify-by-decoration --all
+  ll = log -16 --pretty=format':%h %s   %an, %ar\n'
+  ln = log -16 --pretty=colored --name-only
 
   ## Merge
   m  = merge

@@ -3,10 +3,12 @@
 .LSOverride
 .Spotlight-V100
 .Trashes
+.VolumeIcon.icns
 ._*
 .fseventsd
 Icon?
 
+.#*
 *.sw[nop]
 .clang_complete
 .env
