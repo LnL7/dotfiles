@@ -1,4 +1,6 @@
 nnoremap <Leader>! :Dispatch<cr>
+nnoremap <Leader># :CtrlPLine<cr>
+nnoremap <Leader>` :CtrlPChange<cr>
 nnoremap <Leader>( :tabprev<cr>
 nnoremap <Leader>) :tabnext<cr>
 nnoremap <Leader>. :CtrlPTag<cr>
@@ -9,8 +11,13 @@ nnoremap <Leader>4 :set guifont=Anonymous\ Pro\ For\ Powerline:h28<cr>
 nnoremap <Leader>5 :set transparency=3<cr>
 nnoremap <Leader>6 :set transparency=63<cr>
 nnoremap <Leader><Leader> <C-^>
+nnoremap <Leader>P :CtrlPMixed<cr>
+nnoremap <Leader>b :CtrlPBuffer<cr>
+nnoremap <Leader>d :CtrlPDir<cr>
 nnoremap <Leader>e :e <C-r>=expand('%:h') . '/'<cr>
+nnoremap <Leader>f :CtrlPCurFile<cr>
 nnoremap <Leader>s :SyntasticToggleMode<cr>
+nnoremap <Leader>t :CtrlPBufTag<cr>
 nnoremap <Leader>z zMzv
 
 vnoremap <Leader>so y:execute @@<cr>
