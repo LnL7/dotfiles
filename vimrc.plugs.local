@@ -1,0 +1,35 @@
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'nelstrom/vim-visual-star-search'
+Plug 'tpope/vim-characterize'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-unimpaired'
+
+Plug 'LnL7/vim-pico'
+Plug 'Superbil/llvm.vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'tapichu/potion.vim'
+Plug 'wlangstroth/vim-racket'
+
+Plug 'cwoac/nvim',                    { 'on': 'Nvim'                         }
+Plug 'godlygeek/tabular',             { 'on': 'Tabularize'                   }
+Plug 'ludovicchabant/vim-lawrencium', { 'on': ['Hg', 'Hgstatus', 'Hgcommit'] }
+Plug 'rking/ag.vim',                  { 'on': 'Ag'                           }
+Plug 'scrooloose/syntastic',          { 'on': 'SyntasticToggleMode'          }
+Plug 'sjl/splice.vim',                { 'on': 'SpliceInit'                   }
+Plug 'tpope/vim-abolish',             { 'on': ['Abolish', 'Subvert']         }
+Plug 'tpope/vim-fugitive',            { 'on': ['Git', 'Gstatus', 'Gcommit']  }
+Plug 'vim-scripts/AnsiEsc.vim',       { 'on': 'AnsiEsc'                      }
+Plug 'vim-scripts/Darcs',             { 'on': ['DarcsChanges', 'DarcsDiff']  }
+Plug 'vim-scripts/taglist.vim',       { 'on': 'Tlist'                        }
+
+Plug 'xolox/vim-easytags', { 'on': 'UpdateTags' }
+  Plug 'xolox/vim-misc',   { 'on': 'UpdateTags' }
+
+Plug 'Twinside/vim-hoogle',  { 'for': 'haskell'               }
+Plug 'eagletmt/neco-ghc',    { 'for': 'haskell'               }
+Plug 'eagletmt/ghcmod-vim',  { 'for': 'haskell'               }
+  Plug 'Shougo/vimproc.vim', {
+        \ 'for': 'haskell',
+        \ 'do': 'make' }

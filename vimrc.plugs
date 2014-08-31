@@ -1,0 +1,20 @@
+Plug 'altercation/vim-colors-solarized'
+Plug 'bling/vim-airline'
+
+Plug 'tpope/vim-surround'
+
+Plug 'nathanaelkane/vim-indent-guides', { 'on': 'IndentGuidesEnable'          }
+Plug 'tpope/vim-dispatch',              { 'on': ['Dispatch', 'FocusDispatch'] }
+
+Plug 'Valloric/YouCompleteMe', {
+      \ 'on': 'YcmCompleter',
+      \ 'do': './install.sh' }
+
+Plug 'kien/ctrlp.vim', {
+      \ 'on': [
+      \   'CtrlP', 'CtrlPTag', 'CtrlPLine', 'CtrlPChange', 'CtrlPMixed',
+      \   'CtrlPBuffer', 'CtrlPDir'] }
+
+if filereadable($HOME . '/.vimrc.plugs.local')
+  source ~/.vimrc.plugs.local
+endif

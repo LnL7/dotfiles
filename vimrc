@@ -1,7 +1,10 @@
-source $HOME/.vimrc.bundles
-
+set nocompatible
 filetype plugin indent on
 syntax on
+
+call plug#begin('~/.vim/plugged')
+source ~/.vimrc.plugs
+call plug#end()
 
 " Settings
 " ========
@@ -79,8 +82,8 @@ command! -range Md5 :echo system('echo '.shellescape(join(getline(<line1>, <line
 set background=dark
 colorscheme solarized
 
-let g:ctrlp_cmd         = 'CtrlP'
-let g:ctrlp_map         = '<Leader>p'
+nnoremap <Leader>p :CtrlP<cr>
+
 let g:ctrlp_use_caching = 0
 let g:indent_guides_auto_colors          = 1
 let g:indent_guides_color_change_percent = 2
@@ -94,6 +97,6 @@ autocmd VimEnter,Colorscheme * highlight Search    guibg=NONE guifg=NONE gui=und
 autocmd VimEnter,Colorscheme * highlight IncSearch guibg=NONE guifg=NONE gui=underline ctermfg=NONE ctermbg=NONE term=underline
 autocmd VimEnter,Colorscheme * highlight VertSplit ctermbg=0 guibg=#073642
 
-if filereadable($HOME . "/.vimrc.local")
+if filereadable($HOME . '/.vimrc.local')
   source ~/.vimrc.local
 endif

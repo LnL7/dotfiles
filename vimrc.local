@@ -1,9 +1,9 @@
 nnoremap <Leader>! :Dispatch<cr>
 nnoremap <Leader># :CtrlPLine<cr>
-nnoremap <Leader>` :CtrlPChange<cr>
 nnoremap <Leader>( :tabprev<cr>
 nnoremap <Leader>) :tabnext<cr>
-nnoremap <Leader>. :CtrlPTag<cr>
+nnoremap <Leader>@ :CtrlPTag<cr>
+nnoremap <Leader>` :CtrlPChange<cr>
 nnoremap <Leader>1 :set background=dark<cr> :colorscheme solarized<cr>
 nnoremap <Leader>2 :set background=light<cr> :colorscheme solarized<cr>
 nnoremap <Leader>3 :set guifont=Anonymous\ Pro\ For\ Powerline:h14<cr>
@@ -81,7 +81,6 @@ let g:syntastic_error_symbol         = '✗'
 let g:syntastic_java_javac_classpath = '.:.shake:.shake/src:.shake/test:lib/*.jar'
 let g:syntastic_warning_symbol       = '⚠'
 let g:ycm_path_to_python_interpreter = '/usr/bin/python'
-let g:DisableAutoPHPFolding = 1
 
 let g:ctrlp_max_files = 0
 let g:ctrlp_working_path_mode = 0
