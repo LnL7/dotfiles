@@ -7,8 +7,9 @@ zls() {
     "-h" | "--help")
       echo "usage: zls [-al] <filesystem> [args]"
       echo ""
-      echo "  -a        # display snapshots"
-      echo "  -l <path> # list files in filesystem"
+      echo "  -a         -- display snapshots"
+      echo "  -l <path>  -- list files in dataset"
+      echo "  -h, --help -- display help"
       return 1
       ;;
     "-a")
@@ -33,3 +34,5 @@ zls() {
       ;;
   esac
 }
+
+# vim: ft=zsh sw=2 ts=2 et

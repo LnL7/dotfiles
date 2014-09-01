@@ -2,12 +2,20 @@
 
 zcd() {
   case $1 in
-    "" | "-h" | "--help" | "help")
-      echo "usage: zcd <filesystem>"
+    "" | "-h" | "--help")
+      echo "usage: zcd <filesystem> [path]"
       return 1
       ;;
     *)
-      cd "$(zfs list -H -omountpoint $1)"
+      local filesystem="$(zfs list -H -omountpoint $1)"
+      shift
+      if [[ $# > 0 ]]; then
+        cd "$filesystem/$1"
+      else
+        cd "$filesystem"
+      fi
       ;;
   esac
 }
+
+# vim: ft=zsh sw=2 ts=2 et

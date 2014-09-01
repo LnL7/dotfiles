@@ -1,0 +1,33 @@
+#compdef zls
+
+_zls() {
+  local curcontext="$curcontext" state line
+  typeset -A opt_args
+
+  _arguments \
+    '1: :->dataset'\
+    '2: :->files'\
+    '-a[display snapshots]'\
+    '-l[list files]'\
+    '-h[display help]'\
+    && return 0
+
+  case $state in
+    dataset)
+      _zfs_dataset
+      ;;
+    files)
+      local ddir="$(zfs list -H -omountpoint $words[-2])"
+      _files -W $ddir
+      ;;
+    *)
+      _arguments ': (ERROR)'
+      ;;
+  esac
+
+  return 1
+}
+
+_zls "$@"
+
+# vim: ft=zsh sw=2 ts=2 et

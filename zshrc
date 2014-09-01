@@ -1,6 +1,6 @@
 zstyle :compinstall filename $HOME/.zshrc
 
-fpath=(~/.zsh/completion $fpath)
+fpath=(/usr/local/share/zsh-completions ~/.zsh/completion $fpath)
 
 autoload -Uz compinit     && compinit
 autoload -Uz bashcompinit && bashcompinit
