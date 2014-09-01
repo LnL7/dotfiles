@@ -1,0 +1,13 @@
+# Zcd, cd for zfs mounts
+
+zcd() {
+  case $1 in
+    "" | "-h" | "--help" | "help")
+      echo "usage: zcd <filesystem>"
+      return 1
+      ;;
+    *)
+      cd "$(zfs list -H -omountpoint $1)"
+      ;;
+  esac
+}

@@ -45,3 +45,5 @@ export newmedia="$HOME/Dropbox/Shared/Computer Science/Ontwikkeling, beleid en g
 export oomodel="$HOME/Dropbox/Shared/Computer Science/Objectgericht modelleertechnieken"
 export scp1="$HOME/Dropbox/Shared/Computer Science/Structuur van Computerprogramma's 1"
 export scp2="$HOME/Dropbox/Shared/Computer Science/Structuur van Computerprogramma's 2"
+
+DEBIAN_PREVENT_KEYBOARD_CHANGES="yes"

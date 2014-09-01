@@ -1,0 +1,35 @@
+# Zls, ls for zfs mounts
+
+zls() {
+  local opts="-r"
+
+  case $1 in
+    "-h" | "--help")
+      echo "usage: zls [-al] <filesystem> [args]"
+      echo ""
+      echo "  -a        # display snapshots"
+      echo "  -l <path> # list files in filesystem"
+      return 1
+      ;;
+    "-a")
+      shift
+      opts+="tall"
+      ;;
+  esac
+
+  case $1 in
+    "-l")
+      shift
+      local filesystem="$(zfs list -H -omountpoint $1)"
+      shift
+      if [[ $# > 0 ]]; then
+        ls -lh "$filesystem/$1"
+      else
+        ls -lh "$filesystem"
+      fi
+      ;;
+    *)
+      zfs list $opts "-oname,used,available,referenced,mounted,mountpoint" $@
+      ;;
+  esac
+}

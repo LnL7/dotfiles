@@ -10,6 +10,10 @@ if [ ! -f $HOME/.vim/autoload/plug.vim ]; then
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
 
+if [ ! -e $HOME/.emacs.d/vendor ]; then
+  mkdir -p $HOME/.emacs.d/vendor
+fi
+
 if [ ! -e $HOME/.emacs.d/el-get ]; then
   git clone git@github.com:dimitri/el-get.git $HOME/.emacs.d/el-get
 fi

@@ -8,12 +8,14 @@ if !(tmux has -t $name); then
   tmux new-session -d -s $name -n "."
   tmux send-keys -t $name "~/.dotfiles" C-m
   tmux send-keys -t $name "clear" C-m
-  tmux send-keys -t $name "g" C-m
 
   tmux new-window -t $name -n "~"
   tmux send-keys -t $name "~" C-m
   tmux send-keys -t $name "clear" C-m
-  tmux send-keys -t $name "la" C-m
+
+  tmux new-window -t $name -n "z"
+  tmux send-keys -t $name "/z" C-m
+  tmux send-keys -t $name "clear" C-m
 
   tmux select-window -t $name:2
 fi
