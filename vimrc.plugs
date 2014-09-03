@@ -7,7 +7,6 @@ Plug 'nathanaelkane/vim-indent-guides', { 'on': 'IndentGuidesEnable'          }
 Plug 'tpope/vim-dispatch',              { 'on': ['Dispatch', 'FocusDispatch'] }
 
 Plug 'Valloric/YouCompleteMe', {
-      \ 'on': 'YcmCompleter',
       \ 'do': './install.sh' }
 
 Plug 'kien/ctrlp.vim', {

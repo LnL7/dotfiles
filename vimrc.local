@@ -80,6 +80,7 @@ let g:haskell_conceal = 1
 let g:syntastic_error_symbol         = '✗'
 let g:syntastic_java_javac_classpath = '.:.shake:.shake/src:.shake/test:lib/*.jar'
 let g:syntastic_warning_symbol       = '⚠'
+let g:vim_tags_use_vim_dispatch = 1
 let g:ycm_path_to_python_interpreter = '/usr/bin/python'
 
 let g:ctrlp_max_files = 0
