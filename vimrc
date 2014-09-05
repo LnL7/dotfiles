@@ -74,7 +74,9 @@ nnoremap // :nohlsearch<cr>
 nnoremap K ht lr<cr>k$
 vnoremap s S
 
-command! -range Md5 :echo system('echo '.shellescape(join(getline(<line1>, <line2>), '\n')) . '| md5')
+if executable('md5')
+  command! -range Md5 :echo system('echo '.shellescape(join(getline(<line1>, <line2>), '\n')) . '| md5')
+endif
 
 " Plugins
 " =======
@@ -84,7 +86,7 @@ colorscheme solarized
 
 nnoremap <Leader>p :CtrlP<cr>
 
-let g:ctrlp_use_caching = 0
+let g:ctrlp_use_caching = 1
 let g:indent_guides_auto_colors          = 1
 let g:indent_guides_color_change_percent = 2
 let g:indent_guides_exclude_filetypes    = ['go', 'help']
@@ -92,6 +94,17 @@ let g:indent_guides_guide_size           = 1
 let g:indent_guides_start_level          = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_semantic_triggers            = []
+
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor
+  let g:ctrlp_user_command = {
+        \ 'types': {
+        \ 1: ['.git', 'cd %s && git ls-files'],
+        \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+        \ 3: ['_darcs', 'cd %s && darcs show files --no-directories'] },
+        \ 'fallback': 'ag %s -l --nocolor -g ""' }
+endif
+
 
 autocmd VimEnter,Colorscheme * highlight Search    guibg=NONE guifg=NONE gui=underline ctermfg=NONE ctermbg=NONE term=underline
 autocmd VimEnter,Colorscheme * highlight IncSearch guibg=NONE guifg=NONE gui=underline ctermfg=NONE ctermbg=NONE term=underline

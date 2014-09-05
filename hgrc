@@ -24,4 +24,4 @@ shelve =
 strip  =
 
 [alias]
-l = log -l 16 --style="$HOME/.hg/map-cmdline"
+l = log -l 16 --style="$HOME/.hgrc.style"
