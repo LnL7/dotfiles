@@ -18,18 +18,22 @@ case $1 in
     ;;
 
   "hfs")
-    [ -b "/dev/disk1" ] || hdiutil attach -nomount ram://16777216
+    ram dev
     diskutil partitiondisk /dev/disk1 GPTFormat HFS+ "Ram" 100%
+    sudo mdutil -i off /mnt/Ram
+    sudo rm -rf /mnt/Ram/.fseventsd/
+    mkdir /mnt/Ram/.fseventsd
+    touch /mnt/Ram/.fseventsd/no_log
     ;;
   "unhfs")
     diskutil unmount force /Volumes/Ram
-    [ -b "/dev/disk1" ] && hdiutil detach /dev/disk1
+    ram undev
     ;;
 
   "zfs")
-    [ -b "/dev/disk1" ] || hdiutil attach -nomount ram://16777216
-    diskutil partitiondisk /dev/disk1 GPTFormat ZFS %noformat% 100%
-    zpool create -f -o ashift=13 -m /mnt/Ram ram "/dev/disk1s2"
+    ram dev
+    # diskutil partitiondisk /dev/disk1 GPTFormat ZFS %noformat% 100%
+    zpool create -f -o ashift=13 -m /mnt/Ram ram "/dev/disk1"
     sudo chown -R $USER:staff /mnt/Ram
     sudo mdutil -i off /mnt/Ram
     sudo rm -rf /mnt/Ram/.fseventsd/
@@ -38,7 +42,7 @@ case $1 in
     ;;
   "unzfs")
     zpool export -f ram
-    [ -b "/dev/disk1" ] && hdiutil detach /dev/disk1
+    ram undev
     ;;
 
   *)

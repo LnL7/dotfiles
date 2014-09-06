@@ -55,6 +55,10 @@ function! WinMove(key)
   endif
 endfunction
 
+if executable('md5')
+  command! -range Md5 :echo system('echo '.shellescape(join(getline(<line1>, <line2>), '\n')) . '| md5')
+endif
+
 noremap <silent> <C-w><C-h> :call WinMove('h')<cr>
 noremap <silent> <C-w><C-j> :call WinMove('j')<cr>
 noremap <silent> <C-w><C-k> :call WinMove('k')<cr>
@@ -100,64 +104,64 @@ autocmd FileType php set shiftwidth=4
 
 if executable('lein')
   autocmd FileType clojure
-        \ setl makeprg=lein\ exec\ \"%:p\" |
+        \ setl makeprg=lein\ exec\ %:p |
         \ setl errorformat=%+I%.%#
 endif
 
 if executable('coffee')
   autocmd FileType coffee
-        \ setl makeprg=coffee\ \"%:p\" |
+        \ setl makeprg=coffee\ %:p |
         \ setl errorformat=%+I%.%#
 endif
 
 if executable('elixir')
   autocmd FileType elixir
-        \ setl makeprg=elixir\ \"%:p\" |
+        \ setl makeprg=elixir\ %:p |
         \ setl errorformat=%+I%.%#
 endif
 
 if executable('idris')
   autocmd FileType idris
-        \ setl makeprg=idris\ \"%:p\"\ --exec\ main |
+        \ setl makeprg=idris\ %:p\ --exec\ main |
         \ setl errorformat=%+I%.%#
 endif
 
 if executable('node')
   autocmd FileType javascript
-        \ setl makeprg=node\ \"%:p\" |
+        \ setl makeprg=node\ %:p |
         \ setl errorformat=%+I%.%#
 endif
 
 if executable('lli')
   autocmd FileType llvm
-        \ setl makeprg=lli\ \"%:p\" |
+        \ setl makeprg=lli\ %:p |
         \ setl errorformat=%+I%.%#
 endif
 
 if executable('tpico')
   autocmd FileType pico
-        \ setl makeprg=tpico\ -b\ -i\ -s\ \"%:p\" |
+        \ setl makeprg=tpico\ -b\ -i\ -s\ %:p |
         \ setl errorformat=%+I%.%#
 endif
 
 if executable('racket')
   autocmd FileType racket,scheme
-        \ setl makeprg=racket\ \"%:p\" |
+        \ setl makeprg=racket\ %:p |
         \ setl errorformat=%+I%.%#
 end
 
 if executable('potion')
   autocmd FileType potion
-        \ setl makeprg=potion\ \"%:p\" |
+        \ setl makeprg=potion\ %:p |
         \ setl errorformat=%+I%.%#
 endif
 
 if executable('go')
   autocmd FileType go
         \ if expand('%') =~# 'Test.go$' |
-        \   setl makeprg=go\ test\ \"%:p\" |
+        \   setl makeprg=go\ test\ %:p |
         \ else |
-        \   setl makeprg=go\ run\ \"%:p\" |
+        \   setl makeprg=go\ run\ %:p |
         \   setl errorformat=%+I%.%# |
         \ endif
 endif
@@ -165,10 +169,10 @@ endif
 if executable('runhaskell')
   autocmd FileType haskell
         \ if expand('%') =~# 'Spec.hs$' |
-        \   setl makeprg=hspec\ \"%:p\" |
+        \   setl makeprg=hspec\ %:p |
         \   setl errorformat=%+I%.%# |
         \ else |
-        \   setl makeprg=runhaskell\ \"%:p\" |
+        \   setl makeprg=runhaskell\ %:p |
         \   setl errorformat=%+I%.%# |
         \ endif
 endif
@@ -176,20 +180,22 @@ endif
 if executable('ruby')
   autocmd FileType ruby
         \ if expand('%') =~# '_test\.rb$' |
-        \   compiler rubyunit | setl makeprg=testrb\ \"%:p\" |
+        \   compiler rubyunit | setl makeprg=testrb\ %:p |
         \ elseif expand('%') =~# '_spec\.rb$' |
-        \   compiler rspec | setl makeprg=rspec\ \"%:p\" |
+        \   compiler rspec | setl makeprg=rspec\ %:p |
         \ else |
-        \   compiler ruby | setl makeprg=ruby\ -w\ \"%:p\" |
+        \   compiler ruby | setl makeprg=ruby\ -w\ %:p |
         \   setl errorformat=%+I%.%# |
         \ endif
 endif
 
 
 autocmd FileType markdown
-      \ setl makeprg=open\ -a\ Marked\ \"%:p\" |
+      \ setl makeprg=open\ -a\ Marked\ %:p |
       \ setl errorformat=%+I%.%#
 
 autocmd FileType swift
-      \ setl makeprg=xcrun\ swift\ -i\ \"%:p\" |
+      \ setl makeprg=xcrun\ swift\ -i\ %:p |
       \ setl errorformat=%+I%.%#
+
+command! FileDispatch execute 'FocusDispatch ' . join(map(split(&makeprg), 'expand(v:val)'))

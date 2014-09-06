@@ -15,8 +15,8 @@ Plug 'vim-scripts/AnsiEsc.vim', { 'on': 'AnsiEsc'              }
 
 Plug 'mjbrownie/swapit'
 
-" Plug 'xolox/vim-misc',   { 'on': 'UpdateTags' }
-" Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+" Plug 'xolox/vim-misc'
 
 if executable('ag')
   Plug 'rking/ag.vim', { 'on': 'Ag' }

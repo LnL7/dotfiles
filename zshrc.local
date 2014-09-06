@@ -1,14 +1,16 @@
 export d="$HOME/Desktop"
-export dn="$HOME/Downloads"
 export git="$HOME/Dropbox/git"
 export mamp="/Applications/MAMP/htdocs"
+
+export ex="/z/exercism"
+export ram="/mnt/Ram"
+export tmp="$HOME/tmp"
 
 export asm="$HOME/dev/Asm"
 export c="$HOME/dev/C"
 export clj="$HOME/dev/Closure"
 export cpp="$HOME/dev/C++"
 export erl="$HOME/dev/Erlang"
-export ex="$HOME/dev/Elixir"
 export go="$HOME/dev/Go"
 export hs="$HOME/dev/Haskell"
 export java="$HOME/dev/Java"
