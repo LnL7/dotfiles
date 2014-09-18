@@ -15,5 +15,5 @@ if [ ! -e $HOME/.emacs.d/vendor ]; then
 fi
 
 if [ ! -e $HOME/.emacs.d/el-get ]; then
-  git clone git@github.com:dimitri/el-get.git $HOME/.emacs.d/el-get
+  git clone https://github.com/dimitri/el-get.git $HOME/.emacs.d/el-get
 fi
