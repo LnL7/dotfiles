@@ -8,7 +8,7 @@ bid() {
   if [ -d "/Applications/$shortname.app" ]; then
     location="/Applications/$shortname.app"
   else # otherwise, start searching
-    location=$(mdfind -onlyin /Applications -onlyin ~/Applications -onlyin /Applications/Apps -onlyin /Developer/Applications 'kMDItemKind==Application'|awk -F '/' -v re="$shortname" 'tolower($NF) ~ re {print $0}'|head -n1)
+    location=$(mdfind -onlyin /Applications -onlyin /opt/homebrew-cask/Caskroom 'kMDItemKind==Application'|awk -F '/' -v re="$shortname" 'tolower($NF) ~ re {print $0}'|head -n1)
   fi
   # No results? Die.
   [[ -z $location || $location = "" ]] && echo "$1 not found, I quit" && return

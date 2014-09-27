@@ -72,7 +72,7 @@ let mapleader = " "
 cnoremap %% <C-r>=expand('%:h') . '/'<cr>
 nnoremap // :nohlsearch<cr>
 nnoremap K ht lr<cr>k$
-vnoremap s S
+vmap s S
 
 " Plugins
 " =======
@@ -93,12 +93,13 @@ let g:ycm_semantic_triggers            = []
 
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
-  let g:ctrlp_user_command = {
-        \ 'types': {
-        \ 1: ['.git', 'cd %s && git ls-files'],
-        \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-        \ 3: ['_darcs', 'cd %s && darcs show files --no-directories'] },
-        \ 'fallback': 'ag %s -l --nocolor -g ""' }
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  " let g:ctrlp_user_command = {
+  "       \ 'types': {
+  "       \ 1: ['.git', 'cd %s && git ls-files'],
+  "       \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+  "       \ 3: ['_darcs', 'cd %s && darcs show files --no-directories'] },
+  "       \ 'fallback': 'ag %s -l --nocolor -g ""' }
 endif
 
 

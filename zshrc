@@ -1,6 +1,6 @@
 zstyle :compinstall filename $HOME/.zshrc
 
-fpath=(/usr/local/share/zsh-completions ~/.zsh/completion $fpath)
+fpath=($HOME/.share/zsh-completions ~/.zsh/completion $fpath)
 
 autoload -Uz compinit     && compinit
 autoload -Uz bashcompinit && bashcompinit
@@ -11,15 +11,6 @@ done
 
 set completion-ignore-case on
 set show-all-if-ambiguous on
-
-# source $HOME/.zsh/autosuggestions/autosuggestions.zsh
-# zle-line-init() {
-#   zle autosuggest-start
-# }
-# zle -N zle-line-init
-
-# ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
-# source $HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 source $HOME/.zshrc.aliases
 source $HOME/.zshrc.bindkeys
@@ -34,5 +25,14 @@ SAVEHIST=4096
 export CLICOLOR=1
 export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
 
-[[ -f $HOME/.zshrc.local ]] && source $HOME/.zshrc.local
-[[ -f $HOME/.zsh/z/z.sh  ]] && source $HOME/.zsh/z/z.sh
+[[ -f $HOME/.zshrc.local ]] && \
+  source $HOME/.zshrc.local
+
+
+source $HOME/.share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $HOME/.share/zsh-history-substring-search/zsh-history-substring-search.zsh && \
+
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=white,bold,underline'
+
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down

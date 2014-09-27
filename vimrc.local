@@ -6,12 +6,13 @@ nnoremap <Leader>@ :CtrlPTag<cr>
 nnoremap <Leader>` :CtrlPChange<cr>
 nnoremap <Leader>1 :set background=dark<cr> :colorscheme solarized<cr>
 nnoremap <Leader>2 :set background=light<cr> :colorscheme solarized<cr>
-nnoremap <Leader>3 :set guifont=Anonymous\ Pro\ For\ Powerline:h14<cr>
-nnoremap <Leader>4 :set guifont=Anonymous\ Pro\ For\ Powerline:h28<cr>
+nnoremap <Leader>3 :set guifont=Anonymous\ Pro\ For\ Powerline:h18<cr>
+nnoremap <Leader>4 :set guifont=creep:h16<cr>
+" nnoremap <Leader>4 :set guifont=Anonymous\ Pro\ For\ Powerline:h28<cr>
 nnoremap <Leader>5 :set transparency=3<cr>
 nnoremap <Leader>6 :set transparency=63<cr>
 nnoremap <Leader><Leader> <C-^>
-nnoremap <Leader>P :CtrlPMixed<cr>
+nnoremap <Leader>P :CtrlPMRUFiles<cr>
 nnoremap <Leader>b :CtrlPBuffer<cr>
 nnoremap <Leader>d :CtrlPDir<cr>
 nnoremap <Leader>e :e <C-r>=expand('%:h') . '/'<cr>
@@ -54,6 +55,11 @@ function! WinMove(key)
     exec "wincmd ".a:key
   endif
 endfunction
+
+if executable('xiki')
+  let $XIKI_DIR = "~/.xiki"
+  source ~/.xiki/etc/vim/xiki.vim
+endif
 
 if executable('md5')
   command! -range Md5 :echo system('echo '.shellescape(join(getline(<line1>, <line2>), '\n')) . '| md5')

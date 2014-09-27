@@ -1,7 +1,9 @@
 # No arguments: `git status`
 # With arguments: acts like `git`
 g() {
-  if [[ $# > 0 ]]; then
+  if [ -d ".hg" ]; then
+    hg $@
+  elif [[ $# > 0 ]]; then
     git $@
   else
     git l -4

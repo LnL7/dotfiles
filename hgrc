@@ -24,4 +24,5 @@ shelve =
 strip  =
 
 [alias]
-l = log -l 16 --style="$HOME/.hgrc.style"
+l     = log -l 16 --style="$HOME/.hgrc.style"
+reset = strip 'roots(outgoing())'

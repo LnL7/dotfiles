@@ -1,19 +1,20 @@
 #!/bin/sh
 
-if [ ! -e $HOME/.zsh/cache ]; then
-  mkdir -p $HOME/.zsh/cache
-fi
+[ ! -e $HOME/.share ] && \
+  ln -s $(brew --prefix)/share $HOME/.share
 
-if [ ! -f $HOME/.vim/autoload/plug.vim ]; then
-  mkdir -p ~/.vim/autoload
-  curl -fLo ~/.vim/autoload/plug.vim \
-    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-fi
+[ ! -e $HOME/.zsh/peat ] && \
+  git clone https://github.com/sjl/peat.git $HOME/.zsh/peat && \
+  ln -s $HOME/.zsh/peat/peat ~/.bin/peat
 
-if [ ! -e $HOME/.emacs.d/vendor ]; then
+[ ! -f $HOME/.vim/autoload/plug.vim ] && \
+  mkdir -p ~/.vim/autoload && \
+  curl -fLo ~/.vim/autoload/plug.vim https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+[ ! -e $HOME/.emacs.d/vendor ] && \
   mkdir -p $HOME/.emacs.d/vendor
-fi
 
-if [ ! -e $HOME/.emacs.d/el-get ]; then
+[ ! -e $HOME/.emacs.d/el-get ] && \
   git clone https://github.com/dimitri/el-get.git $HOME/.emacs.d/el-get
-fi
+
+exit 0

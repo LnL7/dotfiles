@@ -1,3 +1,10 @@
+if isdirectory($HOME . '/dev/VimScript')
+  Plug '~/dev/VimScript/hasksyn'
+  Plug '~/dev/VimScript/vim-elixir'
+  Plug '~/dev/VimScript/vim-pico'
+  Plug '~/dev/VimScript/vim-racket'
+endif
+
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'sheerun/vim-polyglot'
 Plug 'tmhedberg/matchit'
@@ -14,6 +21,7 @@ Plug 'tpope/vim-abolish',       { 'on': ['Abolish', 'Subvert'] }
 Plug 'vim-scripts/AnsiEsc.vim', { 'on': 'AnsiEsc'              }
 
 Plug 'mjbrownie/swapit'
+Plug 'joonty/vdebug'
 
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 " Plug 'xolox/vim-misc'
@@ -33,12 +41,12 @@ if executable('tmux')
 endif
 
 if executable('git')
-  Plug 'tpope/vim-fugitive', { 'on': ['Git', 'Gstatus', 'Gcommit'] }
-  Plug 'sjl/splice.vim',     { 'on': 'SpliceInit'                  }
+  Plug 'tpope/vim-fugitive'
+  Plug 'sjl/splice.vim', { 'on': 'SpliceInit' }
 endif
 
 if executable('hg')
-  Plug 'ludovicchabant/vim-lawrencium', { 'on': ['Hg', 'Hgstatus', 'Hgcommit'] }
+  Plug 'ludovicchabant/vim-lawrencium'
 endif
 
 if executable('darcs')
