@@ -11,6 +11,13 @@ git_prompt_info() {
   fi
 }
 
+ghc_prompt_info() {
+  if [[ -n $HALCYON_BASE ]]; then
+    version=$(ghc --version 2> /dev/null | awk '{ print $NF }')
+    echo "[%{$fg[yellow]%}ghc@${version}%{$reset_color%}]"
+  fi
+}
+
 ruby_prompt_info() {
   eval `ruby - <<EOF
 engine  = defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby'
@@ -23,9 +30,17 @@ EOF`
   fi
 }
 
+nix_prompt_info() {
+  if [[ -n $NIX_MYENV_NAME ]]; then
+    echo "[%{$fg[yellow]%}nix@${NIX_MYENV_NAME}%{$reset_color%}]"
+  elif [[ -n $IN_NIX_SHELL ]]; then
+    echo "[%{$fg[yellow]%}nix-shell@${pname}%{$reset_color%}]"
+  fi
+}
+
 PROMPT_PREFIX="%B>%{$reset_color%} "
-PROMPT_SHELL="%{$fg_bold[green]%}$(basename $SHELL)%{$reset_color%}"
+PROMPT_SHELL="%{$fg_bold[green]%}zsh%{$reset_color%}"
 PROMPT_DIR="[${SSH_CONNECTION+"%n@%m:"}%{$fg[blue]%}%~%{$reset_color%}]"
 
 PS1='$(error_prompt_info)$PROMPT_SHELL$PROMPT_PREFIX'
-RPS1='$(ruby_prompt_info)$(git_prompt_info)$PROMPT_DIR'
+RPS1='$(ghc_prompt_info)$(ruby_prompt_info)$(nix_prompt_info)$(git_prompt_info)$PROMPT_DIR'

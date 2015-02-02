@@ -1,6 +1,16 @@
 zstyle :compinstall filename $HOME/.zshrc
 
-fpath=($HOME/.share/zsh-completions ~/.zsh/completion $fpath)
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+
+zstyle ':completion:*' completer _complete _match _approximate
+zstyle ':completion:*:match:*' original only
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+
+zstyle ':completion:*' squeeze-slashes true
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+
+fpath=($HOME/.share/zsh-completions ~/.zsh/completions $fpath)
 
 autoload -Uz compinit     && compinit
 autoload -Uz bashcompinit && bashcompinit
@@ -12,9 +22,10 @@ done
 set completion-ignore-case on
 set show-all-if-ambiguous on
 
+[ -z $NIX_MYENV_NAME ] && source $HOME/.zshrc.exports
+
 source $HOME/.zshrc.aliases
 source $HOME/.zshrc.bindkeys
-source $HOME/.zshrc.exports
 source $HOME/.zshrc.prompt
 source $HOME/.zshrc.setopts
 
@@ -25,14 +36,8 @@ SAVEHIST=4096
 export CLICOLOR=1
 export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
 
+[[ -f $HOME/.fzf.zsh ]] && \
+  source $HOME/.fzf.zsh
+
 [[ -f $HOME/.zshrc.local ]] && \
   source $HOME/.zshrc.local
-
-
-source $HOME/.share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source $HOME/.share/zsh-history-substring-search/zsh-history-substring-search.zsh && \
-
-HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND='fg=white,bold,underline'
-
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down

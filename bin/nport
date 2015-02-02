@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Linux
+# ss -tln | awk 'NR > 1{gsub(/.*:/,"",$4); print $4}' |
+
+# Darwin
+# lsof -iTCP -sTCP:LISTEN -P -n | awk 'NR > 1{gsub(/.*:/,"",$9); print $9}' |
+
+lsof -iTCP -sTCP:LISTEN -P -n | awk 'NR > 1{gsub(/.*:/,"",$9); print $9}' |
+  sort -un |
+  awk -v n=1080 '$0 < n {next}; $0 == n {n++; next}; {exit}; END {print n}'

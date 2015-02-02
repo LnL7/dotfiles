@@ -1,0 +1,9 @@
+:def doc \x -> return $ ":!hoogle --info \"" ++ x ++ "\""
+:def h   \x -> return $ ":!hoogle -c -n 10 \"" ++ x ++ "\""
+
+:set prompt "λ> "
+:set -XOverloadedStrings
+
+:set -fdefer-type-errors
+:set -fwarn-typed-holes
+:set -isrc

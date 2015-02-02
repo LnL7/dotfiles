@@ -1,31 +1,22 @@
 nnoremap <Leader>! :Dispatch<cr>
-nnoremap <Leader># :CtrlPLine<cr>
 nnoremap <Leader>( :tabprev<cr>
 nnoremap <Leader>) :tabnext<cr>
-nnoremap <Leader>@ :CtrlPTag<cr>
-nnoremap <Leader>` :CtrlPChange<cr>
 nnoremap <Leader>1 :set background=dark<cr> :colorscheme solarized<cr>
 nnoremap <Leader>2 :set background=light<cr> :colorscheme solarized<cr>
 nnoremap <Leader>3 :set guifont=Anonymous\ Pro\ For\ Powerline:h18<cr>
-nnoremap <Leader>4 :set guifont=creep:h16<cr>
+nnoremap <Leader>4 :set guifont=creep:h16<cr>:source ~/.vim/creep/creep.vim<cr>
 " nnoremap <Leader>4 :set guifont=Anonymous\ Pro\ For\ Powerline:h28<cr>
 nnoremap <Leader>5 :set transparency=3<cr>
 nnoremap <Leader>6 :set transparency=63<cr>
 nnoremap <Leader><Leader> <C-^>
-nnoremap <Leader>P :CtrlPMRUFiles<cr>
-nnoremap <Leader>b :CtrlPBuffer<cr>
-nnoremap <Leader>d :CtrlPDir<cr>
 nnoremap <Leader>e :e <C-r>=expand('%:h') . '/'<cr>
-nnoremap <Leader>f :CtrlPCurFile<cr>
-nnoremap <Leader>s :SyntasticToggleMode<cr>
-nnoremap <Leader>t :CtrlPBufTag<cr>
 nnoremap <Leader>z zMzv
 
-vnoremap <Leader>so y:execute @@<cr>
-nnoremap <Leader>so ^vg_y:execute @@<cr>
+vnoremap <Leader>So y:execute @@<cr>
+nnoremap <Leader>So ^vg_y:execute @@<cr>
 
-nnoremap <Leader>sr vip:!sort<cr>
-vnoremap <Leader>sr :!sort<cr>
+nnoremap <Leader>Sr vip:!sort<cr>
+vnoremap <Leader>Sr :!sort<cr>
 
 function! <SID>SynStack()
   if !exists("*synstack")
@@ -33,10 +24,7 @@ function! <SID>SynStack()
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
-
-nmap <Leader>sy :call <SID>SynStack()<cr>
-nnoremap <silent> <Leader>/ :execute 'vimgrep /'.@/.'/g %'<cr>:copen<cr>
-nnoremap <silent> <Leader>? :execute 'vimgrep /'.@/.'/g *'<cr>:copen<cr>
+nnoremap <Leader>Sy :call <SID>SynStack()<cr>
 
 nnoremap <silent> <C-w>+ :exe "resize " . (winheight(0) * 3/2)<cr>
 nnoremap <silent> <C-w>- :exe "resize " . (winheight(0) * 2/3)<cr>
@@ -55,6 +43,94 @@ function! WinMove(key)
     exec "wincmd ".a:key
   endif
 endfunction
+
+nnoremap <silent> <Leader>/ :exe 'FZFAg '.@/.' %'<CR>
+nnoremap <silent> <Leader>? :exe 'FZFAg '.@/.' *'<CR>
+nnoremap <silent> <Leader>b :FZFBuffers<CR>
+nnoremap <silent> <Leader>s :FZFSplit<CR>
+nnoremap <silent> <Leader>v :FZFVSplit<CR>
+
+command! FZFSplit call fzf#run({
+      \ 'tmux_height': '40%',
+      \ 'sink': 'sp' })
+
+command! FZFVSplit call fzf#run({
+      \ 'tmux_width': winwidth('.') / 2,
+      \ 'sink': 'vsp' })
+
+command! FZFTab call fzf#run({
+      \ 'sink': 'tabe' })
+
+function! BufferHandler(b)
+  let keys = split(a:b, ':\t')
+  exec 'buf' . keys[0]
+endfunction
+
+function! BufferCommand()
+  let buffers = filter(range(1, bufnr('$')), 'buflisted(v:val)')
+  return map(buffers, 'v:val . ":\t" . bufname(v:val)')
+endfunction
+
+command! FZFBuffers call fzf#run({
+      \ 'source': BufferCommand(),
+      \ 'sink': function('BufferHandler'),
+      \ 'options': '-m' })
+
+function! LineHandler(l)
+  let keys = split(a:l, ':\t')
+  exec 'buf ' . keys[0]
+  exec keys[1]
+  normal! ^zz
+endfunction
+
+function! LineCommand()
+  let res = []
+  for b in filter(range(1, bufnr('$')), 'buflisted(v:val)')
+    call extend(res, map(getbufline(b,0,"$"), 'b . ":\t" . (v:key + 1) . ":\t" . v:val '))
+  endfor
+  return res
+endfunction
+
+command! FZFLines call fzf#run({
+      \ 'source':  LineCommand(),
+      \ 'sink': function('LineHandler'),
+      \ 'options': '--extended --nth=3..,',
+      \ 'tmux_height': '60%' })
+
+command! FZFMru call fzf#run({
+      \ 'source': v:oldfiles,
+      \ 'sink': 'e ',
+      \ 'options': '-m' })
+
+function! TagCommand()
+  return substitute('awk _!/^!/ { print \$1 }_ ', '_', "'", 'g') .
+        \ join(tagfiles(), ' ')
+endfunction
+
+command! FZFTag call fzf#run({
+      \ 'source': TagCommand(),
+      \ 'sink': 'tag' })
+
+if executable('ag')
+  command! -nargs=1 FZFAg call fzf#run({
+        \ 'source': Arghandler(<f-args>),
+        \ 'sink': function('AgHandler'),
+        \ 'options': '-m' })
+
+  function! AgHandler(l)
+    let keys = split(a:l,':')
+    execute 'tabe +' . keys[-2] . ' ' . escape(keys[-1], ' ')
+  endfunction
+
+  function! Arghandler(l)
+    return "ag -i " . a:l . " | sed 's@\\(.[^:]*\\):\\(.[^:]*\\):\\(.*\\)@\\3:\\2:\\1@' "
+  endfunction
+endif
+
+if executable('tmux')
+  " autocmd VimEnter * silent !tmux set status off
+  " autocmd VimLeave * silent !tmux set status on
+endif
 
 if executable('xiki')
   let $XIKI_DIR = "~/.xiki"
@@ -81,7 +157,7 @@ autocmd FileType xml           setlocal omnifunc=xmlcomplete#CompleteTags
 let g:airline_left_sep        = ''
 let g:airline_powerline_fonts = 1
 let g:airline_right_sep       = ''
-let g:haskell_conceal = 1
+" let g:haskell_conceal = 1
 let g:syntastic_error_symbol         = '✗'
 let g:syntastic_java_javac_classpath = '.:.shake:.shake/src:.shake/test:lib/*.jar'
 let g:syntastic_warning_symbol       = '⚠'
@@ -92,6 +168,7 @@ let g:syntastic_mode_map = {
       \ 'active_filetypes': [],
       \ 'passive_filetypes': [] }
 
+autocmd BufNewFile,BufRead *.nix set filetype=nix
 autocmd BufNewFile,BufRead Shakefile set filetype=haskell
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
@@ -101,6 +178,7 @@ autocmd FileType haskell noremap <buffer>_T :GhcModTypeInsert!<cr>
 autocmd FileType haskell noremap <buffer>_i :GhcModInfo!<cr>
 autocmd FileType haskell noremap <buffer>_I :GhcModInfoPreview!<cr>
 
+autocmd FileType coq           setl commentstring=(*\ %s\ *)
 autocmd FileType go            setl commentstring=//\ %s
 autocmd FileType masm          setl commentstring=;\ %s
 autocmd FileType scheme,racket setl commentstring=;\ %s
@@ -120,9 +198,23 @@ if executable('coffee')
         \ setl errorformat=%+I%.%#
 endif
 
+if executable('coqtop')
+  autocmd FileType coq
+        \ setl makeprg=coqtop\ -batch\ -l\ %:p |
+        \ setl errorformat=%+I%.%#
+endif
+
 if executable('elixir')
   autocmd FileType elixir
-        \ setl makeprg=elixir\ %:p |
+        \ if expand('%') =~# '_test\.exs' |
+        \   if filereadable('mix.exs') |
+        \     setl makeprg=mix\ test\ %:p |
+        \   else |
+        \     setl makeprg=elixir\ %:p |
+        \   endif |
+        \ else |
+        \   setl makeprg=elixir\ %:p |
+        \ endif |
         \ setl errorformat=%+I%.%#
 endif
 
@@ -164,7 +256,7 @@ endif
 
 if executable('go')
   autocmd FileType go
-        \ if expand('%') =~# 'Test.go$' |
+        \ if expand('%') =~# 'Test\.go$' |
         \   setl makeprg=go\ test\ %:p |
         \ else |
         \   setl makeprg=go\ run\ %:p |
@@ -174,7 +266,7 @@ endif
 
 if executable('runhaskell')
   autocmd FileType haskell
-        \ if expand('%') =~# 'Spec.hs$' |
+        \ if expand('%') =~# 'Spec\.hs$' |
         \   setl makeprg=hspec\ %:p |
         \   setl errorformat=%+I%.%# |
         \ else |

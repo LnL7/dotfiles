@@ -1,5 +1,5 @@
 Plug 'altercation/vim-colors-solarized'
-" Plug 'bling/vim-airline'
+Plug 'bling/vim-airline'
 
 Plug 'tpope/vim-surround'
 
@@ -7,12 +7,11 @@ Plug 'nathanaelkane/vim-indent-guides', { 'on': 'IndentGuidesEnable'          }
 Plug 'tpope/vim-dispatch',              { 'on': ['Dispatch', 'FocusDispatch'] }
 
 Plug 'Valloric/YouCompleteMe', {
-    \ 'do': './install.sh' }
+      \ 'do': './install.sh' }
 
-Plug 'kien/ctrlp.vim', {
-      \ 'on': [
-      \   'CtrlP', 'CtrlPTag', 'CtrlPLine', 'CtrlPChange', 'CtrlPMixed',
-      \   'CtrlPBuffer', 'CtrlPDir'] }
+Plug 'junegunn/fzf', {
+      \ 'dir': '~/.fzf',
+      \ 'do': 'yes \| ./install' }
 
 if filereadable($HOME . '/.vimrc.plugs.local')
   source ~/.vimrc.plugs.local

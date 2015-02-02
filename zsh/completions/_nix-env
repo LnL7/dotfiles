@@ -1,0 +1,169 @@
+#compdef nix-env
+
+function _common_options() {
+  local systems; systems=(
+    i686-linux x86_64-linux armv5tel-linux armv7l-linux mips64el-linux
+    x86_64-darwini i686-freebsd x86_64-freebsd i686-openbsd x86_64-openbsd
+    i686-netbsd x86_64-netbsd i686-cygwin
+  )
+
+  # TODO: --expr is not implemented yet
+  common_options=(
+    '--help[Summary of the command syntax]' 
+    '--version[Nix version number]' 
+    '--dry-run[Do not actually execute the command]' 
+    "--system-filter[Filter results of --query and --available by the given platform]:platform:($systems)" 
+    '--cores[Number of cores used for build jobs]:digits' 
+    '--max-silent-time[Maximum number of seconds a builder can go without printing to stdout and stderr]:digits' 
+    '--timeout[Maximum number of seconds that a builder can run]:digits' 
+    '--fallback[If a derivation fails to build, fall back to a known substitute]' 
+    '--readonly-mode[Allow only read access to the nix database]' 
+    '--log-type[Format the output written to stderr]:log type:((pretty\:"Pretty Prints the output" escapes\:"Indicate nesting using escape codes" flat\:"Remove all nesting"))' 
+    '--arg[Pass the specified argument to the currently evalued nix expression]:argument::value:' 
+    '--argstr[Like --arg, but the argument value is interpreted as a string]:argument::value:' 
+    '--show-trace[Enable stack trace of the Nix expression evaluation errors]' 
+    '-I[Add path where nix-env searches for Nix expressions]:path:_files -/' 
+    '--option[Set a Nix configuration option to the given value]:option::value:' 
+    '--repair[Fix corrupted or missing store paths]'
+    '(-f --file)'{-f,--file}'[Nix expression used by nix-env operations]:file:_files'
+    '(-p --profile)'{-p,--profile}'[Profile used by nix-env operations]:profile:_files'
+    '(-v --verbose)'{-v,--verbose}'[Verbosity level]:verbosity:((0\:"Errors only" 1\:Informational 2\:Talkative 3\:Chatty 4\:Debug 5\:Vomit))'
+    '(-Q --no-build-output)'{-Q,--no-build-output}'[Suppress output of builds to stdout and stderr]'
+    '(-j --max-jobs)'{-j,--max-jobs}'[Maximum number of parallel build jobs]:digit'
+    '(-k --keep-going)'{-k,--keep-going}'[Keep going in case of failed builds]'
+    '(-K --keep-failed)'{-K,--keep-failed}'[Keep the temporary build directory in case the build fails]'
+    '(-A --attr)'{-A,--attr}'[Select attribute from the top-level Nix expression to be evaluated]:attribute path'
+  )
+}
+
+function _nix-install () {
+  local context state line ret=1
+  local -a common_options
+  declare -A opt_args
+
+  _common_options
+  _arguments -s \
+    ${common_options} \
+    '(-i --install)'{-i,--install}'[Install Nix expression in a new generation]' \
+    '(-b --prebuild-only)'{-b,--prebuild-only}'[Use only derivations for which a pre-build binary exists]' \
+    '(-p --preserve-installed)'{-p,--preserve-installed}'[Do not remove derivations with a matching name]' \
+    '(-r --remove-all)'{-r,--remove-all}'[Remove all previously installed packages first]' \
+    && ret=0
+
+  return ret
+}
+
+function _nix-upgrade () {
+  local context state line ret=1
+  local -a common_options
+  declare -A opt_args
+
+  _common_options
+  _arguments -s \
+    ${common_options} \
+    '--lt[Only upgrade a derivation to a new version]' \
+    '--leq[Only upgrade a derivation with a lower or equal version number]' \
+    '--eq[Only upgrade a derivation with equal version number]' \
+    '--always[Upgrade or downgrade to available Nix expressions]' \
+    '(-u --upgrade)'{-u,--upgrade}'[Upgrade Nix expression in a new generation]' \
+    '(-p --preserve-installed)'{-p,--preserve-installed}'[Do not remove derivations with a matching name]' \
+    && ret=0
+
+  return ret
+}
+
+function _nix-query () {
+  local context state line ret=1
+  local -a common_options
+  declare -A opt_args
+
+  _common_options
+
+  _arguments -s \
+    ${common_options} \
+    '--installed[Query derivations on the store path installed in the current generation]' \
+    '--xml[Print the result in XML representation]' \
+    '--json[Print the result in JSON representation]' \
+    '--no-name[Suppress printing of the name attribute of each derivation]' \
+    '--system[Print the system attribute of the derivation]' \
+    '--drv-path[Print the store path of the derivation]' \
+    '--out-path[Print the output path of the derivation]' \
+    '--description[Print a short description of the derivation]' \
+    '--meta[Print all meta informations of the derivation]' \
+    '(-b --prebuild-only)'{-b,--prebuild-only}'[Use only derivations for which a pre-build binary exists]' \
+    '(-c --compare-versions)'{-c,--compare-versions}'[Compare installed versions to available versions or vice versa]' \
+    '(-s --status)'{-s,--status}'[Prints the status of the derivation]' \
+    '(-P --attr-path)'{-P,--attr-path}'[Print the attribute path of the derivation]' \
+    '(-a --available)'{-a,--available}'[Query derivations that are available in the active Nix expression]' \
+    '(-q --query)'{-q,--query}'[Display information store paths or installed expressions]' \
+    && ret=0
+
+  return ret
+}
+
+function _generations() {
+  local -a gens desc
+  gens=("${(f)$(_call_program generations nix-env --list-generations)}")
+  desc=()
+  for g ($gens); do
+    # escape the colon of the timestamp and split by words
+    g=(${=${g//:/\\:}})
+    # use the number of the generation as completion and the rest as description
+    desc+="${g[1]}:${g[2,-1]}"
+  done
+  _describe -t generations 'generations' desc
+}
+
+function _nix-env () {
+  local context=${context} state line ret=1
+  local -a args common_options
+  declare -A opt_args
+
+  # Check if the arguments allready contain an operation and dispatch to the
+  # corresponding helper function.
+  args=( ${${${(M)words:#-*}#-}:#-*} )
+  case $args in
+    i*)
+      _call_function ret _nix-install
+    ;;
+    u*)
+      _call_function ret _nix-upgrade
+    ;;
+    q*)
+      _call_function ret _nix-query
+    ;;
+    *)
+      case ${(M)words:#--*} in
+        *--install*)
+          _call_function ret _nix-install
+        ;;
+        *--upgrade*)
+          _call_function ret _nix-upgrade
+        ;;
+        *--query*)
+          _call_function ret _nix-query
+        ;;
+        *)
+          _common_options
+          _arguments -s \
+            ${common_options} \
+            '--set-flag[Modify meta attributes of installed packages]:name::value' \
+            '--list-generations[Print a list of all currently existing generations for the active profile]' \
+            '--delete-generations[Delete the specified generations of the current profile]:generations:_generations' \
+            '--rollback[Switch to the previous generation in the active profile]' \
+            '(-i --install)'{-i,--install}'[Install Nix expression in a new generation]' \
+            '(-u --upgrade)'{-u,--upgrade}'[Upgrade Nix expression in a new generation]' \
+            '(-e --uninstall)'{-e,--uninstall}'[Uninstall Nix expression in a new generation]' \
+            '(-q --query)'{-q,--query}'[Display information store paths or installed expressions]' \
+            '(-S --switch-profile)'{-S,--switch-profile}'[Set the given path as the current user profile]:path:_files -/' \
+            '(-G --switch-generation)'{-G,--switch-generation}'[Switch to the given generation in the active profile]:generations:_generations' \
+            && ret=0
+        ;;
+      esac
+    ;;
+  esac
+
+  return ret
+}
+
+_nix-env

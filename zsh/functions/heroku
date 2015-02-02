@@ -1,0 +1,14 @@
+
+heroku-production () {
+  heroku "$@" --app $(basename "${PWD}")
+}
+
+heroku-haskell () {
+  heroku create -b https://github.com/mietek/haskell-on-heroku "$@" && \
+    heroku config:set HALCYON_NO_BUILD_DEPENDENCIES=0
+}
+
+heroku-nix () {
+  heroku create -b https://github.com/chrisjr/heroku-buildpack-nix-proot "$@" && \
+    heroku config:set NIX_BUILD_ON_PUSH=1
+}

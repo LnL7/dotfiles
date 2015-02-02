@@ -1,0 +1,4 @@
+
+flaunchctl () {
+  launchctl list "$@" | fzf
+}

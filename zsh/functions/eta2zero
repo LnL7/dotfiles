@@ -1,0 +1,11 @@
+eta2zero () {
+    A=$(eval ${@})
+
+    while [ ${A} -gt 0 ]
+    do
+        B=$(eval ${@})
+        printf %$((${A} - ${B}))s
+        A=${B}
+        sleep 1
+    done | pv -s ${A} >/dev/null
+}

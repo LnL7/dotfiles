@@ -7,6 +7,7 @@ endif
 
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'sheerun/vim-polyglot'
+Plug 'sjl/vitality.vim'
 Plug 'tmhedberg/matchit'
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-commentary'
@@ -14,21 +15,23 @@ Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 
-Plug 'cwoac/nvim',              { 'on': 'Nvim'                 }
-Plug 'godlygeek/tabular',       { 'on': 'Tabularize'           }
-Plug 'scrooloose/syntastic',    { 'on': 'SyntasticToggleMode'  }
-Plug 'tpope/vim-abolish',       { 'on': ['Abolish', 'Subvert'] }
-Plug 'vim-scripts/AnsiEsc.vim', { 'on': 'AnsiEsc'              }
+Plug 'cwoac/nvim',                    { 'on': 'Nvim'                  }
+Plug 'godlygeek/tabular',             { 'on': 'Tabularize'            }
+Plug 'junegunn/vader.vim',            { 'on': 'Vader', 'for': 'vader' }
+Plug 'nelstrom/vim-markdown-folding', { 'for': 'markdown'             }
+Plug 'scrooloose/syntastic',          { 'on': 'SyntasticToggleMode'   }
+Plug 'tpope/vim-abolish',             { 'on': ['Abolish', 'Subvert']  }
+Plug 'vim-scripts/AnsiEsc.vim',       { 'on': 'AnsiEsc'               }
 
-Plug 'mjbrownie/swapit'
 Plug 'joonty/vdebug'
+Plug 'mjbrownie/swapit'
 
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 " Plug 'xolox/vim-misc'
 
-if executable('ag')
-  Plug 'rking/ag.vim', { 'on': 'Ag' }
-endif
+" if executable('ag')
+"   Plug 'rking/ag.vim', { 'on': 'Ag' }
+" endif
 
 if executable('ctags')
   Plug 'szw/vim-tags',            { 'on': 'TagsGenerate' }
@@ -45,6 +48,10 @@ if executable('git')
   Plug 'sjl/splice.vim', { 'on': 'SpliceInit' }
 endif
 
+if executable('nix-env')
+  Plug 'NixOS/nix', { 'for': 'nix', 'rtp': 'misc/vim' }
+endif
+
 if executable('hg')
   Plug 'ludovicchabant/vim-lawrencium'
 endif
@@ -59,12 +66,32 @@ if executable('ghc')
   Plug 'eagletmt/neco-ghc',   { 'for': 'haskell' }
 endif
 
+if executable('agda')
+  Plug 'derekelkins/agda-vim'
+endif
+
+if executable('node')
+  Plug 'mxw/vim-jsx'
+  Plug 'mtscout6/vim-cjsx'
+endif
+
+if executable('psc')
+  Plug 'raichoo/purescript-vim'
+endif
+
 if executable('racket')
   Plug 'wlangstroth/vim-racket'
+  " Plug 'vim-scripts/paredit.vim'
 endif
 
 if executable('lli')
   Plug 'Superbil/llvm.vim'
+endif
+
+if executable('coqc')
+  " Plug 'jvoorhis/coq.vim'
+  Plug 'the-lambda-church/coquille', { 'for': 'coq', 'branch': 'pathogen-bundle' }
+  Plug 'def-lkb/vimbufsync',         { 'for': 'coq'                              }
 endif
 
 if executable('potion')

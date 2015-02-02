@@ -9,7 +9,6 @@ call plug#end()
 " Settings
 " ========
 
-set gdefault     " When on, the ":substitute" flag 'g' is default on.
 set hlsearch     " When there is a previous search pattern, highlight all its matches.
 set incsearch    " While typing a search command, show where the pattern, as it was typed so far, matches.
 set lazyredraw   " When this option is set, the screen will not be redrawn while executing macros.
@@ -80,27 +79,16 @@ vmap s S
 set background=dark
 colorscheme solarized
 
-nnoremap <Leader>p :CtrlP<cr>
+nnoremap <Leader>p :FZF<cr>
 
-let g:ctrlp_use_caching = 1
 let g:indent_guides_auto_colors          = 1
 let g:indent_guides_color_change_percent = 2
 let g:indent_guides_exclude_filetypes    = ['go', 'help']
 let g:indent_guides_guide_size           = 1
 let g:indent_guides_start_level          = 1
 let g:ycm_seed_identifiers_with_syntax = 1
-let g:ycm_semantic_triggers            = []
+let g:ycm_semantic_triggers            = {}
 
-if executable('ag')
-  set grepprg=ag\ --nogroup\ --nocolor
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-  " let g:ctrlp_user_command = {
-  "       \ 'types': {
-  "       \ 1: ['.git', 'cd %s && git ls-files'],
-  "       \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-  "       \ 3: ['_darcs', 'cd %s && darcs show files --no-directories'] },
-  "       \ 'fallback': 'ag %s -l --nocolor -g ""' }
-endif
 
 
 autocmd VimEnter,Colorscheme * highlight Search    guibg=NONE guifg=NONE gui=underline ctermfg=NONE ctermbg=NONE term=underline

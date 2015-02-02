@@ -1,7 +1,6 @@
 [ui]
 commitsubrepos = no
 ignore         = ~/.hgignore
-username       = Daiderd Jordan <daiderd@gmail.com>
 
 %include .hgrc.local
 
@@ -10,7 +9,7 @@ git = True
 
 [merge-tools]
 splice.args       = -f $base $local $other $output -c 'SpliceInit'
-splice.executable = mvim
+splice.executable = vim
 splice.premerge   = keep
 splice.priority   = 1
 

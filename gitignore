@@ -7,22 +7,27 @@
 ._*
 .fseventsd
 Icon?
+.sync
 
 .#*
 *.sw[nop]
 .clang_complete
 .env
 _darcs
-bin
 tags
+tmp
 log/*.log
+
+dump.rdb
 
 Pods
 *.xcworkspace
 !default.xcworkspace
 xcuserdata
 
-.shake*
+*.o
+
+.shake
 
 .bundle
 .gem
@@ -33,8 +38,3 @@ vendor/bundle
 zeus.json
 
 node_modules
-
-tmp/**/*
-!tmp/cache/.keep
-public/assets/*
-!public/assets/manifest.yml

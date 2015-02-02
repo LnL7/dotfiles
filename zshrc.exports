@@ -1,25 +1,29 @@
 export CPPFLAGS="-I/opt/X11/include"
-export EDITOR="vim -R"
+export EDITOR="vim"
 export LANG="en_US.UTF-8"
-export TERM="xterm-256color"
 export VISUAL="vim"
 
-export GOPATH="$HOME/dev/Go"
+export FZF_DEFAULT_OPTS='-x -m --sort 10000'
+if which ag &> /dev/null; then
+  export FZF_DEFAULT_COMMAND='ag -l -g ""'
+fi
 
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
+
+if [[ -d $HOME/.nix-profile ]]; then
+  source $HOME/.nix-profile/etc/profile.d/nix.sh
+  export NIX_PATH=$HOME/.nix-defexpr/nixpkgs:nixpkgs=$HOME/.nix-defexpr/nixpkgs
+fi
 
 if which rbenv &> /dev/null; then
   eval "$(rbenv init -  --no-rehash)"
 fi
 
-if which brew &> /dev/null; then
-  export PATH="$PATH:$(brew --prefix)/share/npm/bin"
+if which cabal &> /dev/null; then
+  export PATH="$HOME/.cabal/bin:$PATH"
 fi
 
-[[ -d $HOME/.cabal/bin  ]] && export PATH="$PATH:$HOME/.cabal/bin"
-# [[ -d $HOME/.racket/bin ]] && export PATH="$PATH:$HOME/.racket/bin"
-
 export PATH="$HOME/.bin:$HOME/.sbin:$PATH"
-export PATH=".git/safe/../../bin:.git/safe/../../.cabal-sandbox/bin:.git/safe/../../node_modules/bin:$PATH"
+export PATH=".git/safe/../../bin:.git/safe/../../.cabal-sandbox/bin:.git/safe/../../node_modules/.bin:$PATH"
 
 typeset -U PATH # Remove duplicate entries

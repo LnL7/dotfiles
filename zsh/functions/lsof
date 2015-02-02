@@ -1,0 +1,8 @@
+
+lsof-tcp () {
+  lsof -iTCP -sTCP:LISTEN -P -n
+}
+
+lsof-tcp () {
+  lsof -iUDP -P -n
+}

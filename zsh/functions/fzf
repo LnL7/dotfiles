@@ -1,0 +1,102 @@
+# fe [FUZZY PATTERN] - Open the selected file with the default editor
+#   - Bypass fuzzy finder if there's only one match (--select-1)
+#   - Exit if there's no match (--exit-0)
+fe() {
+  local file
+  file=$(fzf --query="$1" +m)
+  [ -n "$file" ] && ${EDITOR:-vim} "$file"
+}
+
+# Equivalent to above, but opens it with `open` command
+fo() {
+  local file
+  file=$(fzf +m)
+  [ -n "$file" ] && open "$@" "$file"
+}
+
+# fd - cd to selected directory
+fd() {
+  local dir
+  dir=$(dirs | tr " " "\n" | fzf +m) &&
+  cd "$dir"
+}
+
+# fkill - kill process
+fkill() {
+  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+
+  if [ "x$pid" != "x" ]
+  then
+    kill -${1:-9} $pid
+  fi
+}
+
+# ftags - search ctags
+ftags() {
+  local line
+  [ -e tags ] &&
+  line=$(
+    awk 'BEGIN { FS="\t" } !/^!/ {print toupper($4)"\t"$1"\t"$2"\t"$3}' tags |
+    cut -c1-80 | fzf --nth=1,2
+  ) && $EDITOR $(cut -f3 <<< "$line") -c "set nocst" \
+                                      -c "silent tag $(cut -f2 <<< "$line")"
+}
+
+ftsession() {
+  local session
+  session=$(tmux list-sessions -F "#{session_name}" | \
+    fzf --query="$1" --select-1 --exit-0) &&
+  tmux switch-client -t "$session"
+}
+
+ftpane() {
+  local panes current_window target target_window target_pane
+  panes=$(tmux list-panes -s -F '#I:#P - #{pane_current_path} #{pane_current_command}')
+  current_window=$(tmux display-message  -p '#I')
+
+  target=$(echo "$panes" | fzf) || return
+
+  target_window=$(echo $target | awk 'BEGIN{FS=":|-"} {print$1}')
+  target_pane=$(echo $target | awk 'BEGIN{FS=":|-"} {print$2}' | cut -c 1)
+
+  if [[ $current_window -eq $target_window ]]; then
+    tmux select-pane -t ${target_window}.${target_pane}
+  else
+    tmux select-pane -t ${target_window}.${target_pane} &&
+    tmux select-window -t $target_window
+  fi
+}
+
+# fbr - checkout git branch
+fgbranch() {
+  local branches branch
+  branches=$(git branch) &&
+  branch=$(echo "$branches" | fzf +s +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //")
+}
+
+# fco - checkout git commit
+fgcheckout() {
+  local commits commit
+  commits=$(git log --pretty=oneline --abbrev-commit --reverse) &&
+  commit=$(echo "$commits" | fzf +s +m -e) &&
+  git checkout $(echo "$commit" | sed "s/ .*//")
+}
+
+# fghc - list ghc packages
+fghc() {
+  ghc-pkg list --global --user --simple-output | tr " " "\n" | fzf --query "$1" -m
+}
+
+# fhoogle - list hoogle query
+fhoogle() {
+  hoogle "$@" | fzf -m
+}
+
+# fnix - install nix packages
+fnix() {
+  local cache="$HOME/.nixpkgs/cache"
+  [ -f $cache ] || nix-env -qa \* -P --no-name > $cache
+
+  cat $cache | fzf --query="$1" -m | xargs nix-env -Q -k -iA
+}

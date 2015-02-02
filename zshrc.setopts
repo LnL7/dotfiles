@@ -1,12 +1,13 @@
 setopt appendhistory autocd extendedglob
 unsetopt beep
 
-setopt auto_pushd           # Make cd push the old directory onto the directory stack
 setopt auto_name_dirs       # Any parameter that is set to the absolute name of a directory immediately becomes a name for that directory
+setopt auto_pushd           # Make cd push the old directory onto the directory stack
 setopt cdablevars           # Expand variables in path
 setopt correct              # Spelling correction for commands
 setopt correctall           # Spelling correction for arguments
 setopt hist_ignore_dups     # Ignore duplicate history entries
+setopt hist_ignore_space    # Ignore commands prefixed with whitespace
 setopt ignoreeof            # Don't exit with ^D
 setopt inc_append_history   # Incrementally add history commands
 setopt interactive_comments # Allow comments even in interactive shells

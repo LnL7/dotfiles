@@ -1,6 +1,8 @@
+autoload -U down-line-or-beginning-search
+autoload -U up-line-or-beginning-search
+
 bindkey -e
 
-bindkey '^F' vi-forward-blank-word
 bindkey '^N' insert-last-word
 bindkey '^Y' accept-and-hold
 bindkey -s '^T' '^Asudo ^E'
@@ -15,3 +17,8 @@ fancy-ctrl-z () {
 }
 zle -N fancy-ctrl-z
 bindkey '^Z' fancy-ctrl-z
+
+bindkey "^[[A" up-line-or-beginning-search   # Up
+bindkey "^[[B" down-line-or-beginning-search # Down
+zle -N down-line-or-beginning-search
+zle -N up-line-or-beginning-search

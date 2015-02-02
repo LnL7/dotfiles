@@ -19,26 +19,26 @@ case $1 in
 
   "hfs")
     ram dev
-    diskutil partitiondisk /dev/disk1 GPTFormat HFS+ "Ram" 100%
-    sudo mdutil -i off /mnt/Ram
-    sudo rm -rf /mnt/Ram/.fseventsd/
-    mkdir /mnt/Ram/.fseventsd
-    touch /mnt/Ram/.fseventsd/no_log
+    diskutil partitiondisk /dev/disk1 GPTFormat HFS+ "ram" 100%
+    sudo mdutil -i off /mnt/ram
+    sudo rm -rf /mnt/ram/.fseventsd/
+    mkdir /mnt/ram/.fseventsd
+    touch /mnt/ram/.fseventsd/no_log
     ;;
   "unhfs")
-    diskutil unmount force /Volumes/Ram
+    diskutil unmount force /Volumes/ram
     ram undev
     ;;
 
   "zfs")
     ram dev
     # diskutil partitiondisk /dev/disk1 GPTFormat ZFS %noformat% 100%
-    zpool create -f -o ashift=13 -m /mnt/Ram ram "/dev/disk1"
-    sudo chown -R $USER:staff /mnt/Ram
-    sudo mdutil -i off /mnt/Ram
-    sudo rm -rf /mnt/Ram/.fseventsd/
-    mkdir /mnt/Ram/.fseventsd
-    touch /mnt/Ram/.fseventsd/no_log
+    zpool create -f -o ashift=13 -m /mnt/ram ram "/dev/disk1"
+    sudo chown -R $USER:staff /mnt/ram
+    sudo mdutil -i off /mnt/ram
+    sudo rm -rf /mnt/ram/.fseventsd/
+    mkdir /mnt/ram/.fseventsd
+    touch /mnt/ram/.fseventsd/no_log
     ;;
   "unzfs")
     zpool export -f ram

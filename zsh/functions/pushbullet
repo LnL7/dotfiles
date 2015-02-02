@@ -1,0 +1,4 @@
+pushbullet() {
+  curl -u """$(cat $HOME/.pushbullet)"":" -d type="note" -d body="$1" -d title="Shell" 'https://api.pushbullet.com/v2/pushes' >/dev/null 2>&1
+  echo "Message send to pushbullet."
+}

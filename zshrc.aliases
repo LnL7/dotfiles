@@ -1,25 +1,61 @@
-alias mv="nocorrect mv"
+alias -g CA="2>&1 | cat -A"
+alias -g C='| wc -l'
+alias -g D="DISPLAY=:0.0"
+alias -g DN=/dev/null
+alias -g ED="export DISPLAY=:0.0"
+alias -g EG='|& egrep'
+alias -g EH='|& head'
+alias -g EL='|& less'
+alias -g ELS='|& less -S'
+alias -g ETL='|& tail -20'
+alias -g ET='|& tail'
+alias -g F=' | fmt -'
+alias -g G='| egrep'
+alias -g H='| head'
+alias -g HL='|& head -20'
+alias -g Sk="*~(*.bz2|*.gz|*.tgz|*.zip|*.z)"
+alias -g LL="2>&1 | less"
+alias -g L="| less"
+alias -g LS='| less -S'
+alias -g MM='| most'
+alias -g M='| more'
+alias -g NE="2> /dev/null"
+alias -g NS='| sort -n'
+alias -g NUL="> /dev/null 2>&1"
+alias -g PIPE='|'
+alias -g RNS='| sort -nr'
+alias -g S='| sort'
+alias -g TL='| tail -20'
+alias -g T='| tail'
+alias -g US='| sort -u'
+alias -g X0G='| xargs -0 egrep'
+alias -g X0='| xargs -0'
+alias -g XG='| xargs egrep'
+alias -g X='| xargs'
+
 alias cp="nocorrect cp"
+alias mv="nocorrect mv"
 alias racket="rlwrap racket"
 alias rsync="rsync -P -avz"
 alias sudo="nocorrect sudo"
 alias time="/usr/bin/time -l"
+alias nginx="nginx -p /nix/data/nginx"
 
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
 alias .....="cd ../../../.."
 
-alias 1="cd -0"
-alias 2="cd -1"
-alias 3="cd -2"
-alias 4="cd -3"
+alias 0="cd -0"
+alias 1="cd -1"
+alias 2="cd -2"
+alias 3="cd -3"
+alias 4="cd -4"
+alias 5="cd -5"
 
-alias b="bundle"                   # Bundler
 alias e="$EDITOR"                  # Editor
 alias l="ls -lh"                   # Pritty ls
 alias ql="qlmanage -p 2>/dev/null" # Quick Look
-alias tx="tmux attach || tenv"     # Attach or create tmux environment
 alias v="$VISUAL"                  # Vim
 
 alias webrick='ruby -run -e httpd . -p 3000'

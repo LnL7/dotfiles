@@ -1,0 +1,4 @@
+
+hoogle () {
+  command hoogle "$@" -d "${HOME}/.hoogle"
+}

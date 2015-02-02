@@ -17,7 +17,7 @@
   tool = splice
 
 [mergetool "splice"]
-  cmd           = "mvim -f $BASE $LOCAL $REMOTE $MERGED -c 'SpliceInit'"
+  cmd           = "vim -f $BASE $LOCAL $REMOTE $MERGED -c 'SpliceInit'"
   trustExitCode = true
 
 [pager]
@@ -28,8 +28,9 @@
 [pretty]
   colored = format:%C(yellow)%h%Cblue%d%Creset %s %C(white)  %an, %ar%Creset\n
 
-[push]
-  default = current
+# [remote "origin"]
+#   fetch = +refs/heads/*:refs/remotes/upstream/*
+#   fetch = +refs/pull/*/head:refs/pull/upstream/*
 
 [alias]
   create-branch = !sh -c 'git push origin HEAD:refs/heads/$1 && git fetch origin && git branch --track $1 origin/$1 && cd . && git checkout $1' -
@@ -41,7 +42,8 @@
 
   ## Add
   a  = add
-  aa = add --all
+  aa = add --all --intent-to-add
+  ap = add --patch
   au = add --update
 
   ## Branch
@@ -67,6 +69,7 @@
   d  = diff --minimal --ignore-space-change --ignore-all-space --ignore-blank-lines --word-diff=color
   dc = diff --cached
   dn = diff --name-status
+  ds = diff --stat
 
   ## Fetch
   f  = fetch --all
@@ -133,3 +136,10 @@
 
   ## Tag
   t = tag
+[filter "media"]
+	clean = git-media-clean %f
+	smudge = git-media-smudge %f
+[filter "hawser"]
+	clean = git hawser clean %f
+	smudge = git hawser smudge %f
+	required = true

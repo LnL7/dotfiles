@@ -1,0 +1,23 @@
+
+ffind() {
+  local -a ignoreargs ignores args
+  if [[ -e $HOME/.agignore ]]; then
+    ignores=( ${(f)"$(< $HOME/.agignore)"} )
+    for ignore in $ignores; do
+      ignoreargs+=( -o -name "$ignore" )
+    done
+  fi
+  if [[ -e $HOME/.gitignore ]]; then
+    ignores=( ${(f)"$(< $HOME/.gitignore)"} )
+    for ignore in $ignores; do
+      ignoreargs+=( -o -name "$ignore" )
+    done
+  fi
+  while true; do
+    case "$1" in
+      -*) args+=($1); shift; ;;
+      *)  args+=($1); shift; break ;;
+    esac
+  done
+  find $args \( -path '*/\.*' $ignoreargs \) -prune -o ${@:--print}
+}

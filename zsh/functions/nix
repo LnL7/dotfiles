@@ -1,0 +1,47 @@
+
+nix-shell-default () {
+  nix-shell -E '(import <nixpkgs> {}).callPackage ./default.nix {}' "$@"
+}
+
+nix-shell-haskell () {
+  nix-shell -E '(import <nixpkgs> {}).haskellPackages.callPackage ./default.nix {}' "$@"
+}
+
+nix-shell-haskell-profiling () {
+  nix-shell -E '(import <nixpkgs> {}).haskellPackages_ghc784_profiling.callPackage ./default.nix {}' "$@"
+}
+
+# nix-exec () {
+#   local nix_path cmd_flag
+#   local -a nix_args
+#   local -a cmd_args
+
+#   while (( $# )); do
+#     case "$1" in
+#       './'*)
+#         nix_path="$1"
+#         ;;
+#       '--')
+#         shift
+#         cmd_flag='--run'
+#         while (( $# )); do
+#           cmd_args+=( "$1" )
+#           shift
+#         done
+#         break
+#         ;;
+#       *)
+#         nix_args+=( "$1" )
+#         ;;
+#     esac
+#     shift
+#   done
+
+#   [[ -z "${nix_path}" ]] && nix_path='./default.nix'
+
+#   if [[ -z "${cmd_flag}" ]]; then
+#     nix-shell -E "(import <nixpkgs> {}).haskellPackages.callPackage ${nix_path} {}" "${nix_args}"
+#   else
+#     nix-shell -E "(import <nixpkgs> {}).haskellPackages.callPackage ${nix_path} {}" "${nix_args}" "${cmd_flag}" "${cmd_args}"
+#   fi
+# }
