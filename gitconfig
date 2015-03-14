@@ -55,8 +55,8 @@
 
   ## Commit
   c  = commit --verbose
-  ca = commit --verbose --amend
-  cm = commit --verbose -m
+  ca = commit --amend
+  cm = commit -m
 
   ## Checkout
   co = checkout
@@ -128,8 +128,8 @@
   ss = stash save
 
   ## Status
-  st = status
   s  = status --short
+  st = status --verbose
 
   ## SubModule
   sm = submodule

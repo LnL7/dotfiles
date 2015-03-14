@@ -21,6 +21,8 @@
         lucid               = self.callPackage ./haskell/lucid {};
         waiMiddlewareStatic = self.callPackage ./haskell/wai-middleware-static {};
 
+        jpeg = self.callPackage ./haskell/jpeg {};
+
         routeGenerator = self.callPackage ./haskell/route-generator {};
         # routeGenerator = pkgs.haskellPackages.routeGenerator.override {
         # network = self.network_2_5_0_0;
@@ -38,7 +40,7 @@
 
     profileEnv = with pkgs; buildEnv {
       name = "profile";
-      paths = [ shellEnv serviceEnv haskellEnv elixirEnv goEnv nodeEnv ];
+      paths = [ shellEnv serviceEnv haskellEnv elixirEnv goEnv ];
     };
 
     shellEnv = with pkgs; buildEnv {
@@ -115,10 +117,10 @@
       paths = [
         nodejs
       ] ++ (with nodePackages; [
-        npm2nix
-        browserify
+        bower
         coffee-script
         gulp
+        npm2nix
       ]);
     };
 

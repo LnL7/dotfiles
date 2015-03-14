@@ -58,4 +58,6 @@ alias l="ls -lh"                   # Pritty ls
 alias ql="qlmanage -p 2>/dev/null" # Quick Look
 alias v="$VISUAL"                  # Vim
 
+alias ghci-hhl='exec "`which ghci`" 2>&1 | hhl'
+alias nginx-start='launchctl load -w ~/.nix-profile/org.nixos.nginx.plist && launchctl start org.nixos.nginx'
 alias webrick='ruby -run -e httpd . -p 3000'

@@ -19,6 +19,12 @@ if which rbenv &> /dev/null; then
   eval "$(rbenv init -  --no-rehash)"
 fi
 
+
+if [[ -d $HOME/.nvm ]]; then
+  export NVM_DIR="/Users/lnl/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+fi
+
 if which cabal &> /dev/null; then
   export PATH="$HOME/.cabal/bin:$PATH"
 fi
