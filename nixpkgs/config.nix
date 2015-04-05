@@ -5,7 +5,15 @@
   allowBroken = true;
   allowUnfree = true;
 
+  haskellPackageOverrides = self : super : (let inherit (pkgs.haskell-ng) lib; in {
+    shake = lib.dontCheck super.shake;
+  });
+
   packageOverrides = pkgs : rec {
+
+    haskellEnv = pkgs.haskellngPackages.ghcWithPackages (p : with p; [
+      cabal2nix cabal-install alex happy hoogle ghc ghc-mod
+    ]);
 
     # haskellPackages = pkgs.haskellPackages.override {
     #   extension = self : super : {
@@ -13,28 +21,28 @@
     #   };
     # };
 
-    haskellPackages = pkgs.recurseIntoAttrs (pkgs.haskellPackages.override {
-      extension = self : super : {
-        # Missing Packages
-        helics              = self.callPackage ./haskell/helics {};
-        helicsWai           = self.callPackage ./haskell/helics-wai {};
-        lucid               = self.callPackage ./haskell/lucid {};
-        waiMiddlewareStatic = self.callPackage ./haskell/wai-middleware-static {};
+    # haskellPackages = pkgs.recurseIntoAttrs (pkgs.haskellPackages.override {
+    #   extension = self : super : {
+    #     # Missing Packages
+    #     helics              = self.callPackage ./haskell/helics {};
+    #     helicsWai           = self.callPackage ./haskell/helics-wai {};
+    #     lucid               = self.callPackage ./haskell/lucid {};
+    #     waiMiddlewareStatic = self.callPackage ./haskell/wai-middleware-static {};
 
-        jpeg = self.callPackage ./haskell/jpeg {};
+    #     jpeg = self.callPackage ./haskell/jpeg {};
 
-        routeGenerator = self.callPackage ./haskell/route-generator {};
-        # routeGenerator = pkgs.haskellPackages.routeGenerator.override {
-        # network = self.network_2_5_0_0;
-        # # cabal = self.cabal.override { extension = self : super : { doCheck = false; }; };
-        # };
+    #     routeGenerator = self.callPackage ./haskell/route-generator {};
+    #     # routeGenerator = pkgs.haskellPackages.routeGenerator.override {
+    #     # network = self.network_2_5_0_0;
+    #     # # cabal = self.cabal.override { extension = self : super : { doCheck = false; }; };
+    #     # };
 
-        # TODO: use overrides
-        hakyll = self.callPackage ./haskell/hakyll {};
-        shake = self.callPackage ./haskell/shake {};
-        systemFileio = self.callPackage ./haskell/system-fileio {};
-      };
-    });
+    #     # TODO: use overrides
+    #     hakyll = self.callPackage ./haskell/hakyll {};
+    #     shake = self.callPackage ./haskell/shake {};
+    #     systemFileio = self.callPackage ./haskell/system-fileio {};
+    #   };
+    # });
 
     potion_HEAD = pkgs.callPackage ./potion/HEAD.nix {};
 
@@ -83,19 +91,19 @@
       stderr = "${dataDir}/var/log/nginx.log";
     };
 
-    haskellEnv = with pkgs; buildEnv {
-      name = "haskell";
-      paths = (with haskellPackages; [
-        ghc
-        cabal2nix
-        cabalInstall_1_20_0_6
-        alex
-        ghcMod
-        happy
-        hoogle
-        shake
-      ]);
-    };
+    # haskellEnv = with pkgs; buildEnv {
+    #   name = "haskell";
+    #   paths = (with haskellPackages; [
+    #     ghc
+    #     cabal2nix
+    #     cabalInstall_1_20_0_6
+    #     alex
+    #     ghcMod
+    #     happy
+    #     hoogle
+    #     shake
+    #   ]);
+    # };
 
     elixirEnv = with pkgs; buildEnv {
       name = "elixir";

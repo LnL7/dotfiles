@@ -1,0 +1,4 @@
+
+mpc-youtube() {
+  mpc add $(youtube-dl --prefer-insecure -g -f140 "$@")
+}

@@ -4,11 +4,11 @@ nix-shell-default () {
 }
 
 nix-shell-haskell () {
-  nix-shell -E '(import <nixpkgs> {}).haskellPackages.callPackage ./default.nix {}' "$@"
+  nix-shell -E 'with (import <nixpkgs> {}).pkgs; (haskellngPackages.callPackage ./default.nix {}).env' "$@"
 }
 
 nix-shell-haskell-profiling () {
-  nix-shell -E '(import <nixpkgs> {}).haskellPackages_ghc784_profiling.callPackage ./default.nix {}' "$@"
+  nix-shell -E 'with (import <nixpkgs> {}).pkgs; (haskellngPackages_ghc784_profiling.callPackage ./default.nix {}).env' "$@"
 }
 
 # nix-exec () {

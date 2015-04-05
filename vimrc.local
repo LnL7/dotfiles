@@ -169,6 +169,7 @@ let g:syntastic_mode_map = {
       \ 'passive_filetypes': [] }
 
 autocmd BufNewFile,BufRead *.nix set filetype=nix
+autocmd BufNewFile,BufRead nginx.conf set filetype=nginx
 autocmd BufNewFile,BufRead Shakefile set filetype=haskell
 autocmd BufReadPost fugitive://* set bufhidden=delete
 

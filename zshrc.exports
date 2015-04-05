@@ -25,6 +25,16 @@ if [[ -d $HOME/.nvm ]]; then
   [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
 fi
 
+if [[ -d $HOME/perl5 ]]; then
+  PERL_MB_OPT="--install_base \"$HOME/perl5\""; export PERL_MB_OPT;
+  PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
+fi
+
+if which go &> /dev/null; then
+  export GOPATH="$HOME/.gopath"
+  export PATH="$HOME/.gopath/bin:$PATH"
+fi
+
 if which cabal &> /dev/null; then
   export PATH="$HOME/.cabal/bin:$PATH"
 fi

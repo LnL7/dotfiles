@@ -1,8 +1,8 @@
-if isdirectory($HOME . '/dev/VimScript')
-  Plug '~/dev/VimScript/hasksyn'
-  Plug '~/dev/VimScript/vim-elixir'
-  Plug '~/dev/VimScript/vim-pico'
-  Plug '~/dev/VimScript/vim-racket'
+if isdirectory($HOME . '/Dropbox/languages/Vim')
+  Plug '~/Dropbox/languages/Vim/hasksyn'
+  Plug '~/Dropbox/languages/Vim/vim-elixir'
+  Plug '~/Dropbox/languages/Vim/vim-pico'
+  Plug '~/Dropbox/languages/Vim/vim-racket'
 endif
 
 Plug 'nelstrom/vim-visual-star-search'
