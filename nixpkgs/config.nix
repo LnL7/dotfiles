@@ -12,7 +12,7 @@
   packageOverrides = pkgs : rec {
 
     haskellEnv = pkgs.haskellngPackages.ghcWithPackages (p : with p; [
-      cabal2nix cabal-install alex happy hoogle ghc ghc-mod
+      cabal2nix cabal-install alex happy hoogle ghc ghc-mod shake
     ]);
 
     # haskellPackages = pkgs.haskellPackages.override {
@@ -48,13 +48,12 @@
 
     profileEnv = with pkgs; buildEnv {
       name = "profile";
-      paths = [ shellEnv serviceEnv haskellEnv elixirEnv goEnv ];
+      paths = [ shellEnv serviceEnv haskellEnv ocamlEnv elixirEnv goEnv ];
     };
 
     shellEnv = with pkgs; buildEnv {
       name = "shell";
       paths = [
-        zsh
         cacert
         cloc
         curl
@@ -62,9 +61,11 @@
         jq
         mercurial
         mosh
+        nix-repl
         nmap
         silver-searcher
         watch
+        zsh
       ];
     };
 
@@ -104,6 +105,18 @@
     #     shake
     #   ]);
     # };
+
+    ocamlEnv = with pkgs; buildEnv {
+      name = "ocaml";
+      paths = [
+        ocaml
+      ] ++ (with ocamlPackages; [
+        findlib
+        ocaml_batteries
+        opam
+        ounit
+      ]);
+    };
 
     elixirEnv = with pkgs; buildEnv {
       name = "elixir";

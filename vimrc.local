@@ -249,6 +249,12 @@ if executable('racket')
         \ setl errorformat=%+I%.%#
 end
 
+if executable('ocaml')
+  autocmd FileType ocaml
+        \ setl makeprg=ocaml\ %:p |
+        \ setl errorformat=%+I%.%#
+endif
+
 if executable('potion')
   autocmd FileType potion
         \ setl makeprg=potion\ %:p |
