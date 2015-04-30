@@ -1,10 +1,12 @@
 if isdirectory($HOME . '/Dropbox/languages/Vim')
   Plug '~/Dropbox/languages/Vim/hasksyn'
   Plug '~/Dropbox/languages/Vim/vim-elixir'
+  Plug '~/Dropbox/languages/Vim/vim-nix'
   Plug '~/Dropbox/languages/Vim/vim-pico'
   Plug '~/Dropbox/languages/Vim/vim-racket'
 endif
 
+Plug 'editorconfig/editorconfig-vim'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'sheerun/vim-polyglot'
 Plug 'sjl/vitality.vim'
@@ -22,9 +24,6 @@ Plug 'nelstrom/vim-markdown-folding', { 'for': 'markdown'             }
 Plug 'scrooloose/syntastic',          { 'on': 'SyntasticToggleMode'   }
 Plug 'tpope/vim-abolish',             { 'on': ['Abolish', 'Subvert']  }
 Plug 'vim-scripts/AnsiEsc.vim',       { 'on': 'AnsiEsc'               }
-
-Plug 'joonty/vdebug'
-Plug 'mjbrownie/swapit'
 
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 " Plug 'xolox/vim-misc'
@@ -49,7 +48,8 @@ if executable('git')
 endif
 
 if executable('nix-env')
-  Plug 'NixOS/nix', { 'for': 'nix', 'rtp': 'misc/vim' }
+  " Plug 'NixOS/nix', { 'for': 'nix', 'rtp': 'misc/vim' }
+  Plug 'LnL7/vim-nix'
 endif
 
 if executable('hg')

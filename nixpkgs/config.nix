@@ -1,55 +1,28 @@
-{ pkgs
-}:
+{ pkgs }:
 
 {
   allowBroken = true;
   allowUnfree = true;
 
   haskellPackageOverrides = self : super : (let inherit (pkgs.haskell-ng) lib; in {
-    shake = lib.dontCheck super.shake;
+    shake       = lib.dontCheck super.shake;
+    zip-archive = lib.dontCheck super.zip-archive;
+    ghc-mod     = lib.dontCheck super.ghc-mod; # (self.callPackage ./haskell/ghc-mod {});
   });
 
   packageOverrides = pkgs : rec {
 
-    haskellEnv = pkgs.haskellngPackages.ghcWithPackages (p : with p; [
-      cabal2nix cabal-install alex happy hoogle ghc ghc-mod shake
+    ghcEnv = pkgs.haskellngPackages.ghcWithPackages (p : with p; [
+      ghc cabal2nix cabal-install alex happy hoogle shake hspec
     ]);
 
-    # haskellPackages = pkgs.haskellPackages.override {
-    #   extension = self : super : {
-    #     cabal = pkgs.haskellPackages.cabalNoTest;
-    #   };
-    # };
+    ghcEnv784 = pkgs.haskell-ng.packages.ghc784.ghcWithPackages (p : with p; [
+      ghc cabal-install ghc-mod
+    ]);
 
-    # haskellPackages = pkgs.recurseIntoAttrs (pkgs.haskellPackages.override {
-    #   extension = self : super : {
-    #     # Missing Packages
-    #     helics              = self.callPackage ./haskell/helics {};
-    #     helicsWai           = self.callPackage ./haskell/helics-wai {};
-    #     lucid               = self.callPackage ./haskell/lucid {};
-    #     waiMiddlewareStatic = self.callPackage ./haskell/wai-middleware-static {};
-
-    #     jpeg = self.callPackage ./haskell/jpeg {};
-
-    #     routeGenerator = self.callPackage ./haskell/route-generator {};
-    #     # routeGenerator = pkgs.haskellPackages.routeGenerator.override {
-    #     # network = self.network_2_5_0_0;
-    #     # # cabal = self.cabal.override { extension = self : super : { doCheck = false; }; };
-    #     # };
-
-    #     # TODO: use overrides
-    #     hakyll = self.callPackage ./haskell/hakyll {};
-    #     shake = self.callPackage ./haskell/shake {};
-    #     systemFileio = self.callPackage ./haskell/system-fileio {};
-    #   };
-    # });
+    nginx = pkgs.callPackage ./nginx {};
 
     potion_HEAD = pkgs.callPackage ./potion/HEAD.nix {};
-
-    profileEnv = with pkgs; buildEnv {
-      name = "profile";
-      paths = [ shellEnv serviceEnv haskellEnv ocamlEnv elixirEnv goEnv ];
-    };
 
     shellEnv = with pkgs; buildEnv {
       name = "shell";
@@ -57,7 +30,7 @@
         cacert
         cloc
         curl
-        git
+        exercism
         jq
         mercurial
         mosh
@@ -69,12 +42,23 @@
       ];
     };
 
+    gitEnv = with pkgs; buildEnv {
+      name = "git";
+      paths = [
+        git
+      ] ++ (with gitAndTools; [
+        # gitAnnex
+        hub
+      ]);
+    };
+
     serviceEnv = with pkgs; buildEnv {
       name = "service";
       paths = [
         nginx
         postgresql
         redis
+        # couchdb
         serviceNginx
       ];
     };
@@ -92,19 +76,10 @@
       stderr = "${dataDir}/var/log/nginx.log";
     };
 
-    # haskellEnv = with pkgs; buildEnv {
-    #   name = "haskell";
-    #   paths = (with haskellPackages; [
-    #     ghc
-    #     cabal2nix
-    #     cabalInstall_1_20_0_6
-    #     alex
-    #     ghcMod
-    #     happy
-    #     hoogle
-    #     shake
-    #   ]);
-    # };
+    haskellEnv = with pkgs; buildEnv {
+      name = "haskell";
+      paths = [ ghcEnv ];
+    };
 
     ocamlEnv = with pkgs; buildEnv {
       name = "ocaml";
@@ -121,8 +96,16 @@
     elixirEnv = with pkgs; buildEnv {
       name = "elixir";
       paths = [
-        erlang
         elixir
+        erlang
+        riak
+      ];
+    };
+
+    rustEnv = with pkgs; buildEnv {
+      name = "rust";
+      paths = [
+        rustc
       ];
     };
 
@@ -138,7 +121,6 @@
       paths = [
         nodejs
       ] ++ (with nodePackages; [
-        bower
         coffee-script
         gulp
         npm2nix

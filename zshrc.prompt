@@ -34,7 +34,7 @@ nix_prompt_info() {
   if [[ -n $NIX_MYENV_NAME ]]; then
     echo "[%{$fg[yellow]%}nix@${NIX_MYENV_NAME}%{$reset_color%}]"
   elif [[ -n $IN_NIX_SHELL ]]; then
-    echo "[%{$fg[yellow]%}nix-shell@${pname}%{$reset_color%}]"
+    echo "[%{$fg[yellow]%}nix-shell%{$reset_color%}]"
   fi
 }
 

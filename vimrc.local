@@ -9,7 +9,6 @@ nnoremap <Leader>4 :set guifont=creep:h16<cr>:source ~/.vim/creep/creep.vim<cr>
 nnoremap <Leader>5 :set transparency=3<cr>
 nnoremap <Leader>6 :set transparency=63<cr>
 nnoremap <Leader><Leader> <C-^>
-nnoremap <Leader>e :e <C-r>=expand('%:h') . '/'<cr>
 nnoremap <Leader>z zMzv
 
 vnoremap <Leader>So y:execute @@<cr>
@@ -46,6 +45,7 @@ endfunction
 
 nnoremap <silent> <Leader>/ :exe 'FZFAg '.@/.' %'<CR>
 nnoremap <silent> <Leader>? :exe 'FZFAg '.@/.' *'<CR>
+nnoremap <silent> <Leader>e :exe 'FZF ' . expand('%:h')<CR>
 nnoremap <silent> <Leader>b :FZFBuffers<CR>
 nnoremap <silent> <Leader>s :FZFSplit<CR>
 nnoremap <silent> <Leader>v :FZFVSplit<CR>

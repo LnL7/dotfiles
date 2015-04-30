@@ -41,3 +41,4 @@ export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
 
 [[ -f $HOME/.zshrc.local ]] && \
   source $HOME/.zshrc.local
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -7,8 +7,16 @@ nix-shell-haskell () {
   nix-shell -E 'with (import <nixpkgs> {}).pkgs; (haskellngPackages.callPackage ./default.nix {}).env' "$@"
 }
 
-nix-shell-haskell-profiling () {
-  nix-shell -E 'with (import <nixpkgs> {}).pkgs; (haskellngPackages_ghc784_profiling.callPackage ./default.nix {}).env' "$@"
+nix-shell-haskell-784  () {
+  nix-shell -E 'with (import <nixpkgs> {}).pkgs; (haskell-ng.packages.ghc784.callPackage ./default.nix {}).env' "$@"
+}
+
+zix-shell-default () {
+  nix-shell -E '(import <nixpkgs> {}).callPackage ./default.nix {}' --run zsh
+}
+
+zix-shell-haskell () {
+  nix-shell -E 'with (import <nixpkgs> {}).pkgs; (haskellngPackages.callPackage ./default.nix {}).env' --run zsh
 }
 
 # nix-exec () {
