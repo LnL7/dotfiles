@@ -7,6 +7,7 @@ if isdirectory($HOME . '/Dropbox/languages/Vim')
 endif
 
 Plug 'editorconfig/editorconfig-vim'
+Plug 'guns/vim-sexp'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'sheerun/vim-polyglot'
 Plug 'sjl/vitality.vim'
@@ -16,6 +17,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
+Plug 'vim-scripts/paredit.vim'
 
 Plug 'cwoac/nvim',                    { 'on': 'Nvim'                  }
 Plug 'godlygeek/tabular',             { 'on': 'Tabularize'            }
@@ -81,7 +83,6 @@ endif
 
 if executable('racket')
   Plug 'wlangstroth/vim-racket'
-  " Plug 'vim-scripts/paredit.vim'
 endif
 
 if executable('lli')

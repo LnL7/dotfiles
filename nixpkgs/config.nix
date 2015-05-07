@@ -102,6 +102,14 @@
       ];
     };
 
+    clojureEnv = with pkgs; buildEnv {
+      name ="clojure";
+      paths = [
+        clojure
+        leiningen
+      ];
+    };
+
     rustEnv = with pkgs; buildEnv {
       name = "rust";
       paths = [
