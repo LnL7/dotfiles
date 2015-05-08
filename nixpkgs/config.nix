@@ -5,15 +5,29 @@
   allowUnfree = true;
 
   haskellPackageOverrides = self : super : (let inherit (pkgs.haskell-ng) lib; in {
-    shake       = lib.dontCheck super.shake;
+    ghc-mod = lib.overrideCabal super.ghc-mod (oldAttrs: {
+      src = pkgs.fetchgit {
+        url = https://github.com/kazu-yamamoto/ghc-mod;
+        rev = "247e4e0e7616fe1fecc68fdcf80d6249ac4cee4f";
+        sha256 = "2a23271d0e6907351a246f095040ba18c3ab6bf1cba08a14338d701defa55474";
+      };
+      buildDepends = oldAttrs.buildDepends ++ [ self.cabal-helper self.cereal ];
+    });
+
+    cabal-helper = lib.overrideCabal super.cabal-helper (oldAttrs: {
+      version = "0.3.2.0";
+      sha256 = "06igjmr0n8418wid1pr74cgvlsmwni7ar72g9bddivlbxax1pfli";
+    });
+
+    # ghc-mod = lib.dontCheck super.ghc-mod; # (self.callPackage ./haskell/ghc-mod {});
+    shake = lib.dontCheck super.shake;
     zip-archive = lib.dontCheck super.zip-archive;
-    ghc-mod     = lib.dontCheck super.ghc-mod; # (self.callPackage ./haskell/ghc-mod {});
   });
 
   packageOverrides = pkgs : rec {
 
     ghcEnv = pkgs.haskellngPackages.ghcWithPackages (p : with p; [
-      ghc cabal2nix cabal-install alex happy hoogle shake hspec
+      ghc cabal2nix cabal-install alex happy ghc-mod hoogle shake hspec
     ]);
 
     ghcEnv784 = pkgs.haskell-ng.packages.ghc784.ghcWithPackages (p : with p; [
