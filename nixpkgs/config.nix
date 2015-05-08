@@ -26,12 +26,19 @@
 
   packageOverrides = pkgs : rec {
 
+    haskellngPackages784 = pkgs.haskell-ng.packages.ghc784.override {
+      overrides = self : super : {
+        Cabal_1_20_0_3 = self.callPackage ./haskell/Cabal/1.20.0.3.nix {};
+        cabal-install_1_20_0_6 = self.callPackage ./haskell/cabal-install/1.20.0.6.nix {};
+      };
+    };
+
     ghcEnv = pkgs.haskellngPackages.ghcWithPackages (p : with p; [
       ghc cabal2nix cabal-install alex happy ghc-mod hoogle shake hspec
     ]);
 
-    ghcEnv784 = pkgs.haskell-ng.packages.ghc784.ghcWithPackages (p : with p; [
-      ghc cabal-install ghc-mod
+    ghcEnv784 = haskellngPackages784.ghcWithPackages (p : with p; [
+      ghc cabal2nix cabal-install_1_20_0_6 ghc-mod
     ]);
 
     nginx = pkgs.callPackage ./nginx {};
