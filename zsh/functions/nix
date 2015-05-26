@@ -3,53 +3,26 @@ nix-shell-default () {
   nix-shell -E '(import <nixpkgs> {}).callPackage ./default.nix {}' "$@"
 }
 
+nix-shell-node () {
+  nix-shell -A build "$@"
+}
+
 nix-shell-haskell () {
-  nix-shell -E 'with (import <nixpkgs> {}).pkgs; (haskellngPackages.callPackage ./default.nix {}).env' "$@"
+  nix-shell -E 'with (import <nixpkgs> {}).pkgs; (haskellPackages.callPackage ./default.nix {}).env' "$@"
 }
 
 nix-shell-haskell-784  () {
-  nix-shell -E 'with (import <nixpkgs> {}).pkgs; (haskell-ng.packages.ghc784.callPackage ./default.nix {}).env' "$@"
+  nix-shell -E 'with (import <nixpkgs> {}).pkgs; (haskell.packages.ghc784.callPackage ./default.nix {}).env' "$@"
 }
 
-zix-shell-default () {
+znix-shell-default () {
   nix-shell -E '(import <nixpkgs> {}).callPackage ./default.nix {}' --run zsh
 }
 
-zix-shell-haskell () {
-  nix-shell -E 'with (import <nixpkgs> {}).pkgs; (haskellngPackages.callPackage ./default.nix {}).env' --run zsh
+znix-shell-node () {
+  nix-shell -A build --run zsh
 }
 
-# nix-exec () {
-#   local nix_path cmd_flag
-#   local -a nix_args
-#   local -a cmd_args
-
-#   while (( $# )); do
-#     case "$1" in
-#       './'*)
-#         nix_path="$1"
-#         ;;
-#       '--')
-#         shift
-#         cmd_flag='--run'
-#         while (( $# )); do
-#           cmd_args+=( "$1" )
-#           shift
-#         done
-#         break
-#         ;;
-#       *)
-#         nix_args+=( "$1" )
-#         ;;
-#     esac
-#     shift
-#   done
-
-#   [[ -z "${nix_path}" ]] && nix_path='./default.nix'
-
-#   if [[ -z "${cmd_flag}" ]]; then
-#     nix-shell -E "(import <nixpkgs> {}).haskellPackages.callPackage ${nix_path} {}" "${nix_args}"
-#   else
-#     nix-shell -E "(import <nixpkgs> {}).haskellPackages.callPackage ${nix_path} {}" "${nix_args}" "${cmd_flag}" "${cmd_args}"
-#   fi
-# }
+znix-shell-haskell () {
+  nix-shell -E 'with (import <nixpkgs> {}).pkgs; (haskellPackages.callPackage ./default.nix {}).env' --run zsh
+}

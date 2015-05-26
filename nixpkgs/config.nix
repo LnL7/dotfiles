@@ -1,6 +1,6 @@
 { pkgs }:
 
-{
+rec {
   allowBroken = true;
   allowUnfree = true;
 
@@ -24,47 +24,52 @@
     zip-archive = lib.dontCheck super.zip-archive;
   });
 
+  haskellPackages784 = pkgs.haskell.packages.ghc784.override {
+    overrides = self : super : {
+      # Cabal_1_20_0_3 = self.callPackage ./haskell/Cabal/1.20.0.3.nix {};
+      # cabal-install_1_20_0_6 = self.callPackage ./haskell/cabal-install/1.20.0.6.nix {};
+    };
+  };
+
   packageOverrides = pkgs : rec {
 
-    haskellngPackages784 = pkgs.haskell-ng.packages.ghc784.override {
-      overrides = self : super : {
-        Cabal_1_20_0_3 = self.callPackage ./haskell/Cabal/1.20.0.3.nix {};
-        cabal-install_1_20_0_6 = self.callPackage ./haskell/cabal-install/1.20.0.6.nix {};
-      };
-    };
-
-    ghcEnv = pkgs.haskellngPackages.ghcWithPackages (p : with p; [
+    ghcEnv = pkgs.haskellPackages.ghcWithPackages (p : with p; [
       ghc cabal2nix cabal-install alex happy ghc-mod hoogle shake hspec
     ]);
 
-    ghcEnv784 = haskellngPackages784.ghcWithPackages (p : with p; [
-      ghc cabal2nix cabal-install_1_20_0_6 ghc-mod
+    ghcEnv784 = haskellPackages784.ghcWithPackages (p : with p; [
+      ghc cabal2nix cabal-install ghc-mod
     ]);
 
     nginx = pkgs.callPackage ./nginx {};
 
     potion_HEAD = pkgs.callPackage ./potion/HEAD.nix {};
 
-    shellEnv = with pkgs; buildEnv {
-      name = "shell";
+    nixEnv = with pkgs; buildEnv {
+      name = "nix-env";
       paths = [
-        cacert
+        nix-repl
+        nix-serve
+      ];
+    };
+
+    shellEnv = with pkgs; buildEnv {
+      name = "shell-env";
+      paths = [
         cloc
         curl
         exercism
         jq
         mercurial
         mosh
-        nix-repl
         nmap
         silver-searcher
         watch
-        zsh
       ];
     };
 
     gitEnv = with pkgs; buildEnv {
-      name = "git";
+      name = "git-env";
       paths = [
         git
       ] ++ (with gitAndTools; [
@@ -74,7 +79,7 @@
     };
 
     serviceEnv = with pkgs; buildEnv {
-      name = "service";
+      name = "service-env";
       paths = [
         nginx
         postgresql
@@ -98,12 +103,12 @@
     };
 
     haskellEnv = with pkgs; buildEnv {
-      name = "haskell";
-      paths = [ ghcEnv ];
+      name = "haskell-env";
+      paths = [ ghcEnv ghcEnv784 ];
     };
 
     ocamlEnv = with pkgs; buildEnv {
-      name = "ocaml";
+      name = "ocaml-env";
       paths = [
         ocaml
       ] ++ (with ocamlPackages; [
@@ -114,17 +119,17 @@
       ]);
     };
 
-    elixirEnv = with pkgs; buildEnv {
-      name = "elixir";
+    erlangEnv = with pkgs; buildEnv {
+      name = "erlang-env";
       paths = [
-        elixir
         erlang
+        elixir
         riak
       ];
     };
 
     clojureEnv = with pkgs; buildEnv {
-      name ="clojure";
+      name ="clojure-env";
       paths = [
         clojure
         leiningen
@@ -132,27 +137,27 @@
     };
 
     rustEnv = with pkgs; buildEnv {
-      name = "rust";
+      name = "rust-env";
       paths = [
         rustc
       ];
     };
 
     goEnv = with pkgs; buildEnv {
-      name = "go";
+      name = "go-env";
       paths = (with go14Packages; [
         go
       ]);
     };
 
     nodeEnv = with pkgs; buildEnv {
-      name = "node";
+      name = "node-env";
       paths = [
         nodejs
       ] ++ (with nodePackages; [
+        npm2nix
         coffee-script
         gulp
-        npm2nix
       ]);
     };
 

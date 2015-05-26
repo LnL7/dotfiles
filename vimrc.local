@@ -171,6 +171,7 @@ let g:syntastic_mode_map = {
       \ 'active_filetypes': [],
       \ 'passive_filetypes': [] }
 
+autocmd BufNewFile,BufRead *.cljx set filetype=clojure
 autocmd BufNewFile,BufRead *.nix set filetype=nix
 autocmd BufNewFile,BufRead nginx.conf set filetype=nginx
 autocmd BufNewFile,BufRead Shakefile set filetype=haskell

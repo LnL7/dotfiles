@@ -12,7 +12,7 @@ fi
 
 # Auto-completion
 # ---------------
-# [[ $- =~ i ]] && source "/Users/lnl/.fzf/shell/completion.zsh"
+[[ $- =~ i ]] && source "/Users/lnl/.fzf/shell/completion.zsh" 2> /dev/null
 
 # Key bindings
 # ------------
