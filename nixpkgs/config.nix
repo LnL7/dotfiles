@@ -12,6 +12,7 @@ rec {
         sha256 = "2a23271d0e6907351a246f095040ba18c3ab6bf1cba08a14338d701defa55474";
       };
       buildDepends = oldAttrs.buildDepends ++ [ self.cabal-helper self.cereal ];
+      patchPhase = "${pkgs.gnused}/bin/sed -i 's/Version:\ *0/Version:5.0.1.1/' ghc-mod.cabal";
     });
 
     cabal-helper = lib.overrideCabal super.cabal-helper (oldAttrs: {
@@ -38,7 +39,7 @@ rec {
     ]);
 
     ghcEnv784 = haskellPackages784.ghcWithPackages (p : with p; [
-      ghc cabal2nix cabal-install ghc-mod
+      ghc cabal2nix cabal-install
     ]);
 
     nginx = pkgs.callPackage ./nginx {};
@@ -48,6 +49,7 @@ rec {
     nixEnv = with pkgs; buildEnv {
       name = "nix-env";
       paths = [
+        nix-prefetch-scripts
         nix-repl
         nix-serve
       ];
@@ -56,10 +58,13 @@ rec {
     shellEnv = with pkgs; buildEnv {
       name = "shell-env";
       paths = [
+        awscli
+        bashCompletion
         cloc
         curl
         exercism
         jq
+        keybase
         mercurial
         mosh
         nmap
@@ -104,7 +109,15 @@ rec {
 
     haskellEnv = with pkgs; buildEnv {
       name = "haskell-env";
-      paths = [ ghcEnv ghcEnv784 ];
+      paths = [ ghcEnv ];
+    };
+
+    haskellEnv784 = with pkgs; myEnvFun {
+      name = "haskell-784";
+      shell = "${zsh}/bin/zsh";
+      buildInputs = [ ghcEnv784 ];
+      extraCmds = ''
+      '';
     };
 
     ocamlEnv = with pkgs; buildEnv {
@@ -164,7 +177,7 @@ rec {
     # fooEnv = with pkgs; myEnvFun {
     #   name = "foo";
     #   shell = "${bash}/bin/bash";
-    #   buildInputs = []
+    #   buildInputs = [];
     #   extraCmds = ''
     #   '';
     # };
