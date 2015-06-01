@@ -4,15 +4,15 @@ nix-shell-default () {
 }
 
 nix-shell-ghc () {
-  nix-shell --run zsh -E '((import <nixpkgs> {}).haskellPackages.callPackage ./default.nix {}).env' "$@"
+  nix-shell --run zsh -E 'with (import <nixpkgs> {}).pkgs; (haskellPackages.callPackage ./default.nix {}).env' "$@"
 }
 
 nix-shell-ghc-784  () {
-  nix-shell --run zsh -E '((import <nixpkgs> {}).pkgs; (haskell.packages.ghc784.callPackage ./default.nix {}).env' "$@"
+  nix-shell --run zsh -E 'with (import <nixpkgs> {}).pkgs; (haskell.packages.ghc784.callPackage ./default.nix {}).env' "$@"
 }
 
 nix-shell-ghc-with () {
-  nix-shell --run zsh -E "(import <nixpkgs> {}).haskellPackages.ghcWithPackages (p: with p; [ ghc $@ ])"
+  nix-shell --run zsh -E "with (import <nixpkgs> {}).pkgs; haskellPackages.ghcWithPackages (p: with p; [ ghc $@ ])"
 }
 
 # vim:set ft=zsh:

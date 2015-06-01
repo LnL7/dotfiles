@@ -1,9 +1,9 @@
-if isdirectory($HOME . '/Dropbox/languages/Vim')
-  Plug '~/Dropbox/languages/Vim/hasksyn'
-  Plug '~/Dropbox/languages/Vim/vim-elixir'
-  Plug '~/Dropbox/languages/Vim/vim-nix'
-  Plug '~/Dropbox/languages/Vim/vim-pico'
-  Plug '~/Dropbox/languages/Vim/vim-racket'
+if isdirectory($HOME . '/languages/Vim')
+  Plug '~/languages/Vim/hasksyn'
+  Plug '~/languages/Vim/vim-elixir'
+  Plug '~/languages/Vim/vim-nix'
+  Plug '~/languages/Vim/vim-pico'
+  Plug '~/languages/Vim/vim-racket'
 endif
 
 Plug 'editorconfig/editorconfig-vim'
