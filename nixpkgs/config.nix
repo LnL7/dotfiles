@@ -39,7 +39,7 @@ rec {
     ]);
 
     ghcEnv784 = haskellPackages784.ghcWithPackages (p : with p; [
-      ghc cabal2nix cabal-install
+      ghc cabal2nix cabal-install alex happy ghc-mod
     ]);
 
     nginx = pkgs.callPackage ./nginx {};

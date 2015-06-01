@@ -1,28 +1,18 @@
 
 nix-shell-default () {
-  nix-shell -E '(import <nixpkgs> {}).callPackage ./default.nix {}' "$@"
+  nix-shell --run zsh -E '(import <nixpkgs> {}).callPackage ./default.nix {}' "$@"
 }
 
-nix-shell-node () {
-  nix-shell -A build "$@"
+nix-shell-ghc () {
+  nix-shell --run zsh -E '((import <nixpkgs> {}).haskellPackages.callPackage ./default.nix {}).env' "$@"
 }
 
-nix-shell-haskell () {
-  nix-shell -E 'with (import <nixpkgs> {}).pkgs; (haskellPackages.callPackage ./default.nix {}).env' "$@"
+nix-shell-ghc-784  () {
+  nix-shell --run zsh -E '((import <nixpkgs> {}).pkgs; (haskell.packages.ghc784.callPackage ./default.nix {}).env' "$@"
 }
 
-nix-shell-haskell-784  () {
-  nix-shell -E 'with (import <nixpkgs> {}).pkgs; (haskell.packages.ghc784.callPackage ./default.nix {}).env' "$@"
+nix-shell-ghc-with () {
+  nix-shell --run zsh -E "(import <nixpkgs> {}).haskellPackages.ghcWithPackages (p: with p; [ ghc $@ ])"
 }
 
-znix-shell-default () {
-  nix-shell -E '(import <nixpkgs> {}).callPackage ./default.nix {}' --run zsh
-}
-
-znix-shell-node () {
-  nix-shell -A build --run zsh
-}
-
-znix-shell-haskell () {
-  nix-shell -E 'with (import <nixpkgs> {}).pkgs; (haskellPackages.callPackage ./default.nix {}).env' --run zsh
-}
+# vim:set ft=zsh:
