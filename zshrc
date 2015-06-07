@@ -22,7 +22,8 @@ done
 set completion-ignore-case on
 set show-all-if-ambiguous on
 
-[ -z $NIX_MYENV_NAME ] && source $HOME/.zshrc.exports
+[ -z $NIX_MYENV_NAME ] && [ -z $IN_NIX_SHELL ] && \
+  source $HOME/.zshrc.exports
 
 source $HOME/.zshrc.aliases
 source $HOME/.zshrc.bindkeys
