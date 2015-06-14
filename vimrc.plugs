@@ -6,8 +6,8 @@ Plug 'tpope/vim-surround'
 Plug 'nathanaelkane/vim-indent-guides', { 'on': 'IndentGuidesEnable'          }
 Plug 'tpope/vim-dispatch',              { 'on': ['Dispatch', 'FocusDispatch'] }
 
-Plug 'Valloric/YouCompleteMe', {
-      \ 'do': './install.sh' }
+" Plug 'Valloric/YouCompleteMe', {
+"       \ 'do': './install.sh' }
 
 Plug 'junegunn/fzf', {
       \ 'dir': '~/.fzf',

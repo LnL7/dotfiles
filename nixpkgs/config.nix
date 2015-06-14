@@ -34,6 +34,9 @@ rec {
 
   packageOverrides = pkgs : rec {
 
+    youcompleteme = pkgs.callPackage ./youcompleteme {};
+    youcompleteme-vim = pkgs.callPackage ./youcompleteme/vim.nix {};
+
     ghcEnv = pkgs.haskellPackages.ghcWithPackages (p : with p; [
       ghc cabal2nix cabal-install alex happy ghc-mod hoogle shake hspec
     ]);
