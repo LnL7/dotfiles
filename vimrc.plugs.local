@@ -1,5 +1,5 @@
 if isdirectory($HOME . '/languages/Vim')
-  Plug '~/languages/Vim/hasksyn'
+  Plug '~/languages/Vim/haskell-vim'
   Plug '~/languages/Vim/vim-elixir'
   Plug '~/languages/Vim/vim-nix'
   Plug '~/languages/Vim/vim-pico'
@@ -62,7 +62,12 @@ if executable('darcs')
   Plug 'vim-scripts/Darcs', { 'on': ['DarcsChanges', 'DarcsDiff'] }
 endif
 
+if executable('elm')
+  Plug 'lambdatoast/elm.vim'
+endif
+
 if executable('ghc')
+  " Plug 'raichoo/haskell-vim'
   Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
   Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
   Plug 'eagletmt/neco-ghc',   { 'for': 'haskell' }

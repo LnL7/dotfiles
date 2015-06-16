@@ -34,12 +34,13 @@ alias -g XG='| xargs egrep'
 alias -g X='| xargs'
 
 alias cp="nocorrect cp"
+alias exec="nocorrect exec"
 alias mv="nocorrect mv"
+alias nginx="nginx -p /nix/data/nginx"
 alias racket="rlwrap racket"
 alias rsync="rsync -P -avz"
 alias sudo="nocorrect sudo"
 alias time="/usr/bin/time -l"
-alias nginx="nginx -p /nix/data/nginx"
 
 alias ..="cd .."
 alias ...="cd ../.."
