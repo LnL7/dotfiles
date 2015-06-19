@@ -98,7 +98,7 @@ fnix() {
   local cache="$HOME/.nixpkgs/cache"
   [ -f $cache ] || nix-env -qa \* -P --no-name > $cache
 
-  cat $cache | fzf --query="$1" -m | xargs nix-env -Q -k -iA
+  cat $cache | fzf --query="$1" -m
 }
 
 # fnix-haskell - install nix haskellPackages
@@ -106,5 +106,5 @@ fnix-haskell() {
   local cache="$HOME/.nixpkgs/cache-haskell"
   [ -f $cache ] || nix-env -qaP -A nixpkgs.haskellPackages --no-name > $cache
 
-  cat $cache | fzf --query="$1" -m | xargs nix-env -Q -k -iA
+  cat $cache | fzf --query="$1" -m
 }
