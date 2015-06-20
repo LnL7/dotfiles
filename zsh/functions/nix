@@ -1,4 +1,20 @@
 
+xnix-description () {
+  xargs nix-env --description -qaA "$@"
+}
+
+xnix-drv () {
+  xargs nix-env --drv-path -qaA "$@" | jq .
+}
+
+xnix-out () {
+  xargs nix-env --out-path -qaA "$@" | jq .
+}
+
+xnix-install () {
+  xargs nix-env -iA "$@"
+}
+
 nix-shell-default () {
   local expr='
   { nixpkgs ? import <nixpkgs> {} }:

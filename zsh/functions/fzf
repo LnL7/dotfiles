@@ -93,7 +93,7 @@ fhoogle() {
   hoogle "$@" | fzf -m
 }
 
-# fnix - install nix packages
+# fnix - query nix packages
 fnix() {
   local cache="$HOME/.nixpkgs/cache"
   [ -f $cache ] || nix-env -qa \* -P --no-name > $cache
@@ -101,10 +101,15 @@ fnix() {
   cat $cache | fzf --query="$1" -m
 }
 
-# fnix-haskell - install nix haskellPackages
+# fnix-haskell - query nix haskellPackages
 fnix-haskell() {
   local cache="$HOME/.nixpkgs/cache-haskell"
   [ -f $cache ] || nix-env -qaP -A nixpkgs.haskellPackages --no-name > $cache
 
   cat $cache | fzf --query="$1" -m
+}
+
+# fnix - uninstall nix packages
+fnix-uninstall() {
+  nix-env -q | fzf --query="$1" -m | xargs nix-env -e
 }
