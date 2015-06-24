@@ -184,6 +184,16 @@ rec {
       ]);
     };
 
+    pythonEnv = with pkgs; buildEnv {
+      name = "python-env";
+      paths = [
+        python
+        python2nix
+      ] ++ (with pythonPackages; [
+        pip
+      ]);
+    };
+
     nodeEnv = with pkgs; buildEnv {
       name = "node-env";
       paths = [
