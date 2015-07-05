@@ -42,6 +42,7 @@ endif
 
 if executable('tmux')
   Plug 'christoomey/vim-tmux-navigator'
+  Plug 'tpope/vim-tbone'
 endif
 
 if executable('git')

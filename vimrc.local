@@ -265,8 +265,15 @@ if executable('potion')
         \ setl errorformat=%+I%.%#
 endif
 
+if executable('psc')
+  autocmd FileType purescript
+        \ setl makeprg=psc\ --main\ %:p\ \|\ node |
+        \ setl errorformat=%+I%.%#
+endif
+
 if executable('go')
   autocmd FileType go
+        \ setl noexpandtab |
         \ if expand('%') =~# 'Test\.go$' |
         \   setl makeprg=go\ test\ %:p |
         \ else |
