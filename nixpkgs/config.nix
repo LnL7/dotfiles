@@ -8,17 +8,21 @@ rec {
     ghc-mod = lib.overrideCabal super.ghc-mod (oldAttrs: {
       src = pkgs.fetchgit {
         url = https://github.com/kazu-yamamoto/ghc-mod;
-        rev = "247e4e0e7616fe1fecc68fdcf80d6249ac4cee4f";
-        sha256 = "2a23271d0e6907351a246f095040ba18c3ab6bf1cba08a14338d701defa55474";
+        rev = "509f43999fc303f27c0bd6569c502360647084b4";
+        sha256 = "926c064cb8d385ad47f5f97cd8b63cfcc2a0509e39f38337b9f554f0cc4eae13";
+        # rev = "247e4e0e7616fe1fecc68fdcf80d6249ac4cee4f";
+        # sha256 = "2a23271d0e6907351a246f095040ba18c3ab6bf1cba08a14338d701defa55474";
       };
       buildDepends = oldAttrs.buildDepends ++ [ self.cabal-helper self.cereal ];
       patchPhase = "${pkgs.gnused}/bin/sed -i 's/Version:\ *0/Version:5.0.1.1/' ghc-mod.cabal";
     });
 
-    cabal-helper = lib.overrideCabal super.cabal-helper (oldAttrs: {
-      version = "0.3.2.0";
-      sha256 = "06igjmr0n8418wid1pr74cgvlsmwni7ar72g9bddivlbxax1pfli";
-    });
+    # cabal-helper = lib.overrideCabal super.cabal-helper (oldAttrs: {
+    #   version = "0.3.6.0";
+    #   sha256 = "06igjmr0n8418wid1pr74cgvlsmwni7ar72g9bddivlbxax1pfli";
+    #   # version = "0.3.2.0";
+    #   # sha256 = "06igjmr0n8418wid1pr74cgvlsmwni7ar72g9bddivlbxax1pfli";
+    # });
 
     # ghc-mod = lib.dontCheck super.ghc-mod; # (self.callPackage ./haskell/ghc-mod {});
     shake = lib.dontCheck super.shake;
@@ -39,7 +43,7 @@ rec {
       // pkgs.callPackage ./node-packages { self = nodePackages; };
 
     ghcEnv = pkgs.haskellPackages.ghcWithPackages (p : with p; [
-      ghc cabal2nix cabal-install alex happy ghc-mod hoogle shake hspec
+      ghc cabal2nix cabal-install alex happy ghc-mod hoogle shake hspec halive
     ]);
 
     ghcEnv784 = haskellPackages784.ghcWithPackages (p : with p; [
@@ -68,7 +72,7 @@ rec {
         curl
         exercism
         jq
-        keybase
+        # keybase
         mercurial
         mosh
         nmap
@@ -138,6 +142,7 @@ rec {
       shell = "${zsh}/bin/zsh";
       buildInputs = [ ghcEnv784 ];
       extraCmds = ''
+
       '';
     };
 
@@ -158,7 +163,7 @@ rec {
       paths = [
         erlang
         elixir
-        riak
+        # riak
       ];
     };
 
@@ -191,6 +196,7 @@ rec {
         python2nix
       ] ++ (with pythonPackages; [
         pip
+        virtualenv
       ]);
     };
 
