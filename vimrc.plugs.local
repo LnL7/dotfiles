@@ -8,6 +8,7 @@ endif
 
 Plug 'editorconfig/editorconfig-vim'
 Plug 'guns/vim-sexp'
+Plug 'keith/investigate.vim'
 Plug 'nelstrom/vim-visual-star-search'
 Plug 'sheerun/vim-polyglot'
 Plug 'sjl/vitality.vim'
@@ -70,8 +71,15 @@ endif
 if executable('ghc')
   " Plug 'raichoo/haskell-vim'
   Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
-  Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
   Plug 'eagletmt/neco-ghc',   { 'for': 'haskell' }
+endif
+
+if executable('ghc-mod')
+  Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
+endif
+
+if executable('hdevtools')
+  Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
 endif
 
 if executable('agda')

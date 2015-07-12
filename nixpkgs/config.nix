@@ -43,7 +43,7 @@ rec {
       // pkgs.callPackage ./node-packages { self = nodePackages; };
 
     ghcEnv = pkgs.haskellPackages.ghcWithPackages (p : with p; [
-      ghc cabal2nix cabal-install alex happy ghc-mod hoogle shake hspec halive
+      ghc cabal2nix cabal-install alex happy hoogle hdevtools halive shake hspec
     ]);
 
     ghcEnv784 = haskellPackages784.ghcWithPackages (p : with p; [

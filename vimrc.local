@@ -158,11 +158,13 @@ let g:airline_left_sep        = ''
 let g:airline_powerline_fonts = 1
 let g:airline_right_sep       = ''
 " let g:haskell_conceal = 1
+let g:hdevtools_options = '-g-isrc -g-Wall -g-fwarn-typed-hole -g-fdefer-type-errors -g-XPartialTypeSignatures'
 let g:paredit_mode = 0
 let g:paredit_shortmaps = 0
 let g:paredit_smartjump = 1
 let g:syntastic_error_symbol         = '✗'
 let g:syntastic_java_javac_classpath = '.:.shake:.shake/src:.shake/test:lib/*.jar'
+let g:syntastic_haskell_hdevtools_args = '-g-isrc -g-Wall -g-fwarn-typed-holes -g-XPartialTypeSignatures'
 let g:syntastic_warning_symbol       = '⚠'
 let g:vim_tags_use_vim_dispatch = 1
 
@@ -177,11 +179,14 @@ autocmd BufNewFile,BufRead nginx.conf set filetype=nginx
 autocmd BufNewFile,BufRead Shakefile set filetype=haskell
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
-autocmd FileType haskell noremap <buffer>__ :GhcModTypeClear<cr>
-autocmd FileType haskell noremap <buffer>_t :GhcModType!<cr>
-autocmd FileType haskell noremap <buffer>_T :GhcModTypeInsert!<cr>
-autocmd FileType haskell noremap <buffer>_i :GhcModInfo!<cr>
-autocmd FileType haskell noremap <buffer>_I :GhcModInfoPreview!<cr>
+" autocmd FileType haskell noremap <buffer>__ :GhcModTypeClear<cr>
+" autocmd FileType haskell noremap <buffer>_t :GhcModType!<cr>
+" autocmd FileType haskell noremap <buffer>_T :GhcModTypeInsert!<cr>
+" autocmd FileType haskell noremap <buffer>_i :GhcModInfo!<cr>
+" autocmd FileType haskell noremap <buffer>_I :GhcModInfoPreview!<cr>
+
+autocmd FileType haskell nnoremap <buffer> _t :HdevtoolsType<cr>
+autocmd FileType haskell nnoremap <buffer> __ :HdevtoolsClear<cr>
 
 autocmd FileType coq           setl commentstring=(*\ %s\ *)
 autocmd FileType go            setl commentstring=//\ %s
