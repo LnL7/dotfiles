@@ -5,7 +5,7 @@ rec {
   allowUnfree = true;
 
   haskellPackageOverrides = self : super : (let inherit (pkgs.haskell-ng) lib; in {
-    ghc-mod = lib.overrideCabal super.ghc-mod (oldAttrs: {
+    ghc-mod = lib.overrideCabal super.ghc-mod (drv: {
       src = pkgs.fetchgit {
         url = https://github.com/kazu-yamamoto/ghc-mod;
         rev = "509f43999fc303f27c0bd6569c502360647084b4";
@@ -13,7 +13,7 @@ rec {
         # rev = "247e4e0e7616fe1fecc68fdcf80d6249ac4cee4f";
         # sha256 = "2a23271d0e6907351a246f095040ba18c3ab6bf1cba08a14338d701defa55474";
       };
-      buildDepends = oldAttrs.buildDepends ++ [ self.cabal-helper self.cereal ];
+      buildDepends = drv.buildDepends ++ [ self.cabal-helper self.cereal ];
       patchPhase = "${pkgs.gnused}/bin/sed -i 's/Version:\ *0/Version:5.0.1.1/' ghc-mod.cabal";
     });
 
@@ -60,6 +60,7 @@ rec {
         nix-prefetch-scripts
         nix-repl
         nix-serve
+        nixopsUnstable
       ];
     };
 

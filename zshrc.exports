@@ -13,6 +13,11 @@ export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 if [[ -d $HOME/.nix-profile ]]; then
   source $HOME/.nix-profile/etc/profile.d/nix.sh
   export NIX_PATH=$HOME/.nix-defexpr/nixpkgs:nixpkgs=$HOME/.nix-defexpr/nixpkgs
+
+  export NIX_GHC="$HOME/.nix-profile/bin/ghc"
+  export NIX_GHCPKG="$HOME/.nix-profile/bin/ghc-pkg"
+  export NIX_GHC_DOCDIR="$HOME/.nix-profile/share/doc/ghc/html"
+  export NIX_GHC_LIBDIR="$HOME/.nix-profile/lib/ghc-$(ghc --numeric-version)"
 fi
 
 if which rbenv &> /dev/null; then

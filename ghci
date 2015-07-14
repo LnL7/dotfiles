@@ -3,6 +3,7 @@
 
 :set prompt "λ> "
 :set -XOverloadedStrings
+:set -XPartialTypeSignatures
 
 :set -fdefer-type-errors
 :set -fwarn-typed-holes
