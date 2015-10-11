@@ -34,6 +34,7 @@ rec {
       paths = [
         awscli
         bashCompletion
+        bazaar
         cloc
         ctags
         curl
@@ -45,6 +46,7 @@ rec {
         nmap
         s3cmd
         silver-searcher
+        tmux
         watch
 
         gitEnv

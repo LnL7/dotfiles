@@ -15,10 +15,12 @@ if [[ -d $HOME/.nix-profile ]]; then
     source $HOME/.nix-profile/etc/profile.d/nix.sh
     export NIX_PATH=$HOME/.nix-defexpr/nixpkgs:nixpkgs=$HOME/.nix-defexpr/nixpkgs
 
-    export NIX_GHC="$(which ghc)"
-    export NIX_GHCPKG="$(which ghc-pkg)"
-    export NIX_GHC_DOCDIR="$(dirname $(dirname $NIX_GHC))/share/doc/ghc/html"
-    export NIX_GHC_LIBDIR="$(dirname $(dirname $NIX_GHC))/lib/ghc-$(ghc --numeric-version)"
+    if which ghc &> /dev/null; then
+      export NIX_GHC="$(which ghc)"
+      export NIX_GHCPKG="$(which ghc-pkg)"
+      export NIX_GHC_DOCDIR="$(dirname $(dirname $NIX_GHC))/share/doc/ghc/html"
+      export NIX_GHC_LIBDIR="$(dirname $(dirname $NIX_GHC))/lib/ghc-$(ghc --numeric-version)"
+    fi
   fi
 fi
 
@@ -43,7 +45,8 @@ fi
 
 if which go &> /dev/null; then
   export GOPATH="$HOME/.gopath"
-  export PATH="$HOME/.gopath/bin:$PATH"
+  export GOBIN="$GOPATH/bin"
+  export PATH="$GOPATH/bin:$PATH"
 fi
 
 if which cabal &> /dev/null; then
