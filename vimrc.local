@@ -43,88 +43,106 @@ function! WinMove(key)
   endif
 endfunction
 
-nnoremap <silent> <Leader>/ :exe 'FZFAg '.@/.' %'<CR>
-nnoremap <silent> <Leader>? :exe 'FZFAg '.@/.' *'<CR>
+nnoremap <silent> <Leader>/ :exe 'Ag '.@/.' %'<CR>
+nnoremap <silent> <Leader>? :exe 'Ag '.@/.' *'<CR>
+" nnoremap <silent> <Leader>p :exe 'FZF'<CR>
 nnoremap <silent> <Leader>e :exe 'FZF ' . expand('%:h')<CR>
-nnoremap <silent> <Leader>b :FZFBuffers<CR>
-nnoremap <silent> <Leader>s :FZFSplit<CR>
-nnoremap <silent> <Leader>v :FZFVSplit<CR>
+nnoremap <silent> <Leader>m :Mru<CR>
 
 command! FZFSplit call fzf#run({
       \ 'tmux_height': '40%',
-      \ 'sink': 'sp' })
+      \ 'sink':        'sp' })
 
 command! FZFVSplit call fzf#run({
       \ 'tmux_width': winwidth('.') / 2,
-      \ 'sink': 'vsp' })
+      \ 'sink':       'vsp' })
 
 command! FZFTab call fzf#run({
       \ 'sink': 'tabe' })
 
-function! BufferHandler(b)
-  let keys = split(a:b, ':\t')
-  exec 'buf' . keys[0]
+function! s:buflist()
+  redir => ls
+  silent ls
+  redir END
+  return split(ls, '\n')
 endfunction
 
-function! BufferCommand()
-  let buffers = filter(range(1, bufnr('$')), 'buflisted(v:val)')
-  return map(buffers, 'v:val . ":\t" . bufname(v:val)')
+function! s:bufopen(e)
+  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
 endfunction
 
-command! FZFBuffers call fzf#run({
-      \ 'source': BufferCommand(),
-      \ 'sink': function('BufferHandler'),
-      \ 'options': '-m' })
+nnoremap <silent> <Leader><Enter> :call fzf#run({
+      \ 'source':  reverse(<sid>buflist()),
+      \ 'sink':    function('<sid>bufopen'),
+      \ 'options': '+m',
+      \ 'down':    len(<sid>buflist()) + 2 })<CR>
 
-function! LineHandler(l)
-  let keys = split(a:l, ':\t')
-  exec 'buf ' . keys[0]
-  exec keys[1]
-  normal! ^zz
-endfunction
-
-function! LineCommand()
-  let res = []
-  for b in filter(range(1, bufnr('$')), 'buflisted(v:val)')
-    call extend(res, map(getbufline(b,0,"$"), 'b . ":\t" . (v:key + 1) . ":\t" . v:val '))
-  endfor
-  return res
-endfunction
-
-command! FZFLines call fzf#run({
-      \ 'source':  LineCommand(),
-      \ 'sink': function('LineHandler'),
-      \ 'options': '--extended --nth=3..,',
-      \ 'tmux_height': '60%' })
-
-command! FZFMru call fzf#run({
+command! Mru call fzf#run({
       \ 'source': v:oldfiles,
-      \ 'sink': 'e ',
-      \ 'options': '-m' })
+      \ 'sink': 'e',
+      \ 'options': '-m -x +s',
+      \ 'down': '40%' })
 
-function! TagCommand()
-  return substitute('awk _!/^!/ { print \$1 }_ ', '_', "'", 'g') .
-        \ join(tagfiles(), ' ')
+function! s:tags_sink(line)
+  let parts = split(a:line, '\t\zs')
+  let excmd = matchstr(parts[2:], '^.*\ze;"\t')
+  execute 'silent e' parts[1][:-2]
+  let [magic, &magic] = [&magic, 0]
+  execute excmd
+  let &magic = magic
 endfunction
 
-command! FZFTag call fzf#run({
-      \ 'source': TagCommand(),
-      \ 'sink': 'tag' })
+function! s:tags()
+  if empty(tagfiles())
+    echohl WarningMsg
+    echom 'Preparing tags'
+    echohl None
+    call system('ctags -R')
+  endif
+
+  call fzf#run({
+        \ 'source':  'cat '.join(map(tagfiles(), 'fnamemodify(v:val, ":S")')).
+        \            '| grep -v ^!',
+        \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index',
+        \ 'down':    '40%',
+        \ 'sink':    function('s:tags_sink') })
+endfunction
 
 if executable('ag')
-  command! -nargs=1 FZFAg call fzf#run({
-        \ 'source': Arghandler(<f-args>),
-        \ 'sink': function('AgHandler'),
-        \ 'options': '-m' })
-
-  function! AgHandler(l)
-    let keys = split(a:l,':')
-    execute 'tabe +' . keys[-2] . ' ' . escape(keys[-1], ' ')
+  function! s:ag_to_qf(line)
+    let parts = split(a:line, ':')
+    return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
+          \ 'text': join(parts[3:], ':')}
   endfunction
 
-  function! Arghandler(l)
-    return "ag -i " . a:l . " | sed 's@\\(.[^:]*\\):\\(.[^:]*\\):\\(.*\\)@\\3:\\2:\\1@' "
+  function! s:ag_handler(lines)
+    if len(a:lines) < 2 | return | endif
+
+    let cmd = get({'ctrl-x': 'split',
+          \ 'ctrl-v': 'vertical split',
+          \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
+    let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
+
+    let first = list[0]
+    execute cmd escape(first.filename, ' %#\')
+    execute first.lnum
+    execute 'normal!' first.col.'|zz'
+
+    if len(list) > 1
+      call setqflist(list)
+      copen
+      wincmd p
+    endif
   endfunction
+
+  command! -nargs=* Ag call fzf#run({
+        \ 'source':  printf('ag --nogroup --column --color "%s"',
+        \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
+        \ 'sink*':   function('<sid>ag_handler'),
+        \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
+        \            '--multi --bind ctrl-a:select-all,ctrl-d:deselect-all '.
+        \            '--color hl:68,hl+:110',
+        \ 'down':    '50%' })
 endif
 
 if executable('tmux')
@@ -279,7 +297,8 @@ endif
 if executable('go')
   autocmd FileType go
         \ setl noexpandtab |
-        \ if expand('%') =~# 'Test\.go$' |
+        \ setl nolist |
+        \ if expand('%') =~# '_test\.go$' |
         \   setl makeprg=go\ test\ %:p |
         \ else |
         \   setl makeprg=go\ run\ %:p |

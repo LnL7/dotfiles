@@ -78,6 +78,10 @@ if executable('ghc-mod')
   Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
 endif
 
+if executable('go')
+  Plug 'fatih/vim-go'
+endif
+
 if executable('hdevtools')
   Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
 endif
