@@ -40,7 +40,6 @@ rec {
         curl
         exercism
         jq
-        keybase
         mercurial
         mosh
         nmap
@@ -58,7 +57,6 @@ rec {
       paths = [
         git
       ] ++ (with gitAndTools; [
-        git-annex
         hub
       ]);
     };

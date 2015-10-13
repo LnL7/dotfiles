@@ -25,6 +25,7 @@ set show-all-if-ambiguous on
 [ -z $NIX_MYENV_NAME ] && [ -z $IN_NIX_SHELL ] && \
   source $HOME/.zshrc.exports
 
+source $HOME/.git.aliases
 source $HOME/.zshrc.aliases
 source $HOME/.zshrc.bindkeys
 source $HOME/.zshrc.prompt

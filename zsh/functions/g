@@ -1,14 +1,9 @@
 # No arguments: `git status`
 # With arguments: acts like `git`
 g() {
-  if [ -d ".hg" ]; then
-    hg $@
-  elif [[ $# > 0 ]]; then
-    git $@
-  else
-    git l -4
-    git s
-  fi
+  git log -3 --pretty=colored --graph
+  echo
+  git status --short
 }
 
 # Complete g like git

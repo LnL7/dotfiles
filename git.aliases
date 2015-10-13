@@ -1,0 +1,67 @@
+alias ga='git add'
+alias gaa='git add --all --intent-to-add'
+alias gap='git add --patch'
+alias gau='git add --update'
+
+alias gb='git branch'
+alias gba='git branch --all --verbose'
+
+alias gc='git commit --verbose'
+alias gca='git commit --amend'
+alias gcm='git commit -m'
+
+alias gcb='git checkout -B'
+alias gco='git checkout'
+
+alias gcp='git cherry-pick'
+
+alias gd='git diff --minimal --ignore-space-change --ignore-all-space --ignore-blank-lines --word-diff=color'
+alias gdc='git diff --cached'
+alias gdn='git diff --name-status'
+alias gds='git diff --stat'
+
+alias gf='git fetch --all'
+
+alias gi='git init'
+alias gib='git init --bare'
+
+alias gl='git log -16 --pretty=colored --graph'
+alias gla='git log -32 --pretty=colored --simplify-by-decoration --all'
+alias gll='git log -16 --pretty=format":%h %s   %an, %ar"'
+alias gln='git log -1 --pretty=colored --name-only'
+
+alias gm='git merge'
+alias gms='git merge --squash'
+
+alias gp='git push'
+alias gpu='git push -u'
+alias gpt='git push --tags'
+
+alias gpl='git pull'
+alias gpr='git pull --rebase'
+
+alias grb='git rebase'
+alias gri='git rebase --interactive'
+
+alias grl='git reflog -32'
+
+alias gr='git remote'
+alias grv='git remote --verbose'
+
+alias grs='git reset'
+alias grh='git reset --hard'
+alias grs='git reset --soft'
+
+alias grc='git rm --cached'
+
+alias gsa='git stash apply'
+alias gsl='git stash list'
+alias gsp='git stash pop'
+alias gss='git stash save'
+
+alias gs='git status --short'
+alias gst='git status --verbose'
+
+alias gsm='git submodule'
+
+alias gt='git tag'
