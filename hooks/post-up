@@ -1,9 +1,10 @@
 #!/bin/sh
 
-cd $HOME
+[ which nvim &> /dev/null ] && \
+  ln -s $HOME/.vim $HOME/.nvim
 
 [ ! -e $HOME/.sbin ] && [ -e $HOME/Dropbox/library/sbin ] && \
-  ln -s $HOME/Dropbox/library/sbin .sbin
+  ln -s $HOME/Dropbox/library/sbin $HOME/.sbin
 
 [ ! -e $HOME/.zsh/peat ] && \
   git clone https://github.com/sjl/peat.git $HOME/.zsh/peat && \

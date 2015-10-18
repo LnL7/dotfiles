@@ -67,6 +67,25 @@ ftpane() {
   fi
 }
 
+fmount() {
+  local filesystem
+  # TODO: mount filesystem if not mounted
+  # zfs get -H -o value mounted "$filesystem"
+  filesystem=$(zfs list -H -o name | fzf) &&
+  case "$(zfs get -H -o value mounted $filesystem)" in
+    no)
+      sudo zfs mount "$filesystem"
+      ;;
+  esac &&
+  cd "$(zfs list -H -o mountpoint $filesystem)"
+}
+
+funmount() {
+  local filesystem
+  filesystem=$(zfs list -H -o name | fzf) &&
+  zfs unmount "$filesystem"
+}
+
 # fbr - checkout git branch
 fgbranch() {
   local branches branch

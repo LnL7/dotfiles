@@ -1,13 +1,13 @@
 # Setup fzf
 # ---------
-if [[ ! "$PATH" =~ "~/.fzf/bin" ]]; then
-  export PATH="$PATH:~/.fzf/bin"
+if [[ ! "$PATH" =~ "$HOME/.fzf/bin" ]]; then
+  export PATH="$PATH:$HOME/.fzf/bin"
 fi
 
 # Man path
 # --------
-if [[ ! "$MANPATH" =~ "~/.fzf/man" && -d "~/.fzf/man" ]]; then
-  export MANPATH="$MANPATH:~/.fzf/man"
+if [[ ! "$MANPATH" =~ "$HOME/.fzf/man" && -d "~/.fzf/man" ]]; then
+  export MANPATH="$MANPATH:$HOME/.fzf/man"
 fi
 
 # Auto-completion

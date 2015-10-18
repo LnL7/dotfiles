@@ -1,10 +1,12 @@
 # No arguments: `git status`
 # With arguments: acts like `git`
 g() {
-  git log -3 --pretty=colored --graph
-  echo
-  git status --short
-}
+  if [[ "$#" -ne 0 ]]; then
+    echo "$0: '$@' is not a command."
+    return 1
+  fi
 
-# Complete g like git
-compdef g=git
+  git log -3 --pretty=colored --graph || return "$?"
+  echo
+  git status --short || return "$?"
+}

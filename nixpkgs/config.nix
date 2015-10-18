@@ -161,6 +161,7 @@ rec {
       paths = [
         python
         python2nix
+        pypi2nix
       ] ++ (with pythonPackages; [
         pip
         virtualenv

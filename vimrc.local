@@ -211,8 +211,8 @@ autocmd FileType go            setl commentstring=//\ %s
 autocmd FileType masm          setl commentstring=;\ %s
 autocmd FileType scheme,racket setl commentstring=;\ %s
 
-autocmd FileType php set tabstop=4
-autocmd FileType php set shiftwidth=4
+autocmd FileType php    setl shiftwidth=4 tabstop=4
+autocmd FileType python setl shiftwidth=4 tabstop=4
 
 if executable('lein')
   autocmd FileType clojure
