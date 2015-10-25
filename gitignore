@@ -33,6 +33,7 @@ xcuserdata
 .gem
 .powenv
 .rbx
+.stack-work
 db/*.sqlite3
 vendor/bundle
 zeus.json

@@ -1,0 +1,18 @@
+fmount() {
+  local filesystem
+  filesystem=$(zfs list | fzf --header-lines=1 +s +m | awk '{print $1}') &&
+  case "$(zfs get -H -o value mounted $filesystem)" in
+    no)
+      sudo zfs mount "$filesystem"
+      ;;
+  esac &&
+  cd "$(zfs list -H -o mountpoint $filesystem)"
+}
+
+funmount() {
+  local filesystem
+  filesystem=$(zfs list -o name | fzf --header-lines=1 +s +m | awk '{print $1}') &&
+  zfs unmount "$filesystem"
+}
+
+# vim:set ft=zsh:

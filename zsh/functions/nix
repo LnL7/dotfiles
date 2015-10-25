@@ -1,3 +1,27 @@
+fnix() {
+  local cache="$HOME/.nixpkgs/cache"
+  [ -f $cache ] || nix-env -qa \* -P --no-name > $cache
+
+  cat $cache | fzf --query="$1" -m
+}
+
+fnix-haskell() {
+  local cache="$HOME/.nixpkgs/cache-haskell"
+  [ -f $cache ] || nix-env -qaA nixpkgs.haskellPackages -P --no-name > $cache
+
+  cat $cache | fzf --query="$1" -m
+}
+
+fnix-python() {
+  local cache="$HOME/.nixpkgs/cache-python"
+  [ -f $cache ] || nix-env -qaA nixpkgs.pythonPackages -P --no-name > $cache
+
+  cat $cache | fzf --query="$1" -m
+}
+
+fnix-uninstall() {
+  nix-env -q | fzf --query="$1" -m | xargs nix-env -e
+}
 
 xnix-description () {
   xargs nix-env --description -qaA "$@"

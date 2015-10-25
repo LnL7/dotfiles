@@ -1,0 +1,20 @@
+fgit-branch() {
+  local branch
+  branch=$( git branch | fzf +s +m | sed "s/.* //" )
+  git checkout "${branch}"
+}
+
+fgit-checkout() {
+  local commit
+  commit=$( git log --pretty=oneline --abbrev-commit --reverse | fzf +s +m -e | sed "s/ .*//" )
+  git checkout "${commit}"
+}
+
+fgit-copy() {
+  [[ $# -eq 1 ]] || return 1
+
+  local files
+  git diff --name-only | fzf -m | xargs -n1 -I% rsync -avzP % "$1/%"
+}
+
+# vim:set ft=zsh:

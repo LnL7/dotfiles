@@ -67,41 +67,6 @@ ftpane() {
   fi
 }
 
-fmount() {
-  local filesystem
-  # TODO: mount filesystem if not mounted
-  # zfs get -H -o value mounted "$filesystem"
-  filesystem=$(zfs list -H -o name | fzf) &&
-  case "$(zfs get -H -o value mounted $filesystem)" in
-    no)
-      sudo zfs mount "$filesystem"
-      ;;
-  esac &&
-  cd "$(zfs list -H -o mountpoint $filesystem)"
-}
-
-funmount() {
-  local filesystem
-  filesystem=$(zfs list -H -o name | fzf) &&
-  zfs unmount "$filesystem"
-}
-
-# fbr - checkout git branch
-fgbranch() {
-  local branches branch
-  branches=$(git branch) &&
-  branch=$(echo "$branches" | fzf +s +m) &&
-  git checkout $(echo "$branch" | sed "s/.* //")
-}
-
-# fco - checkout git commit
-fgcheckout() {
-  local commits commit
-  commits=$(git log --pretty=oneline --abbrev-commit --reverse) &&
-  commit=$(echo "$commits" | fzf +s +m -e) &&
-  git checkout $(echo "$commit" | sed "s/ .*//")
-}
-
 # fghc - list ghc packages
 fghc() {
   ghc-pkg list --global --user --simple-output | tr " " "\n" | fzf --query "$1" -m
@@ -112,23 +77,4 @@ fhoogle() {
   hoogle "$@" | fzf -m
 }
 
-# fnix - query nix packages
-fnix() {
-  local cache="$HOME/.nixpkgs/cache"
-  [ -f $cache ] || nix-env -qa \* -P --no-name > $cache
-
-  cat $cache | fzf --query="$1" -m
-}
-
-# fnix-haskell - query nix haskellPackages
-fnix-haskell() {
-  local cache="$HOME/.nixpkgs/cache-haskell"
-  [ -f $cache ] || nix-env -qaP -A nixpkgs.haskellPackages --no-name > $cache
-
-  cat $cache | fzf --query="$1" -m
-}
-
-# fnix - uninstall nix packages
-fnix-uninstall() {
-  nix-env -q | fzf --query="$1" -m | xargs nix-env -e
-}
+# vim:set ft=zsh:

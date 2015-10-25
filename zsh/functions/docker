@@ -1,0 +1,21 @@
+fdocker-ps() {
+  docker ps -a | fzf --header-lines=1 +s -m | awk '{print $1}'
+}
+
+fdocker-exec() {
+  local image
+  image=$( docker ps | fzf --header-lines=1 +s +m | awk '{print $1}' )
+  docker exec -it "${image}" ${1:-/bin/bash}
+}
+
+fdocker-run() {
+  local image
+  image=$( docker images | fzf --header-lines=1 +s +m | awk '{print $1}' )
+  docker run --rm -it "${image}" ${1:-/bin/bash}
+}
+
+xdocker-rm() {
+  xargs docker rm "$@"
+}
+
+# vim:set ft=zsh:

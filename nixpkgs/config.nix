@@ -64,6 +64,23 @@ rec {
     vimEnv = with pkgs; buildEnv {
       name = "vim-env";
       paths = [
+        (vim_configurable.customize {
+          name = "vim";
+          vimrcConfig = {
+            customRC = ''
+              source $HOME/.vimrc
+            '';
+            vam.pluginDictionaries = [
+              { names = [ "youcompleteme" ]; }
+            ];
+          };
+        })
+      ];
+    };
+
+    nvimEnv = with pkgs; buildEnv {
+      name = "nvim-env";
+      paths = [
         (neovim.override {
           vimAlias = true;
           configure = {
