@@ -1,6 +1,7 @@
 export CPPFLAGS="-I/opt/X11/include"
 export EDITOR="vim"
 export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
 export VISUAL="vim"
 
 export FZF_DEFAULT_OPTS='-x -m --sort 10000'
