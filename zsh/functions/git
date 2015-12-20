@@ -1,3 +1,21 @@
+g() {
+  if [[ "$#" -ne 0 ]]; then
+    echo "$0: '$@' is not a command."
+    return 1
+  fi
+
+  git log -3 --pretty=colored --graph || return "$?"
+  echo
+  git status --short || return "$?"
+}
+
+gf() {
+  local remote
+  remote="${1:---all}"
+  [[ "$#" -ne 0 ]] && shift
+  git fetch "${remote}" "$@"
+}
+
 fgit-branch() {
   local branch
   branch=$( git branch | fzf +s +m | sed "s/.* //" )

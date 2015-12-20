@@ -29,8 +29,9 @@ set fillchars+=vert:\ ,stl:\ ,stlnc:\  " Characters to fill the statuslines and 
 set list                                          " Useful to see the difference between tabs and spaces and for trailing blanks.
 set listchars=tab:»·,trail:·,extends:⟩,precedes:⟨ " Strings to use in 'list' mode and for the |:list| command.
 
-set number        " Print the line number in front of each line.
-set numberwidth=2 " Minimal number of columns to use for the line number.
+set number         " Print the line number in front of each line.
+set relativenumber " Show the line number relative to the line with the cursor
+set numberwidth=2  " Minimal number of columns to use for the line number.
 
 set t_vb=
 set visualbell " Use visual bell instead of beeping.  The terminal code to display the visual bell is given with 't_vb'.

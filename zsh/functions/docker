@@ -1,20 +1,28 @@
-fdocker-ps() {
+fdocker-machine () {
+  local env machine
+  rm $HOME/.docker/env 2> /dev/null
+  machine=$( docker-machine ls | fzf --header-lines=1 | awk '{print $1}' )
+  docker-machine env "${machine}" > $HOME/.docker/env
+  eval $(cat $HOME/.docker/env)
+}
+
+fdocker-ps () {
   docker ps -a | fzf --header-lines=1 +s -m | awk '{print $1}'
 }
 
-fdocker-exec() {
+fdocker-exec () {
   local image
   image=$( docker ps | fzf --header-lines=1 +s +m | awk '{print $1}' )
   docker exec -it "${image}" ${1:-/bin/bash}
 }
 
-fdocker-run() {
+fdocker-run () {
   local image
   image=$( docker images | fzf --header-lines=1 +s +m | awk '{print $1}' )
   docker run --rm -it "${image}" ${1:-/bin/bash}
 }
 
-xdocker-rm() {
+xdocker-rm () {
   xargs docker rm "$@"
 }
 

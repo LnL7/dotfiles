@@ -39,12 +39,13 @@ xnix-install () {
   xargs nix-env -iA "$@"
 }
 
-nix-shell-default () {
-  local expr='
-  { nixpkgs ? import <nixpkgs> {} }:
-  nixpkgs.callPackage ./. {}
-  '
-  nix-shell --run zsh -E "${expr}" "$@"
+fnix-build-inputs () {
+  local drv=$( nix-instantiate '<nixpkgs>' -A "$@" 2> /dev/null )
+  nix-store -qR "${drv}" | fzf -m
+}
+
+nix-download () {
+  nix-store -r $(grep -l outputHash $(nix-store -qR $(nix-instantiate '<nixpkgs>' -A "$@") | grep '.drv$'))
 }
 
 nix-shell-ghc () {
@@ -55,7 +56,7 @@ nix-shell-ghc () {
   nix-shell --run zsh -E "${expr}" "$@"
 }
 
-nix-shell-ghc-with () {
+nix-shell-ghc-package () {
   nix-shell --run zsh -p "haskellPackages.ghcWithPackages (p: with p; [ $@ ])"
 }
 

@@ -15,6 +15,14 @@ rec {
 
     potion_HEAD = pkgs.callPackage ./potion/HEAD.nix {};
 
+    nodePackages =
+      let
+        self = pkgs.nodePackages.override {
+          inherit self;
+          generated = pkgs.nodePackages // pkgs.callPackage ./node-packages { inherit self; };
+        };
+      in self;
+
     ghcEnv = pkgs.haskellPackages.ghcWithPackages (p : with p; [
       ghc cabal2nix cabal-install stack alex happy hoogle halive shake hspec # hdevtools
     ]);
@@ -38,7 +46,7 @@ rec {
         cloc
         ctags
         curl
-        exercism
+        # exercism
         jq
         mercurial
         mosh
@@ -82,7 +90,7 @@ rec {
       name = "nvim-env";
       paths = [
         (neovim.override {
-          vimAlias = true;
+          # vimAlias = true;
           configure = {
             customRC = ''
               source $HOME/.vimrc
@@ -160,8 +168,10 @@ rec {
 
     goEnv = with pkgs; buildEnv {
       name = "go-env";
-      paths = (with goPackages; [
+      paths = [
         go
+      ] ++ (with goPackages; [
+        tools
       ]);
     };
 
@@ -180,7 +190,6 @@ rec {
         python2nix
         pypi2nix
       ] ++ (with pythonPackages; [
-        pip
         virtualenv
       ]);
     };
@@ -191,12 +200,8 @@ rec {
         nodejs
       ] ++ (with nodePackages; [
         npm2nix
-        # babel
-        bower
+        babel
         # browser-sync
-        browserify
-        coffee-script
-        gulp
       ]);
     };
 

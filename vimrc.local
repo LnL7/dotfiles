@@ -11,6 +11,9 @@ nnoremap <Leader>6 :set transparency=63<cr>
 nnoremap <Leader><Leader> <C-^>
 nnoremap <Leader>z zMzv
 
+nnoremap <Leader>Yd :YcmCompleter GoTo<cr>
+nnoremap <Leader>Yt :YcmCompleter GetType<cr>
+
 vnoremap <Leader>So y:execute @@<cr>
 nnoremap <Leader>So ^vg_y:execute @@<cr>
 

@@ -69,7 +69,7 @@ if executable('elm')
 endif
 
 if executable('ghc')
-  " Plug 'raichoo/haskell-vim'
+  Plug 'raichoo/haskell-vim'
   Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
   Plug 'eagletmt/neco-ghc',   { 'for': 'haskell' }
 endif
@@ -93,6 +93,10 @@ endif
 if executable('node')
   Plug 'mxw/vim-jsx'
   Plug 'mtscout6/vim-cjsx'
+endif
+
+if executable('flake8')
+  Plug 'nvie/vim-flake8'
 endif
 
 if executable('psc')

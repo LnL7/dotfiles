@@ -20,8 +20,6 @@ alias gdc='git diff --cached'
 alias gdn='git diff --name-status'
 alias gds='git diff --stat'
 
-alias gf='git fetch --all'
-
 alias gi='git init'
 alias gib='git init --bare'
 

@@ -1,6 +1,0 @@
-halcyon() {
-  export HALCYON_NO_CLEAN_CACHE=1
-  source <(HALCYON_NO_SELF_UPDATE=1 "/app/halcyon/halcyon" paths)
-  unset -f halcyon
-  command halcyon "$@"
-}
