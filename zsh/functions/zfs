@@ -1,6 +1,6 @@
 fmount() {
   local filesystem
-  filesystem=$(zfs list | fzf --header-lines=1 +s +m | awk '{print $1}') &&
+  filesystem=$(zfs list -oname,used,available,referenced,mounted,mountpoint | fzf --header-lines=1 +s +m | awk '{print $1}') &&
   case "$(zfs get -H -ovalue mounted $filesystem)" in
     no)
       sudo zfs mount "$filesystem"
@@ -11,7 +11,7 @@ fmount() {
 
 funmount() {
   local filesystem
-  filesystem=$(zfs list -oname | fzf --header-lines=1 +s +m | awk '{print $1}') &&
+  filesystem=$(zfs list -oname,used,available,referenced,mounted,mountpoint | sed -n 's/      yes//p; s/  MOUNTED//p' | fzf --header-lines=1 +s +m | awk '{print $1}') &&
   zfs unmount "$filesystem"
 }
 

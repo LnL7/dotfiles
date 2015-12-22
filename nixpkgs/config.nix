@@ -178,6 +178,7 @@ rec {
     rubyEnv = with pkgs; buildEnv {
       name = "ruby-env";
       paths = [
+        bundix
         bundler
         ruby
       ];
