@@ -20,13 +20,13 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'vim-scripts/paredit.vim'
 
-Plug 'cwoac/nvim',                    { 'on': 'Nvim'                  }
-Plug 'godlygeek/tabular',             { 'on': 'Tabularize'            }
-Plug 'junegunn/vader.vim',            { 'on': 'Vader', 'for': 'vader' }
-Plug 'nelstrom/vim-markdown-folding', { 'for': 'markdown'             }
-Plug 'scrooloose/syntastic',          { 'on': 'SyntasticToggleMode'   }
-Plug 'tpope/vim-abolish',             { 'on': ['Abolish', 'Subvert']  }
-Plug 'vim-scripts/AnsiEsc.vim',       { 'on': 'AnsiEsc'               }
+Plug 'cwoac/nvim',                    { 'on': 'Nvim'                                 }
+Plug 'godlygeek/tabular',             { 'on': 'Tabularize'                           }
+Plug 'junegunn/vader.vim',            { 'on': 'Vader', 'for': 'vader'                }
+Plug 'nelstrom/vim-markdown-folding', { 'for': 'markdown'                            }
+Plug 'scrooloose/syntastic',          { 'on': 'SyntasticToggleMode', 'for': 'python' }
+Plug 'tpope/vim-abolish',             { 'on': ['Abolish', 'Subvert']                 }
+Plug 'vim-scripts/AnsiEsc.vim',       { 'on': 'AnsiEsc'                              }
 
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 " Plug 'xolox/vim-misc'

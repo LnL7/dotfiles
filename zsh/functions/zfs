@@ -3,7 +3,7 @@ fmount() {
   filesystem=$(zfs list -oname,used,available,referenced,mounted,mountpoint | fzf --header-lines=1 +s +m | awk '{print $1}') &&
   case "$(zfs get -H -ovalue mounted $filesystem)" in
     no)
-      sudo zfs mount "$filesystem"
+      zfs mount "$filesystem"
       ;;
   esac &&
   cd "$(zfs list -H -omountpoint $filesystem)"
@@ -13,6 +13,11 @@ funmount() {
   local filesystem
   filesystem=$(zfs list -oname,used,available,referenced,mounted,mountpoint | sed -n 's/      yes//p; s/  MOUNTED//p' | fzf --header-lines=1 +s +m | awk '{print $1}') &&
   zfs unmount "$filesystem"
+}
+
+fcd() {
+  local dir=$( (zfs list -H -omounted,mountpoint | grep -v nix | grep '^yes' | awk '{print $2}' | xargs -I% find "%" -depth 1 -type d \( ! -iname ".*" \) 2>/dev/null || true) | fzf +s +m )
+  cd "$dir"
 }
 
 # vim:set ft=zsh:

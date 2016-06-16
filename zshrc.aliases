@@ -22,6 +22,7 @@ alias -g M='| more'
 alias -g NE="2> /dev/null"
 alias -g NS='| sort -n'
 alias -g NUL="> /dev/null 2>&1"
+alias -g N="> /dev/null"
 alias -g PIPE='|'
 alias -g RNS='| sort -nr'
 alias -g S='| sort'
@@ -31,6 +32,9 @@ alias -g US='| sort -u'
 alias -g X0G='| xargs -0 egrep'
 alias -g X0='| xargs -0'
 alias -g XG='| xargs egrep'
+alias -g XI='| xargs -I%'
+alias -g XNI='| xargs -n1 -I%'
+alias -g XN='| xargs -n1'
 alias -g X='| xargs'
 
 alias cp="nocorrect cp"

@@ -6,7 +6,7 @@ export VISUAL="vim"
 
 export FZF_DEFAULT_OPTS='-x -m --sort 10000'
 if which ag &> /dev/null; then
-  export FZF_DEFAULT_COMMAND='ag -l -g ""'
+  export FZF_DEFAULT_COMMAND='ag -l -f -g ""'
 fi
 
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"

@@ -1,0 +1,12 @@
+tenv() {
+  local name
+  name=$(hostname -s | head -c7 | awk '{print tolower($0)}')
+  if ! (tmux has -t "$name" &> /dev/null); then
+    tmux start-server
+    tmux new-session -d -s "$name"
+  fi
+  [ -z "$TMUX" ] || return
+  exec tmux attach-session -t "$name"
+}
+
+# vim:set ft=sh:

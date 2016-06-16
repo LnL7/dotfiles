@@ -184,14 +184,13 @@ let g:paredit_mode = 0
 let g:paredit_shortmaps = 0
 let g:paredit_smartjump = 1
 let g:syntastic_error_symbol         = '✗'
-let g:syntastic_java_javac_classpath = '.:.shake:.shake/src:.shake/test:lib/*.jar'
 let g:syntastic_haskell_hdevtools_args = '-g-isrc -g-Wall -g-fwarn-typed-holes -g-XPartialTypeSignatures'
 let g:syntastic_warning_symbol       = '⚠'
 let g:vim_tags_use_vim_dispatch = 1
 
 let g:syntastic_mode_map = {
       \ 'mode': 'passive',
-      \ 'active_filetypes': [],
+      \ 'active_filetypes': ['python'],
       \ 'passive_filetypes': [] }
 
 autocmd BufNewFile,BufRead *.cljx set filetype=clojure
