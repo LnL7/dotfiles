@@ -11,47 +11,23 @@ fi
 
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
 
-if [[ -d $HOME/.nix-profile ]]; then
-  source $HOME/.nix-profile/etc/profile.d/nix.sh
-  export NIX_PATH=$HOME/.nix-defexpr/nixpkgs:nixpkgs=$HOME/.nix-defexpr/nixpkgs
-
-  if which ghc &> /dev/null; then
-    export NIX_GHC="$(which ghc)"
-    export NIX_GHCPKG="$(which ghc-pkg)"
-    export NIX_GHC_DOCDIR="$(dirname $(dirname $NIX_GHC))/share/doc/ghc/html"
-    export NIX_GHC_LIBDIR="$(dirname $(dirname $NIX_GHC))/lib/ghc-$(ghc --numeric-version)"
-  fi
+NIX_LINK="$HOME/.nix-profile"
+NIX_EXPR="$HOME/.nix-defexpr"
+if [[ -d $NIX_LINK ]]; then
+  source $NIX_LINK/etc/profile.d/nix.sh
+  export MANPATH=$NIX_LINK/share/man:$MANPATH
+  export NIX_PATH=$NIX_EXPR/nixpkgs:nixpkgs=$NIX_EXPR/nixpkgs:nixpkgs-unstable=$NIX_EXPR/nixpkgs-unstable
 fi
 
-if which rbenv &> /dev/null; then
-  eval "$(rbenv init -  --no-rehash)"
-fi
+# if [[ -d $HOME/perl5 ]]; then
+#   PERL_MB_OPT="--install_base \"$HOME/perl5\""; export PERL_MB_OPT;
+#   PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
+# fi
 
-
-if [[ -d $HOME/.racket ]]; then
-  export PATH=$PATH:$HOME/.racket/bin
-fi
-
-if [[ -d $HOME/.nvm ]]; then
-  export NVM_DIR="/Users/lnl/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-fi
-
-if [[ -d $HOME/perl5 ]]; then
-  PERL_MB_OPT="--install_base \"$HOME/perl5\""; export PERL_MB_OPT;
-  PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"; export PERL_MM_OPT;
-fi
-
-if [[ -f $HOME/.docker/env ]]; then
-  eval $(cat $HOME/.docker/env)
-fi
-
-
-export GOPATH="$HOME/.gopath"
-export GOBIN="$GOPATH/bin"
-export PATH="$GOPATH/bin:$PATH"
 
 export PATH="$HOME/.bin:$HOME/.sbin:$PATH"
 export PATH=".git/safe/../../bin:.git/safe/../../venv/bin:.git/safe/../../node_modules/.bin:$PATH"
 
-typeset -U PATH # Remove duplicate entries
+# Remove duplicate entries
+typeset -U MANPATH
+typeset -U PATH

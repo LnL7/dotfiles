@@ -43,4 +43,4 @@ PROMPT_SHELL="%{$fg_bold[green]%}zsh%{$reset_color%}"
 PROMPT_DIR="[${SSH_CONNECTION+"%n@%m:"}%{$fg[blue]%}%~%{$reset_color%}]"
 
 PS1='$(error_prompt_info)$PROMPT_SHELL$PROMPT_PREFIX'
-RPS1='$(ghc_prompt_info)$(ruby_prompt_info)$(nix_prompt_info)$(git_prompt_info)$PROMPT_DIR'
+RPS1='$(nix_prompt_info)$(git_prompt_info)$PROMPT_DIR'

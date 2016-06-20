@@ -1,11 +1,23 @@
-# Pretty print PATH
-path() {
-  echo $PATH | tr ":" "\n" | \
+# vim:set ft=sh:
+
+ppath () {
+  echo ${PATH} | tr ":" "\n" | \
     awk "{ sub(\"/usr\",   \"$fg_no_bold[green]/usr$reset_color\"); \
            sub(\"/bin\",   \"$fg_no_bold[blue]/bin$reset_color\"); \
            sub(\"/opt\",   \"$fg_no_bold[cyan]/opt$reset_color\"); \
            sub(\"/sbin\",  \"$fg_no_bold[magenta]/sbin$reset_color\"); \
            sub(\"/local\", \"$fg_no_bold[yellow]/local$reset_color\"); \
-           sub(\"/.rvm\",  \"$fg_no_bold[red]/.rvm$reset_color\"); \
+           sub(\"${HOME}\",  \"$fg_no_bold[red]${HOME}$reset_color\"); \
+           print }"
+}
+
+pmanpath () {
+  echo ${MANPATH} | tr ":" "\n" | \
+    awk "{ sub(\"/usr\",   \"$fg_no_bold[green]/usr$reset_color\"); \
+           sub(\"/man\",   \"$fg_no_bold[blue]/man$reset_color\"); \
+           sub(\"/opt\",   \"$fg_no_bold[cyan]/opt$reset_color\"); \
+           sub(\"/share\",  \"$fg_no_bold[magenta]/share$reset_color\"); \
+           sub(\"/local\", \"$fg_no_bold[yellow]/local$reset_color\"); \
+           sub(\"${HOME}\",  \"$fg_no_bold[red]${HOME}$reset_color\"); \
            print }"
 }
