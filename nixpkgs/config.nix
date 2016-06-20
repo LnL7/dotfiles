@@ -27,6 +27,7 @@ rec {
         ctags
         curl
         # fzf
+        gettext
         git
         jq
         # mercurial
@@ -35,6 +36,7 @@ rec {
         silver-searcher
         # taskwarrior
         # tmux
+        rcm
       ];
     };
 
