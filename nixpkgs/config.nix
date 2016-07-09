@@ -5,6 +5,8 @@ rec {
   allowUnfree = true;
 
   packageOverrides = pkgs : rec {
+    services = pkgs.callPackage ./services {};
+
     potion_HEAD = pkgs.callPackage ./potion/HEAD.nix {};
 
     ghc-env = pkgs.haskellPackages.ghcWithPackages (p : with p; [
