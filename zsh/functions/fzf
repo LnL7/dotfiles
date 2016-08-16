@@ -1,58 +1,62 @@
+# vim:set ft=sh:
+
+f () {
+  ( fzf --header-lines=1 "$@" ) || return
+}
+
 # fe [FUZZY PATTERN] - Open the selected file with the default editor
 #   - Bypass fuzzy finder if there's only one match (--select-1)
 #   - Exit if there's no match (--exit-0)
-fe() {
+fe () {
   local file
-  file=$(fzf --query="$1" +m)
+  file=$(fzf --query="$1" +m) || return
   [ -n "$file" ] && ${EDITOR:-vim} "$file"
 }
 
 # Equivalent to above, but opens it with `open` command
-fo() {
+fo () {
   local file
-  file=$(fzf +m)
+  file=$(fzf +m) || return
   [ -n "$file" ] && open "$@" "$file"
 }
 
 # fd - cd to selected directory
-fd() {
+fd () {
   local dir
-  dir=$(dirs | tr " " "\n" | fzf +m) &&
-  cd "$dir"
+  dir=$(dirs | tr " " "\n" | fzf +m) || return
+  cd "$dir" || return
 }
 
 # fkill - kill process
-fkill() {
-  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
+fkill () {
+  pid=$(ps -ef | fzf --header-lines=1 -m | awk '{print $2}') || return
 
-  if [ "x$pid" != "x" ]
-  then
-    echo $pid | xargs kill -${1:-9}
+  if [ "x$pid" != "x" ]; then
+    echo $pid | xargs kill "${1:-9}" || return
   fi
 }
 
 # ftags - search ctags
-ftags() {
+ftags () {
   local line
-  [ -e tags ] &&
+  [ -e tags ] || return
   line=$(
     awk 'BEGIN { FS="\t" } !/^!/ {print toupper($4)"\t"$1"\t"$2"\t"$3}' tags |
     cut -c1-80 | fzf --nth=1,2
-  ) && $EDITOR $(cut -f3 <<< "$line") -c "set nocst" \
-                                      -c "silent tag $(cut -f2 <<< "$line")"
+  ) || return
+  $EDITOR $(cut -f3 <<< "$line") -c "set nocst" -c "silent tag $(cut -f2 <<< "$line")" || return
 }
 
-ftsession() {
+ftsession () {
   local session
-  session=$(tmux list-sessions -F "#{session_name}" | \
-    fzf --query="$1" --select-1 --exit-0) &&
-  tmux switch-client -t "$session"
+  session=$(tmux list-sessions -F "#{session_name}" | fzf --query="$1" --select-1 --exit-0) || return
+  tmux switch-client -t "$session" || return
 }
 
-ftpane() {
+ftpane () {
   local panes current_window target target_window target_pane
-  panes=$(tmux list-panes -s -F '#I:#P - #{pane_current_path} #{pane_current_command}')
-  current_window=$(tmux display-message  -p '#I')
+  panes=$(tmux list-panes -s -F '#I:#P - #{pane_current_path} #{pane_current_command}') || return
+  current_window=$(tmux display-message  -p '#I') || return
 
   target=$(echo "$panes" | fzf) || return
 
@@ -60,21 +64,19 @@ ftpane() {
   target_pane=$(echo $target | awk 'BEGIN{FS=":|-"} {print$2}' | cut -c 1)
 
   if [[ $current_window -eq $target_window ]]; then
-    tmux select-pane -t ${target_window}.${target_pane}
+    tmux select-pane -t ${target_window}.${target_pane} || return
   else
-    tmux select-pane -t ${target_window}.${target_pane} &&
-    tmux select-window -t $target_window
+    tmux select-pane -t ${target_window}.${target_pane} || return
+    tmux select-window -t $target_window || return
   fi
 }
 
 # fghc - list ghc packages
-fghc() {
-  ghc-pkg list --global --user --simple-output | tr " " "\n" | fzf --query "$1" -m
+fghc () {
+  ( ghc-pkg list --global --user --simple-output | tr " " "\n" | fzf --query "$1" -m ) || return
 }
 
 # fhoogle - list hoogle query
-fhoogle() {
-  hoogle "$@" | fzf -m
+fhoogle () {
+  ( hoogle "$@" | fzf -m ) || return
 }
-
-# vim:set ft=zsh:

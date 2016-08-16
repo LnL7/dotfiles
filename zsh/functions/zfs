@@ -1,23 +1,76 @@
-fmount() {
+# vim:set ft=sh:
+
+z () {
+  case "$1" in
+    st|status)       shift && __zfs_status "$@" ;;
+    fs|pools)        shift && __zfs_pools "$@" ;;
+    ls|filesystems)  shift && __zfs_filesystems "" "$@" ;;
+    sn|snapshots)    shift && __zfs_snapshots "" "$@" ;;
+    rm|destroy)      shift && __zfs_destroy "$@" ;;
+    cd)              shift && __zfs_cd "$@" ;;
+    mount)           shift && __zfs_mount "$@" ;;
+    umount|unmount)  shift && __zfs_unmount "$@" ;;
+    -h) type -f "$0" ;;
+    *) false ;;
+  esac
+}
+
+__zfs_status () {
+  ( sudo zpool status "$@" ) || return
+}
+
+__zfs_pools () {
+  ( sudo zpool list "$@" ) || return
+}
+
+__zfs_filesystems () {
+  ( sudo zfs list $(__zfs_list_options "$1") -r "${@:2}" ) || return
+}
+
+__zfs_snapshots () {
+  ( sudo zfs list -t snapshot $(__zfs_list_options "$1") -r "${@:2}" ) || return
+}
+
+__zfs_destroy () {
+  local filesystems
+  ( __zfs_filesystems "" -t snapshot "$@" | f | awk '{print $1}' | xargs -n1 -p sudo zfs destroy ) || return
+}
+
+__zfs_cd () {
   local filesystem
-  filesystem=$(zfs list -oname,used,available,referenced,mounted,mountpoint | fzf --header-lines=1 +s +m | awk '{print $1}') &&
-  case "$(zfs get -H -ovalue mounted $filesystem)" in
-    no)
-      zfs mount "$filesystem"
-      ;;
-  esac &&
-  cd "$(zfs list -H -omountpoint $filesystem)"
+  filesystem=$(__zfs_filesystems "canmount,mounted" "$@" | sed '/       off/d' | f +m | awk '{print $1}') || return
+  case "$(__zfs_get mounted "$filesystem")" in
+    no) ( sudo zfs mount "$filesystem" ) || return ;;
+  esac
+  cd "$(__zfs_get mountpoint "$filesystem")" || return
 }
 
-funmount() {
-  local filesystem
-  filesystem=$(zfs list -oname,used,available,referenced,mounted,mountpoint | sed -n 's/      yes//p; s/  MOUNTED//p' | fzf --header-lines=1 +s +m | awk '{print $1}') &&
-  zfs unmount "$filesystem"
+__zfs_mount () {
+  local filesystems
+  filesystems=$(__zfs_filesystems "canmount,mounted" "$@" | sed '/       off/d' | f | awk '{print $1}') || return
+  for filesystem in "${(f)filesystems}"; do
+    case "$(__zfs_get mounted "$filesystem")" in
+      no) ( sudo zfs mount "$filesystem" ) || return ;;
+      *)  echo "skipping $filesystem..." >&2 || return ;;
+    esac
+  done
 }
 
-fcd() {
-  local dir=$( (zfs list -H -omounted,mountpoint | grep -v nix | grep '^yes' | awk '{print $2}' | xargs -I% find "%" -depth 1 -type d \( ! -iname ".*" \) 2>/dev/null || true) | fzf +s +m )
-  cd "$dir"
+__zfs_unmount () {
+  local filesystems
+  filesystems=$(__zfs_filesystems "canmount,mounted" "$@" | sed '/       off/d' | f | awk '{print $1}') || return
+  for filesystem in "${(f)filesystems}"; do
+    case "$(__zfs_get mounted "$filesystem")" in
+      yes) ( sudo zfs unmount "$filesystem" ) || return ;;
+      *)   echo "skipping $filesystem..." >&2 || return ;;
+    esac
+  done
 }
 
-# vim:set ft=zsh:
+__zfs_get () {
+  ( sudo zfs get -H -o value "$@" ) || return
+}
+
+__zfs_list_options () {
+  ( echo -o "name,used,available,referenced,mountpoint,$1" "${@:2}" ) || return
+}
