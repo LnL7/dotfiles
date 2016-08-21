@@ -2,18 +2,18 @@
 
 z () {
   case "$1" in
-    st|status)       shift && __zfs_status "$@" ;;
-    fs|pools)        shift && __zfs_pools "$@" ;;
-    ls|filesystems)  shift && __zfs_filesystems "" "$@" ;;
-    sn|snapshots)    shift && __zfs_snapshots "" "$@" ;;
-    rm|destroy)      shift && __zfs_destroy "$@" ;;
-    cd)              shift && __zfs_cd "$@" ;;
-    mount)           shift && __zfs_mount "$@" ;;
-    umount|unmount)  shift && __zfs_unmount "$@" ;;
-    offline)         shift && __zfs_offline "$@" ;;
-    online)          shift && __zfs_online "$@" ;;
+    st|status)       __zfs_status "${@:2}" ;;
+    fs|pools)        __zfs_pools "${@:2}" ;;
+    ls|filesystems)  __zfs_filesystems "" "${@:2}" ;;
+    sn|snapshots)    __zfs_snapshots "" "${@:2}" ;;
+    rm|destroy)      __zfs_destroy "${@:2}" ;;
+    cd)              __zfs_cd "${@:2}" ;;
+    mount)           __zfs_mount "${@:2}" ;;
+    umount|unmount)  __zfs_unmount "${@:2}" ;;
+    offline)         __zfs_offline "${@:2}" ;;
+    online)          __zfs_online "${@:2}" ;;
     -h) type -f "$0" ;;
-    *)  false ;;
+    *)  zfs "$@" ;;
   esac
 }
 

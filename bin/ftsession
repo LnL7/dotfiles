@@ -1,3 +1,4 @@
 #!/usr/bin/env zsh
 
+. ~/.zsh/functions/tmux
 ftsession "$@"

@@ -2,16 +2,16 @@
 
 nix () {
   case "$1" in
-    'b'|'build')       shift && __nix_build "$@" ;;
-    'e'|'eval')        shift && __nix_eval "$@" ;;
-    'i'|'instantiate') shift && __nix_instantiate "$@" ;;
-    'r'|'repl')        shift && __nix_repl "$@" ;;
-    's'|'shell')       shift && __nix_shell "$@" ;;
-    'x'|'exec')        shift && __nix_exec "$@" ;;
-    'q'|'search')      shift && __nix_search "$@" ;;
-    '--gc')            shift && __nix_store "$@" --gc ;;
-    '--roots')         shift && __nix_store "$@" --gc --print-roots ;;
-    '--delete')        shift && __nix_store "$@" --delete --ignore-liveness ;;
+    'b'|'build')       __nix_build "${@:2}" ;;
+    'e'|'eval')        __nix_eval "${@:2}" ;;
+    'i'|'instantiate') __nix_instantiate "${@:2}" ;;
+    'r'|'repl')        __nix_repl "${@:2}" ;;
+    's'|'shell')       __nix_shell "${@:2}" ;;
+    'x'|'exec')        __nix_exec "${@:2}" ;;
+    'q'|'search')      __nix_search "${@:2}" ;;
+    '--gc')            __nix_store "${@:2}" --gc ;;
+    '--roots')         __nix_store "${@:2}" --gc --print-roots ;;
+    '--delete')        __nix_store "${@:2}" --delete --ignore-liveness ;;
     '-h') type -f "$0" ;;
     *) __nix_env "$@" ;;
   esac
