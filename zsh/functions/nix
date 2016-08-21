@@ -1,63 +1,123 @@
-fnix() {
-  local cache="$HOME/.nixpkgs/cache"
-  [ -f $cache ] || nix-env -qa \* -P --no-name > $cache
+# vim:set ft=sh:
 
-  cat $cache | fzf --query="$1" -m
+nix () {
+  case "$1" in
+    'b'|'build')       shift && __nix_build "$@" ;;
+    'e'|'eval')        shift && __nix_eval "$@" ;;
+    'i'|'instantiate') shift && __nix_instantiate "$@" ;;
+    'r'|'repl')        shift && __nix_repl "$@" ;;
+    's'|'shell')       shift && __nix_shell "$@" ;;
+    'x'|'exec')        shift && __nix_exec "$@" ;;
+    'q'|'search')      shift && __nix_search "$@" ;;
+    '--gc')            shift && __nix_store "$@" --gc ;;
+    '--roots')         shift && __nix_store "$@" --gc --print-roots ;;
+    '--delete')        shift && __nix_store "$@" --delete --ignore-liveness ;;
+    '-h') type -f "$0" ;;
+    *) __nix_env "$@" ;;
+  esac
 }
 
-fnix-haskell() {
-  local cache="$HOME/.nixpkgs/cache-haskell"
-  [ -f $cache ] || nix-env -qaA nixpkgs.haskellPackages -P --no-name > $cache
-
-  cat $cache | fzf --query="$1" -m
+__nix_build () {
+  __nix_expr_do nix-build "$@" || return
 }
 
-fnix-python() {
-  local cache="$HOME/.nixpkgs/cache-python"
-  [ -f $cache ] || nix-env -qaA nixpkgs.pythonPackages -P --no-name > $cache
-
-  cat $cache | fzf --query="$1" -m
+__nix_eval () {
+  __nix_expr_do nix-instantiate "$@" --eval --strict || return
 }
 
-fnix-uninstall() {
-  nix-env -q | fzf --query="$1" -m | xargs nix-env -e
+__nix_instantiate () {
+  __nix_expr_do nix-instantiate "$@" || return
 }
 
-xnix-description () {
-  xargs nix-env --description -qaA "$@"
+__nix_shell () {
+  __nix_expr_do nix-shell "$@" || return
 }
 
-xnix-drv () {
-  xargs nix-env --drv-path -qaA "$@" | jq .
+__nix_exec () {
+  local -a args_a
+  args_a=()
+
+  while (( $# )); do
+    case "$1" in
+      '--') shift && break ;;
+      *)    args_a+="$1" && shift ;;
+    esac
+  done
+
+  __nix_expr_do nix-shell $args_a -- --run "${*:-$SHELL}" || return
 }
 
-xnix-out () {
-  xargs nix-env --out-path -qaA "$@" | jq .
+__nix_repl () {
+  ( nix-repl '<nixpkgs>' "$@" ) || return
 }
 
-xnix-install () {
-  xargs nix-env -iA "$@"
+__nix_env () {
+  ( nix-env "$@" ) || return
 }
 
-fnix-build-inputs () {
-  local drv=$( nix-instantiate '<nixpkgs>' -A "$@" 2> /dev/null )
-  nix-store -qR "${drv}" | fzf -m
+__nix_store () {
+  ( nix-store "$@" ) || return
 }
 
-nix-download () {
-  nix-store -r $(grep -l outputHash $(nix-store -qR $(nix-instantiate '<nixpkgs>' -A "$@") | grep '.drv$'))
+__nix_search () {
+  local attr cache
+  attr='nixpkgs'
+  if test -n "$1"; then
+    attr="nixpkgs.$1" && shift
+  fi
+
+  cache="$HOME/.cache/fzf/$attr"
+  ( nix-env -qaA "$attr" -P | fzf --history="${cache}_history" -m | awk '{print $1}' ) || return
 }
 
-nix-shell-ghc () {
-  local expr='
-  { nixpkgs ? import <nixpkgs> {}, compiler ? "ghc7101" }:
-  (nixpkgs.pkgs.haskell.packages.${compiler}.callPackage ./. {}).env
-  '
-  nix-shell --run zsh -E "${expr}" "$@"
+
+__nix_expr_do () {
+  local -a exec_a expr_a
+  local arg
+  exec_a=()
+  expr_a=()
+
+  arg='-E'
+  exec_a+="$1" && shift
+  while (( $# )); do
+    case "$1" in
+      '--')
+        shift
+        while (( $# )); do
+          case "$1" in
+            '--') shift ;;
+            *)    exec_a+="$1" && shift ;;
+          esac
+        done
+        break
+        ;;
+      '-E'|'-p') arg="$1" && shift ;;
+      '-'*)      exec_a+="$1" && shift ;;
+      *)         expr_a+="$1" && shift ;;
+    esac
+  done
+
+  ( $exec_a $arg "$(__nix_expr $expr_a)" ) || return
 }
 
-nix-shell-ghc-package () {
-  nix-shell --run zsh -p "haskellPackages.ghcWithPackages (p: with p; [ $@ ])"
+__nix_expr () {
+  local expr
+  expr="{ }"
+  if test -f default.nix; then
+    expr="callPackage ./. {}"
+  fi
+
+  if test -n "$1"; then
+    expr="with $expr; $@"
+  fi
+  echo "with import <nixpkgs> {}; $expr" || return
 }
 
-# vim:set ft=zsh:
+# fnix-build-inputs () {
+#   local drv=$( nix-instantiate '<nixpkgs>' -A "$@" 2> /dev/null )
+#   nix-store -qR "${drv}" | fzf -m
+# }
+
+# nix-download () {
+#   nix-store -r $(grep -l outputHash $(nix-store -qR $(nix-instantiate '<nixpkgs>' -A "$@") | grep '.drv$'))
+# }

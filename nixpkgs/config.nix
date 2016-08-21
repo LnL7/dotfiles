@@ -10,35 +10,36 @@ rec {
     potion_HEAD = pkgs.callPackage ./potion/HEAD.nix {};
 
     ghc-env = pkgs.haskellPackages.ghcWithPackages (p : with p; [
-      ghc cabal2nix cabal-install stack alex happy hoogle halive shake hspec hdevtools
+      ghc cabal2nix cabal-install alex happy hoogle hspec hdevtools
+      # stack hoogle halive shake
     ]);
 
 
     nix-env = with pkgs; buildEnv {
       name = "nix-env";
       paths = [
-        nix-prefetch-scripts
+        nix-prefetch-zip nix-prefetch-git nix-prefetch-hg
         nix-repl
+        nox
       ];
     };
 
     shell-env = with pkgs; buildEnv {
       name = "shell-env";
       paths = [
-        # bazaar
         ctags
         curl
         # fzf
         gettext
         git
         jq
-        # mercurial
-        # mosh
+        mercurial
+        mosh
         nmap
+        rcm
         silver-searcher
         # taskwarrior
-        # tmux
-        rcm
+        tmux
       ];
     };
 

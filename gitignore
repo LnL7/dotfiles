@@ -15,7 +15,6 @@ Icon?
 .env
 _darcs
 tags
-tmp
 log/*.log
 
 dump.rdb
@@ -34,10 +33,3 @@ xcuserdata
 .powenv
 .rbx
 .stack-work
-db/*.sqlite3
-vendor/bundle
-zeus.json
-
-venv
-
-node_modules

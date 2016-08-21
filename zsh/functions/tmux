@@ -23,3 +23,27 @@ tssh () {
   ( tmux set prefix M-b ) || return
   exec "$@"
 }
+
+ftsession () {
+  local session
+  session=$(tmux list-sessions -F "#{session_name}" | fzf --query="$1" --select-1 --exit-0) || return
+  tmux switch-client -t "$session" || return
+}
+
+ftpane () {
+  local panes current_window target target_window target_pane
+  panes=$(tmux list-panes -s -F '#I:#P - #{pane_current_path} #{pane_current_command}') || return
+  current_window=$(tmux display-message  -p '#I') || return
+
+  target=$(echo "$panes" | fzf) || return
+
+  target_window=$(echo $target | awk 'BEGIN{FS=":|-"} {print$1}')
+  target_pane=$(echo $target | awk 'BEGIN{FS=":|-"} {print$2}' | cut -c 1)
+
+  if [[ $current_window -eq $target_window ]]; then
+    tmux select-pane -t ${target_window}.${target_pane} || return
+  else
+    tmux select-pane -t ${target_window}.${target_pane} || return
+    tmux select-window -t $target_window || return
+  fi
+}

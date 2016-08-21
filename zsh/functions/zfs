@@ -10,8 +10,10 @@ z () {
     cd)              shift && __zfs_cd "$@" ;;
     mount)           shift && __zfs_mount "$@" ;;
     umount|unmount)  shift && __zfs_unmount "$@" ;;
+    offline)         shift && __zfs_offline "$@" ;;
+    online)          shift && __zfs_online "$@" ;;
     -h) type -f "$0" ;;
-    *) false ;;
+    *)  false ;;
   esac
 }
 
@@ -32,22 +34,21 @@ __zfs_snapshots () {
 }
 
 __zfs_destroy () {
-  local filesystems
-  ( __zfs_filesystems "" -t snapshot "$@" | f | awk '{print $1}' | xargs -n1 -p sudo zfs destroy ) || return
+  __zfs_filesystems "" -t snapshot "$@" | fzf --prompt='zfs destroy> ' --header-lines=1 -m | awk '{print $1}' | xargs -n1 -p sudo zfs destroy || return
 }
 
 __zfs_cd () {
   local filesystem
-  filesystem=$(__zfs_filesystems "canmount,mounted" "$@" | sed '/       off/d' | f +m | awk '{print $1}') || return
+  filesystem=$(__zfs_filesystems "canmount,mounted" "$@" | sed '/       off/d' | fzf --header-lines=1 +m | awk '{print $1}') || return
   case "$(__zfs_get mounted "$filesystem")" in
-    no) ( sudo zfs mount "$filesystem" ) || return ;;
+    'no') ( sudo zfs mount "$filesystem" ) || return ;;
   esac
   cd "$(__zfs_get mountpoint "$filesystem")" || return
 }
 
 __zfs_mount () {
   local filesystems
-  filesystems=$(__zfs_filesystems "canmount,mounted" "$@" | sed '/       off/d' | f | awk '{print $1}') || return
+  filesystems=$(__zfs_filesystems "canmount,mounted" "$@" | sed '/       off/d' | fzf --header-lines=1 -m | awk '{print $1}') || return
   for filesystem in "${(f)filesystems}"; do
     case "$(__zfs_get mounted "$filesystem")" in
       no) ( sudo zfs mount "$filesystem" ) || return ;;
@@ -58,13 +59,19 @@ __zfs_mount () {
 
 __zfs_unmount () {
   local filesystems
-  filesystems=$(__zfs_filesystems "canmount,mounted" "$@" | sed '/       off/d' | f | awk '{print $1}') || return
+  filesystems=$(__zfs_filesystems "canmount,mounted" "$@" | sed '/       off/d' | fzf --header-lines=1 -m | awk '{print $1}') || return
   for filesystem in "${(f)filesystems}"; do
     case "$(__zfs_get mounted "$filesystem")" in
       yes) ( sudo zfs unmount "$filesystem" ) || return ;;
       *)   echo "skipping $filesystem..." >&2 || return ;;
     esac
   done
+}
+
+__zfs_online () {
+  local disk
+  disk=$(sudo zpool status "$@" | fzf -m | awk '{print $1}') || return
+  ( sudo zpool online "$@" "$disk" ) || return
 }
 
 __zfs_get () {

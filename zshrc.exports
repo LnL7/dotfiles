@@ -16,7 +16,7 @@ NIX_EXPR="$HOME/.nix-defexpr"
 if [[ -d $NIX_LINK ]]; then
   source $NIX_LINK/etc/profile.d/nix.sh
   export MANPATH=$NIX_LINK/share/man:$MANPATH
-  export NIX_PATH=$NIX_EXPR/nixpkgs:nixpkgs=$NIX_EXPR/nixpkgs:nixpkgs-unstable=$NIX_EXPR/nixpkgs-unstable
+  export NIX_PATH=nixpkgs=$NIX_EXPR/nixpkgs
 fi
 
 # if [[ -d $HOME/perl5 ]]; then
