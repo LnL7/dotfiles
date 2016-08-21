@@ -1,12 +1,25 @@
-tenv() {
+# vim:set ft=sh:
+
+tenv () {
   local name
+
+  if ! test -z "$TMUX"; then
+    return 1
+  fi
+
   name=$(hostname -s | head -c7 | awk '{print tolower($0)}')
   if ! (tmux has -t "$name" &> /dev/null); then
-    tmux start-server
-    tmux new-session -d -s "$name"
+    ( tmux start-server ) || return
+    ( tmux new-session -d -s "$name" ) || return
   fi
-  [ -z "$TMUX" ] || return
   exec tmux attach-session -t "$name"
 }
 
-# vim:set ft=sh:
+tssh () {
+  if test -z "$TMUX"; then
+    return 1
+  fi
+
+  ( tmux set prefix M-b ) || return
+  exec "$@"
+}
