@@ -1,46 +1,20 @@
-autoload -Uz colors && colors
+autoload -U promptinit && promptinit && prompt walters
 
-error_prompt_info() {
-  echo "%(?..%{$fg_bold[red]%}=> %?\n%{$reset_color%})"''
-}
+export RPROMPT="\$(__git_prompt)${RPROMPT:+ }$RPROMPT"
 
-git_prompt_info() {
+__git_prompt () {
+  local ref
   ref=$(git symbolic-ref HEAD 2> /dev/null)
-  if [[ -n $ref ]]; then
-    echo "[%{$fg_bold[green]%}${ref#refs/heads/}%{$reset_color%}]"
+  if test -n "$ref"; then
+    echo "[%F{yellow}${ref#refs/heads/}%f]"
   fi
 }
 
-ghc_prompt_info() {
-  if [[ -n $HALCYON_BASE ]]; then
-    version=$(ghc --version 2> /dev/null | awk '{ print $NF }')
-    echo "[%{$fg[yellow]%}ghc@${version}%{$reset_color%}]"
-  fi
+__nix_propmt () {
+  echo "$PATH" | cut -d':' -f1 | cut -d'/' -f4 | cut -d'-' -f2-
 }
 
-ruby_prompt_info() {
-  eval `ruby - <<EOF
-engine  = defined?(RUBY_ENGINE) ? RUBY_ENGINE : 'ruby'
-version = engine == 'rbx' ? RUBY_VERSION.slice(0,3) : RUBY_VERSION
-puts "engine=#{engine}"
-puts "version=#{version}"
-EOF`
-  if [ -f '.ruby-version' ] || [[ -n $RBENV_VERSION ]]; then
-    echo "[%{$fg[yellow]%}${engine}@${version}%{$reset_color%}]"
-  fi
-}
-
-nix_prompt_info() {
-  if [[ -n $NIX_MYENV_NAME ]]; then
-    echo "[%{$fg[yellow]%}nix@${NIX_MYENV_NAME}%{$reset_color%}]"
-  elif [[ -n $IN_NIX_SHELL ]]; then
-    echo "[%{$fg[yellow]%}nix-shell%{$reset_color%}]"
-  fi
-}
-
-PROMPT_PREFIX="%B>%{$reset_color%} "
-PROMPT_SHELL="%{$fg_bold[green]%}zsh%{$reset_color%}"
-PROMPT_DIR="[${SSH_CONNECTION+"%n@%m:"}%{$fg[blue]%}%~%{$reset_color%}]"
-
-PS1='$(error_prompt_info)$PROMPT_SHELL$PROMPT_PREFIX'
-RPS1='$(nix_prompt_info)$(git_prompt_info)$PROMPT_DIR'
+if test -n "$IN_NIX_SHELL"; then
+  export PS1="%B%(?..[%?] )[nix-shell:%~]\$%b "
+  export RPROMPT="%F{yellow}\$(__nix_propmt)%f"
+fi

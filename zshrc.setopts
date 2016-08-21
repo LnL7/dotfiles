@@ -18,3 +18,7 @@ setopt share_history        # Imports new commands to history
 setopt transient_rprompt    # only show the rprompt on the current prompt
 unsetopt flow_control       # If this option is unset, output flow control via start/stop characters
 unsetopt nomatch            # Allow [ or ] whereever you want
+
+if test -n "$IN_NIX_SHELL"; then
+  setopt noignoreeof
+fi
