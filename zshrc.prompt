@@ -1,7 +1,5 @@
 autoload -U promptinit && promptinit && prompt walters
 
-export RPROMPT="\$(__git_prompt)${RPROMPT:+ }$RPROMPT"
-
 __git_prompt () {
   local ref
   ref=$(git symbolic-ref HEAD 2> /dev/null)
@@ -13,6 +11,12 @@ __git_prompt () {
 __nix_propmt () {
   echo "$PATH" | cut -d':' -f1 | cut -d'/' -f4 | cut -d'-' -f2-
 }
+
+export RPROMPT="\$(__git_prompt)${RPROMPT:+ }$RPROMPT"
+
+if test -z "$SSH_CONNECTION"; then
+  export PS1="%B%(?..[%?] )%b> "
+fi
 
 if test -n "$IN_NIX_SHELL"; then
   export PS1="%B%(?..[%?] )[nix-shell:%~]\$%b "
