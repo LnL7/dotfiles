@@ -12,6 +12,7 @@ zstyle ':completion:*:cd:*' ignore-parents parent pwd
 
 fpath=($HOME/.share/zsh-completions ~/.zsh/completions $fpath)
 
+autoload -Uz colors       && colors
 autoload -Uz compinit     && compinit
 autoload -Uz bashcompinit && bashcompinit
 

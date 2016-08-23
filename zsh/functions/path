@@ -2,22 +2,33 @@
 
 ppath () {
   echo ${PATH} | tr ":" "\n" | \
-    awk "{ sub(\"/usr\",   \"$fg_no_bold[green]/usr$reset_color\"); \
-           sub(\"/bin\",   \"$fg_no_bold[blue]/bin$reset_color\"); \
-           sub(\"/opt\",   \"$fg_no_bold[cyan]/opt$reset_color\"); \
-           sub(\"/sbin\",  \"$fg_no_bold[magenta]/sbin$reset_color\"); \
-           sub(\"/local\", \"$fg_no_bold[yellow]/local$reset_color\"); \
-           sub(\"${HOME}\",  \"$fg_no_bold[red]${HOME}$reset_color\"); \
+    awk "{ sub(\"/usr\",      \"$fg_no_bold[green]/usr$reset_color\"); \
+           sub(\"/bin\",      \"$fg_no_bold[blue]/bin$reset_color\"); \
+           sub(\"/opt\",      \"$fg_no_bold[cyan]/opt$reset_color\"); \
+           sub(\"/sbin\",     \"$fg_no_bold[magenta]/sbin$reset_color\"); \
+           sub(\"/local\",    \"$fg_no_bold[yellow]/local$reset_color\"); \
+           sub(\"${HOME}\",   \"$fg_no_bold[red]${HOME}$reset_color\"); \
            print }"
 }
 
 pmanpath () {
   echo ${MANPATH} | tr ":" "\n" | \
-    awk "{ sub(\"/usr\",   \"$fg_no_bold[green]/usr$reset_color\"); \
-           sub(\"/man\",   \"$fg_no_bold[blue]/man$reset_color\"); \
-           sub(\"/opt\",   \"$fg_no_bold[cyan]/opt$reset_color\"); \
-           sub(\"/share\",  \"$fg_no_bold[magenta]/share$reset_color\"); \
-           sub(\"/local\", \"$fg_no_bold[yellow]/local$reset_color\"); \
-           sub(\"${HOME}\",  \"$fg_no_bold[red]${HOME}$reset_color\"); \
+    awk "{ sub(\"/usr\",      \"$fg_no_bold[green]/usr$reset_color\"); \
+           sub(\"/man\",      \"$fg_no_bold[blue]/man$reset_color\"); \
+           sub(\"/opt\",      \"$fg_no_bold[cyan]/opt$reset_color\"); \
+           sub(\"/share\",    \"$fg_no_bold[magenta]/share$reset_color\"); \
+           sub(\"/local\",    \"$fg_no_bold[yellow]/local$reset_color\"); \
+           sub(\"${HOME}\",   \"$fg_no_bold[red]${HOME}$reset_color\"); \
+           print }"
+}
+
+pnixpath () {
+  echo ${NIX_PATH} | tr ":" "\n" | \
+    awk "{ sub(\"nixpkgs=\",                \"$fg_no_bold[green]nixpkgs$reset_color=\"); \
+           sub(\"nixos=\",                  \"$fg_no_bold[blue]nixos$reset_color=\"); \
+           sub(\"nixos-config\",            \"$fg_no_bold[cyan]nixos-config$reset_color\"); \
+           sub(\"/nix/var/nix/profiles\",   \"$fg_no_bold[magenta]/nix/var/nix/profiles$reset_color\"); \
+           sub(\"/.nix-defexpr\",           \"$fg_no_bold[yellow]/.nix-defexpr$reset_color\"); \
+           sub(\"${HOME}\",                 \"$fg_no_bold[red]${HOME}$reset_color\"); \
            print }"
 }
