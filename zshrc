@@ -39,9 +39,6 @@ SAVEHIST=4096
 export CLICOLOR=1
 export LSCOLORS=gxfxbEaEBxxEhEhBaDaCaD
 
-[[ -f $HOME/.fzf.zsh ]] && \
-  source $HOME/.fzf.zsh
-
 [[ -f $HOME/.zshrc.local ]] && \
   source $HOME/.zshrc.local
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

@@ -5,13 +5,16 @@ nix () {
     'b'|'build')       __nix_build "${@:2}" ;;
     'e'|'eval')        __nix_eval "${@:2}" ;;
     'i'|'instantiate') __nix_instantiate "${@:2}" ;;
+    'l'|'link')        __nix_link "${@:2}" ;;
     'r'|'repl')        __nix_repl "${@:2}" ;;
     's'|'shell')       __nix_shell "${@:2}" ;;
     'x'|'exec')        __nix_exec "${@:2}" ;;
+    'z'|'zsh')         __nix_exec "${@:2}" ;;
+    'p'|'pkg')         __nix_exec -p "${@:2}" ;;
     'q'|'search')      __nix_search "${@:2}" ;;
-    '--gc')            __nix_store "${@:2}" --gc ;;
-    '--roots')         __nix_store "${@:2}" --gc --print-roots ;;
-    '--delete')        __nix_store "${@:2}" --delete --ignore-liveness ;;
+    'gc-roots')        __nix_gc_roots "${@:2}" ;;
+    'gc')              __nix_store --gc "${@:2}" ;;
+    '--delete')        __nix_delete ;;
     '-h') type -f "$0" ;;
     *) __nix_env "$@" ;;
   esac
@@ -22,7 +25,11 @@ __nix_build () {
 }
 
 __nix_eval () {
-  __nix_expr_do nix-instantiate "$@" --eval --strict || return
+  __nix_expr_do nix-instantiate --eval --strict "$@" || return
+}
+
+__nix_link () {
+  __nix_expr_do nix-instantiate --indirect --add-root "$@" || return
 }
 
 __nix_instantiate () {
@@ -55,8 +62,22 @@ __nix_env () {
   ( nix-env "$@" ) || return
 }
 
+__nix_delete () {
+  __nix_store --delete --ignore-liveness "$@" || return
+}
+
 __nix_store () {
   ( nix-store "$@" ) || return
+}
+
+__nix_gc_roots () {
+  local -a exec_a
+  exec_a=()
+  if test -z "$1"; then
+    exec_a+=('grep' '-v' '/nix/var/nix/profiles')
+  fi
+  exec_a+=$@
+  __nix_store --gc --print-roots | $exec_a || return
 }
 
 __nix_search () {
@@ -67,7 +88,11 @@ __nix_search () {
   fi
 
   cache="$HOME/.cache/fzf/$attr"
-  ( nix-env -qaA "$attr" -P | fzf --history="${cache}_history" -m | awk '{print $1}' ) || return
+  if ! test -f "$cache"; then
+    nix-env -qaA "$attr" -P > $cache
+  fi
+  cat "$cache" | fzf +m --history="${cache}_history" --reverse \
+    --bind="enter:execute:(echo {} | awk '{print \$1}' | xargs -I% nix-env -qaA % -P --drv-path --out-path --description | cut -d' ' -f5- | less -R)"
 }
 
 

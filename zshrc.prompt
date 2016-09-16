@@ -1,3 +1,4 @@
+# vim:set ft=sh:
 autoload -U promptinit && promptinit && prompt walters
 
 __git_prompt () {
@@ -8,17 +9,27 @@ __git_prompt () {
   fi
 }
 
-__nix_propmt () {
+__nix_prompt () {
   echo "$PATH" | cut -d':' -f1 | cut -d'/' -f4 | cut -d'-' -f2-
+}
+
+__nix_remote () {
+  local remote
+  if test -n "$NIX_REMOTE_SYSTEMS"; then
+    remote=$(head -n1 "$NIX_REMOTE_SYSTEMS" | awk '{print $1}')
+    echo "nix@%U$remote%u"
+  fi
 }
 
 export RPROMPT="\$(__git_prompt)${RPROMPT:+ }$RPROMPT"
 
 if test -z "$SSH_CONNECTION"; then
-  export PS1="%B%(?..[%?] )%b> "
+  export PROMPT="%B%(?..[%?] )%b> "
 fi
 
+export PROMPT="%B%(?..[%?] )\$(__nix_remote)%b> "
+
 if test -n "$IN_NIX_SHELL"; then
-  export PS1="%B%(?..[%?] )[nix-shell:%~]\$%b "
-  export RPROMPT="%F{yellow}\$(__nix_propmt)%f"
+  export PROMPT="%B%(?..[%?] )[nix-shell:%~]\$%b "
+  export RPROMPT="%F{yellow}\$(__nix_prompt)%f"
 fi

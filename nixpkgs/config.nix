@@ -29,7 +29,7 @@ rec {
       paths = [
         ctags
         curl
-        # fzf
+        fzf
         gettext
         git
         jq
@@ -53,7 +53,7 @@ rec {
               source $HOME/.vimrc
             '';
             vam.pluginDictionaries = [
-              { names = [ "youcompleteme" ]; }
+              { names = [ "youcompleteme" "fzfWrapper" ]; }
             ];
           };
         })
