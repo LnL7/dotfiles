@@ -57,6 +57,7 @@ nnoremap <Leader>) :tabnext<CR>
 
 " ale
 let g:is_bash=1
+let g:ale_rust_cargo_check_tests = 1
 let g:ale_virtualenv_dir_names = ['venv']
 
 " deoplete
