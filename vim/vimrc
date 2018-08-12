@@ -1,0 +1,101 @@
+" vim:ft=vim
+
+set completeopt=menuone
+set encoding=utf-8
+set hlsearch
+set list
+set number
+set splitright
+
+set lazyredraw
+set ttyfast
+
+set clipboard=unnamed
+set mouse=a
+
+set backup
+set backupdir=~/.vim/tmp/backup//
+set backupskip=/tmp/*,/private/tmp/*
+set directory=~/.vim/tmp/swap/
+set noswapfile
+set undodir=~/.vim/tmp/undo//
+set undofile
+
+if !isdirectory(expand(&undodir))
+  call mkdir(expand(&undodir), "p")
+endif
+if !isdirectory(expand(&backupdir))
+  call mkdir(expand(&backupdir), "p")
+endif
+if !isdirectory(expand(&directory))
+  call mkdir(expand(&directory), "p")
+endif
+
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>,
+      \ <bang>0 ? fzf#vim#with_preview('up:30%')
+      \ : fzf#vim#with_preview('right:50%:hidden', '?'),
+      \ <bang>0)
+
+command! -bang -nargs=* Rg call fzf#vim#grep(
+      \ 'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+      \ <bang>0 ? fzf#vim#with_preview('up:30%')
+      \         : fzf#vim#with_preview('right:50%:hidden', '?'),
+      \ <bang>0)
+
+inoremap <C-g> <Esc><CR>
+vnoremap <C-g> <Esc><CR>
+cnoremap <C-g> <Esc><CR>
+
+cnoremap %% <C-r>=expand('%:h') . '/'<CR>
+nnoremap // :nohlsearch<CR>
+
+let mapleader = ' '
+nnoremap <Leader>( :tabprevious<CR>
+nnoremap <Leader>) :tabnext<CR>
+
+
+
+" ale
+let g:is_bash=1
+let g:ale_virtualenv_dir_names = ['venv']
+
+" deoplete
+let g:deoplete#enable_at_startup = 1
+
+" fzf
+nnoremap <silent> <Leader>p :FZF<CR>
+nnoremap <silent> <Leader>e :exe 'FZF ' . expand('%:h')<CR>
+
+" vim-dispatch
+nnoremap <silent> <Leader><CR> :Dispatch!<CR>
+nnoremap <silent> <Leader>q :cclose<CR> :lclose<CR> :pclose<CR>
+let g:dispatch_compilers =
+      \ { 'bundle exec': 'ruby'
+      \ , 'nosetests': 'python'
+      \ , 'mix test': 'exunit'
+      \ }
+
+" LanguageClient-nvim
+let g:LanguageClient_diagnosticsList = 'Location'
+let g:LanguageClient_serverCommands =
+      \ { 'python': ['pyls']
+      \ , 'rust': ['rls']
+      \ }
+
+" vim-polyglot
+let g:polyglot_disabled = ['nix']
+
+" colors-solarized
+let g:solarized_termcolors=16
+" let g:solarized_termtrans=1
+
+" vim-surround
+vmap s S
+
+" vim-test
+let test#strategy = "dispatch"
+let test#python#runner = 'nose'
+nnoremap t<CR> :TestNearest<CR>
+
+" youcompleteme
+let g:ycm_seed_identifiers_with_syntax = 1
