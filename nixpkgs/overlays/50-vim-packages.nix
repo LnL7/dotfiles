@@ -1,5 +1,16 @@
 self: super:
 
+let
+  startPackages = with super.vimPlugins; [
+    sensible repeat surround
+    ReplaceWithRegister vim-indent-object vim-sort-motion
+    fzfWrapper fzf-vim vim-dispatch vim-test vim-projectionist vim-gitgutter
+    vim-abolish commentary vim-eunuch fugitive vim-isort rhubarb vim-scriptease tabular vim-tbone
+    gist-vim webapi-vim
+    polyglot vim-nix bats-vim vim-docbk editorconfig-vim
+  ];
+in
+
 {
   lnl = super.lnl or {} // {
     pyls = super.pythonPackages.python-language-server.override {
@@ -8,16 +19,8 @@ self: super:
 
     neovim = super.neovim.override {
       configure = {
-        packages.darwin.start = with super.vimPlugins; [
-          sensible repeat surround
-          ReplaceWithRegister vim-indent-object vim-sort-motion
-          fzfWrapper fzf-vim vim-dispatch vim-test vim-projectionist vim-gitgutter
-          vim-abolish commentary vim-eunuch fugitive vim-isort rhubarb vim-scriptease tabular vim-tbone
-          gist-vim webapi-vim
-          polyglot vim-nix bats-vim vim-docbk editorconfig-vim
-
-          deoplete-nvim LanguageClient-neovim ale
-        ];
+        packages.darwin.start = startPackages
+          ++ (with super.vimPlugins; [ deoplete-nvim LanguageClient-neovim ale ]);
         packages.darwin.opt = with super.vimPlugins; [
           colors-solarized
           echodoc-vim
@@ -42,16 +45,8 @@ self: super:
 
     vim = super.vim_configurable.customize {
       name = "vim";
-      vimrcConfig.packages.darwin.start = with super.vimPlugins; [
-        vim-repeat vim-sensible vim-surround
-        ReplaceWithRegister vim-indent-object vim-sort-motion
-        fzfWrapper fzf-vim vim-dispatch vim-test vim-projectionist vim-gitgutter
-        vim-abolish commentary vim-eunuch fugitive rhubarb vim-scriptease tabular vim-tbone
-        gist-vim webapi-vim
-        polyglot vim-nix bats-vim vim-docbk editorconfig-vim
-
-        YouCompleteMe ale
-      ];
+      vimrcConfig.packages.darwin.start = startPackages
+        ++ (with super.vimPlugins; [ YouCompleteMe ale ]);
       vimrcConfig.packages.darwin.opt = with super.vimPlugins; [
         colors-solarized
         echodoc-vim
