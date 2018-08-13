@@ -31,6 +31,9 @@ in
         customRC = ''
           ${builtins.readFile ../../vim/vimrc}
 
+          set listchars=tab:»·,trail:·,extends:⟩,precedes:⟨
+          set relativenumber
+
           " deoplete
           inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
 
