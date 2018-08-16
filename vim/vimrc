@@ -1,5 +1,6 @@
 " vim:ft=vim
 
+set backspace=indent,start
 set completeopt=menuone
 set encoding=utf-8
 set hlsearch
