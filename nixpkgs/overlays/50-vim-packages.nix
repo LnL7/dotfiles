@@ -29,7 +29,7 @@ in
           neomake
         ];
         customRC = ''
-          ${builtins.readFile ../../vim/vimrc}
+          source ${../../vim/vimrc}
 
           set listchars=tab:»·,trail:·,extends:⟩,precedes:⟨
           set relativenumber
@@ -42,6 +42,10 @@ in
           nnoremap <Leader>d :call LanguageClient#textDocument_definition()<CR>
           nnoremap <Leader>D :call LanguageClient#textDocument_definition({'gotoCmd': 'vsplit'})<CR>
           nnoremap <Leader>K :call LanguageClient#textDocument_hover()<CR>
+
+          if filereadable($HOME . '/.vimrc')
+            source ~/.vimrc
+          endif
         '';
       };
     };
@@ -56,7 +60,7 @@ in
         splice-vim
       ];
       vimrcConfig.customRC = ''
-        ${builtins.readFile ../../vim/vimrc}
+        source ${../../vim/vimrc}
 
         " youcompleteme
         nmap <Leader>d :YcmCompleter GoTo<CR>
@@ -66,6 +70,10 @@ in
         nmap <Leader>jc :YcmCompleter GoToDeclaration<CR>
         nmap <Leader>jf :YcmCompleter GoToDefinition<CR>
         nmap <Leader>jr :YcmCompleter GoToReferences<CR>
+
+        if filereadable($HOME . '/.vimrc')
+          source ~/.vimrc
+        endif
       '';
     };
   };
