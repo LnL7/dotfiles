@@ -12,4 +12,16 @@ self: super:
       src = builtins.fetchGit /src/vim-nix;
     });
   };
+
+  puma = super.callPackage
+    ({ buildGoPackage, fetchzip }:
+     buildGoPackage rec {
+       name = "puma-${version}";
+       version = "0.12";
+       goPackagePath = "github.com/puma/puma-dev";
+       src = fetchzip {
+         url = "https://github.com/puma/puma-dev/archive/v${version}.tar.gz";
+         sha256 = "01g1cwhdzff99k71d6r519j4fsjggcjb1iicc23ls3znfvibd7li";
+       };
+     }) { };
 }
