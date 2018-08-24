@@ -1,0 +1,69 @@
+# vim:ft=conf
+
+# focus window
+alt - h : chunkc tiling::window --focus west
+alt - j : chunkc tiling::window --focus south
+alt - k : chunkc tiling::window --focus north
+alt - l : chunkc tiling::window --focus east
+
+# swap window
+shift + alt - h : chunkc tiling::window --swap west
+shift + alt - j : chunkc tiling::window --swap south
+shift + alt - k : chunkc tiling::window --swap north
+shift + alt - l : chunkc tiling::window --swap east
+
+# move window
+ctrl + alt - h : chunkc tiling::window --warp west
+ctrl + alt - j : chunkc tiling::window --warp south
+ctrl + alt - k : chunkc tiling::window --warp north
+ctrl + alt - l : chunkc tiling::window --warp east
+
+# send window to desktop
+ctrl + alt - 1 : chunkc tiling::window --send-to-desktop 1
+ctrl + alt - 2 : chunkc tiling::window --send-to-desktop 2
+ctrl + alt - 3 : chunkc tiling::window --send-to-desktop 3
+
+# focus monitor
+alt - 1 : chunkc tiling::monitor -f 1
+alt - 2 : chunkc tiling::monitor -f 2
+alt - 3 : chunkc tiling::monitor -f 3
+
+# send window to monitor
+shift + alt - 1 : chunkc tiling::window --send-to-monitor 1; chunkc tiling::monitor -f 1
+shift + alt - 2 : chunkc tiling::window --send-to-monitor 2; chunkc tiling::monitor -f 2
+shift + alt - 3 : chunkc tiling::window --send-to-monitor 3; chunkc tiling::monitor -f 3
+
+# toggle window fullscreen
+shift + alt - f : chunkc tiling::window --toggle fullscreen
+
+# toggle window parent zoom
+shift + alt - d : chunkc tiling::window --toggle parent
+
+# float / unfloat window and center on screen
+shift + alt - w : chunkc tiling::window --toggle float;\
+                  chunkc tiling::window --grid-layout 4:4:1:1:2:2
+
+# toggle sticky, float and resize to picture-in-picture size
+shift + alt - s : chunkc tiling::window --toggle sticky;\
+                  chunkc tiling::window --grid-layout 5:5:4:0:1:1
+
+# disable tiling, float next window to be tiled
+shift + alt - t : chunkc set window_float_next 1
+
+# rotate tree
+shift + alt - r : chunkc tiling::desktop --rotate 90
+
+# change layout of desktop
+ctrl + alt - a : chunkc tiling::desktop --layout bsp
+ctrl + alt - s : chunkc tiling::desktop --layout monocle
+ctrl + alt - d : chunkc tiling::desktop --layout float
+
+ctrl + alt - return : kitty \
+                      --single-instance -d ~ \
+                      --instance-group=solarized \
+                      --config=/Users/djord90082/Library/Preferences/Kitty/solarized.conf
+
+# quit/reload services
+ctrl + alt - q : pkill chunkwm;\
+                 pkill skhd;\
+                 pkill khd
