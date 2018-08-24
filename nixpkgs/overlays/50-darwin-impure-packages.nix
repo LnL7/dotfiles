@@ -2,15 +2,43 @@ self: super:
 
 {
   lnl = super.lnl or {} // {
-    # TODO: add chunkwm to nixpkgs. (CoreFoundation 10.11)
+    CommandLineTools = super.callPackage
+      ({ makeSetupHook }:
+       makeSetupHook {} (builtins.toFile "CommandLineTools" ''
+         addCommandLineTools() {
+             export PATH="/Library/Developer/CommandLineTools/usr/bin:$PATH"
+         }
+
+         prePhases+=" addCommandLineTools"
+       '')) {};
+
     chunkwm = super.callPackage
-      ({ runCommandNoCC }:
-       runCommandNoCC "chunkwm-0.0.0" {} ''
-         mkdir -p $out/bin $out/libexec/chunkwm $out/lib/chunkwm/plugins
-         ln -s /src/chunkwm/src/chunkc/bin/chunkc $out/bin
-         ln -s /src/chunkwm/bin/chunkwm $out/libexec/chunkwm
-         ln -s /src/chunkwm/plugins/*.so $out/lib/chunkwm/plugins
-       '') {};
+      ({ stdenv, fetchzip, CommandLineTools }:
+       stdenv.mkDerivation rec {
+         name = "chunkwm-${version}";
+         version = "0.4.6";
+         src = fetchzip {
+           url = "http://github.com/koekeishiya/chunkwm/archive/v${version}.tar.gz";
+           sha256 = "0hqgdj1jsn1xwbj70izflqhvqnr4rk7mfzmgbnspdlassk3cbf78";
+         };
+         outputs = [ "bin" "out" ];
+         nativeBuildInputs = [ CommandLineTools ];  # impure
+         makeTarget = [ "install" ];
+         buildPhase = ''
+           for d in . src/chunkc src/plugins/*; do
+               pushd $d
+               buildPhase
+               popd
+           done
+         '';
+         installPhase = ''
+           mkdir -p $bin/bin $out/bin $out/lib/chunkwm/plugins
+           cp src/chunkc/bin/chunkc $bin/bin/chunkc
+           cp bin/chunkwm $out/bin
+           cp plugins/*.so $out/lib/chunkwm/plugins
+         '';
+         preferLocalBuild = true;  # impure
+       }) { inherit (self.lnl) CommandLineTools; };
 
     # TODO: fix darwin build in nixpkgs.
     kitty = super.callPackage
