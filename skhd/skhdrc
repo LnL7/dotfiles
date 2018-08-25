@@ -18,11 +18,6 @@ ctrl + alt - j : chunkc tiling::window --warp south
 ctrl + alt - k : chunkc tiling::window --warp north
 ctrl + alt - l : chunkc tiling::window --warp east
 
-# send window to desktop
-ctrl + alt - 1 : chunkc tiling::window --send-to-desktop 1
-ctrl + alt - 2 : chunkc tiling::window --send-to-desktop 2
-ctrl + alt - 3 : chunkc tiling::window --send-to-desktop 3
-
 # focus monitor
 alt - 1 : chunkc tiling::monitor -f 1
 alt - 2 : chunkc tiling::monitor -f 2
@@ -32,6 +27,15 @@ alt - 3 : chunkc tiling::monitor -f 3
 shift + alt - 1 : chunkc tiling::window --send-to-monitor 1; chunkc tiling::monitor -f 1
 shift + alt - 2 : chunkc tiling::window --send-to-monitor 2; chunkc tiling::monitor -f 2
 shift + alt - 3 : chunkc tiling::window --send-to-monitor 3; chunkc tiling::monitor -f 3
+
+# send window to desktop
+ctrl + alt - 1 : chunkc tiling::window --send-to-desktop 1
+ctrl + alt - 2 : chunkc tiling::window --send-to-desktop 2
+ctrl + alt - 3 : chunkc tiling::window --send-to-desktop 3
+
+# mirror windows on desktop
+shift + alt - x : chunkc tiling::desktop --mirror vertical
+shift + alt - z : chunkc tiling::desktop --mirror horizontal
 
 # toggle window fullscreen
 shift + alt - f : chunkc tiling::window --toggle fullscreen
