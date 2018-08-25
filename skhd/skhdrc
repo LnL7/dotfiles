@@ -51,8 +51,8 @@ shift + alt - w : chunkc tiling::window --toggle float;\
 shift + alt - s : chunkc tiling::window --toggle sticky;\
                   chunkc tiling::window --grid-layout 5:5:4:0:1:1
 
-# disable tiling, float next window to be tiled
-shift + alt - t : chunkc set window_float_next 1
+# toggle desktop offset and window gap
+shift + alt - q : chunkc tiling::desktop --toggle offset
 
 # rotate tree
 shift + alt - r : chunkc tiling::desktop --rotate 90
@@ -62,10 +62,13 @@ ctrl + alt - a : chunkc tiling::desktop --layout bsp
 ctrl + alt - s : chunkc tiling::desktop --layout monocle
 ctrl + alt - d : chunkc tiling::desktop --layout float
 
-ctrl + alt - return : kitty \
-                      --single-instance -d ~ \
-                      --instance-group=solarized \
-                      --config=/Users/djord90082/Library/Preferences/Kitty/solarized.conf
+# equalize size of all windows on desktop
+ctrl + alt - e : chunkc tiling::desktop --equalize
+
+# disable tiling, float next window to be tiled
+ctrl + alt - t : chunkc set window_float_next 1
+
+ctrl + alt - return : kitty --single-instance -d ~ --instance-group=lnl
 
 # quit/reload services
 ctrl + alt - q : pkill chunkwm;\
