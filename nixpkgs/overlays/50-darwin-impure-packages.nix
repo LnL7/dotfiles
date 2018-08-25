@@ -6,6 +6,11 @@ self: super:
       ({ makeSetupHook }:
        makeSetupHook {} (builtins.toFile "CommandLineTools" ''
          addCommandLineTools() {
+             echo >&2
+             echo "WARNING: this is impure and unreliable, make sure the CommandLineTools are installed!" >&2
+             echo "  $ xcode-select --install" >&2
+             echo >&2
+             [ -d /Library/Developer/CommandLineTools/usr/bin ]
              export PATH="/Library/Developer/CommandLineTools/usr/bin:$PATH"
          }
 
