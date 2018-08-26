@@ -25,6 +25,18 @@ self: super:
          '';
        }) {};
 
+    chunkwm-statusbar = super.callPackage
+      ({ stdenv, writeScriptBin, coreutils, chunkwm }:
+       writeScriptBin "chunkwm-statusbar" ''
+         #!${stdenv.shell}
+         set -e
+         export PATH=${stdenv.lib.makeBinPath [coreutils chunkwm]}
+
+         mode=$(chunkc tiling::query --desktop mode 2>/dev/null)
+         window=$(chunkc tiling::query --window tag 2>/dev/null | head -c 80)
+         echo "[$mode] $window"
+       '') { inherit (self.lnl) chunkwm; };
+
     git-statusbar = super.callPackage
       ({ stdenv, writeScriptBin, coreutils, gawk, git }:
        writeScriptBin "git-statusbar" ''
