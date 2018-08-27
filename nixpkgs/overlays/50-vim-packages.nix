@@ -13,10 +13,6 @@ in
 
 {
   lnl = super.lnl or {} // {
-    pyls = super.pythonPackages.python-language-server.override {
-      providers = ["rope"];
-    };
-
     neovim = super.neovim.override {
       configure = {
         packages.darwin.start = startPackages
