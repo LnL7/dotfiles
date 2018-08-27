@@ -68,7 +68,11 @@ ctrl + alt - e : chunkc tiling::desktop --equalize
 # disable tiling, float next window to be tiled
 ctrl + alt - t : chunkc set window_float_next 1
 
-ctrl + alt - return : kitty --single-instance -d ~ --instance-group=lnl
+# change split ratio
+ctrl + alt - z : chunkc set bsp_split_ratio 0.5
+ctrl + alt - x : chunkc set bsp_split_ratio 0.66
+
+ctrl + alt - return : kitty --single-instance -d ~
 
 # quit/reload services
 ctrl + alt - q : pkill chunkwm;\
