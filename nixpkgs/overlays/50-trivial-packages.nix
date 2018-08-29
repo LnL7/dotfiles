@@ -3,7 +3,6 @@ self: super:
 {
   lnl = super.lnl or {} // {
     dotfiles = { name = "dotfiles"; outPath = builtins.toString ../..; };
-    dotpkgs = { name = "dotpkgs"; outPath = builtins.toString ../.; };
 
     darwinpkgs = super.callPackage
       ({ writeTextFile }:
