@@ -1,0 +1,30 @@
+[core]
+	autocrlf = input
+	excludesfile = ~/.gitignore
+
+[color]
+	ui = auto
+
+[commit]
+	verbose = true
+
+[github]
+	email = daiderd@gmail.com
+	user = LnL7
+
+[gpg]
+	program = gpg
+
+[pretty]
+	color = format:%C(yellow)%h%C(red)%d%Creset %s   %C(green)%an, %ar%Creset
+	nocolor = format:%h%d %s   %an, %ar
+
+[rerere]
+	enabled = true
+
+[user]
+	name = Daiderd Jordan
+
+[include]
+	path = .gitconfig.local
+
