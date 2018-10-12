@@ -11,7 +11,7 @@ self: super:
              echo "  $ xcode-select --install" >&2
              echo >&2
              [ -d /Library/Developer/CommandLineTools/usr/bin ]
-             export PATH="/Library/Developer/CommandLineTools/usr/bin:$PATH"
+             export PATH=/usr/bin:/Library/Developer/CommandLineTools/usr/bin:$PATH
          }
 
          prePhases+=" addCommandLineTools"
