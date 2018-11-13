@@ -48,5 +48,12 @@ self: super:
          echo "[$head/$fork] $(git "$@" log --oneline -1 origin/master | head -1)"
          git "$@" rev-parse origin/master
        '') {};
+
+    SFMono = super.callPackage
+      ({ runCommandNoCC }:
+       runCommandNoCC "SFMono-apple-10.14.0" {} ''
+         mkdir -p $out/share/fonts/opentype
+         cp ${../../fonts/sf-mono}/*.otf $out/share/fonts/opentype
+       '') {};
   };
 }
