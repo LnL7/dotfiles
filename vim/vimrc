@@ -96,6 +96,7 @@ vmap s S
 " vim-test
 let test#strategy = "dispatch"
 let test#python#runner = 'nose'
+let test#rust#cargotest#options = '--lib'
 nnoremap t<CR> :TestNearest<CR>
 
 " youcompleteme
