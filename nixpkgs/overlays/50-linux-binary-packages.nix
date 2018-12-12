@@ -4,11 +4,12 @@ self: super:
   lnl = super.lnl or {} // {
     vault = super.callPackage
       ({ stdenv, fetchurl, unzip }:
-       stdenv.mkDerivation {
-         name = "vault-0.11.1";
+       stdenv.mkDerivation rec {
+         name = "vault-${version}";
+         version = "1.0.0";
          src = fetchurl {
-           url = https://releases.hashicorp.com/vault/0.11.1/vault_0.11.1_linux_amd64.zip;
-           sha256 = "15jrwqf58hr3x2xbkq7xrjpxx2wrjn3qfpq0j4grq96as1hj93gb";
+           url = "https://releases.hashicorp.com/vault/${version}/vault_${version}_linux_amd64.zip";
+           sha256 = "19la7qawyxh95pf515chky66p7rp3cgysizizfm4dszbs93vdbvm";
          };
          strictDeps = true;
          nativeBuildInputs = [ unzip ];
