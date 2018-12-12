@@ -79,7 +79,8 @@ let g:dispatch_compilers =
 " LanguageClient-nvim
 let g:LanguageClient_diagnosticsList = 'Location'
 let g:LanguageClient_serverCommands =
-      \ { 'python': ['pyls']
+      \ { 'cpp': ['clangd']
+      \ , 'python': ['pyls']
       \ , 'rust': ['rls']
       \ }
 
