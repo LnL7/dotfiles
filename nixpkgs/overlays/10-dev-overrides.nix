@@ -1,10 +1,12 @@
 self: super:
 
+with import ../lib/versions.nix;
+
 {
-  # nixUnstable = super.nixUnstable.overrideAttrs (drv: rec {
+  # nixUnstable = outdated (super.nixUnstable.overrideAttrs (drv: rec {
   #   name = "nix-2.1pre${toString src.revCount}.${src.shortRev}";
   #   src = builtins.fetchGit /src/nix;
-  # });
+  # })) super.nixUnstable;
 
   vimPlugins = super.vimPlugins or {} // {
     vim-nix = super.vimPlugins.vim-nix.overrideAttrs (drv: rec {
