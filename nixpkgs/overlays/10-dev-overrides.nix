@@ -4,8 +4,9 @@ with import ../lib/versions.nix;
 
 {
   # nixUnstable = outdated (super.nixUnstable.overrideAttrs (drv: rec {
-  #   name = "nix-2.1pre${toString src.revCount}.${src.shortRev}";
-  #   src = builtins.fetchGit /src/nix;
+  #   name = "nix-${builtins.readFile /src/nix/version}pre${toString src.revCount}.${src.shortRev}";
+  #   src = builtins.fetchGit { url = /src/nix; rev = "0659a190fb497b8d80ac3b9525f99cf41c00b04f"; };
+  #   buildInputs = drv.buildInputs or [] ++ [ super.editline ];
   # })) super.nixUnstable;
 
   vimPlugins = super.vimPlugins or {} // {
