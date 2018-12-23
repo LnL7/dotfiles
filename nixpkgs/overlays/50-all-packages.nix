@@ -8,6 +8,7 @@ in
   lnl = super.lnl or {} // {
 
     dev-tld-resolver = callPackage ../pkgs/dev-tld-resolver { };
+    puma = callPackage ../pkgs/puma { };
     puma-dev = callPackage ../pkgs/puma-dev {
       buildGoPackage = super.buildGo110Package;
     };
