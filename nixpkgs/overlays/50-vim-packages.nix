@@ -31,7 +31,12 @@ in
           set relativenumber
 
           " deoplete
-          inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+          inoremap <expr><C-g> deoplete#undo_completion()
+          inoremap <expr><C-l> deoplete#refresh()
+          inoremap <silent><expr><C-Tab> deoplete#mappings#manual_complete()
+          inoremap <silent><expr><Tab> pumvisible() ? "\<C-n>" : "\<TAB>"
+
+
 
           " LanguageClient-neovim
           nnoremap <C-Space> :call LanguageClient_contextMenu()<CR>
