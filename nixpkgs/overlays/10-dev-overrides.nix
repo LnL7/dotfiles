@@ -1,13 +1,19 @@
 self: super:
 
+let
+  nixTrunk = super.nixUnstable.overrideAttrs (drv: rec {
+    name = "nix-${version}";
+    version = "${builtins.readFile /src/nix/version}${versionSuffix}";
+    versionSuffix = "pre${toString src.revCount}.${src.shortRev}";
+    src = builtins.fetchGit { url = /src/nix; ref = "lnl7-wip"; };
+  });
+in
+
 with import ../lib/versions.nix;
 
 {
-  # nixUnstable = outdated (super.nixUnstable.overrideAttrs (drv: rec {
-  #   name = "nix-${builtins.readFile /src/nix/version}pre${toString src.revCount}.${src.shortRev}";
-  #   src = builtins.fetchGit { url = /src/nix; rev = "0659a190fb497b8d80ac3b9525f99cf41c00b04f"; };
-  #   buildInputs = drv.buildInputs or [] ++ [ super.editline ];
-  # })) super.nixUnstable;
+  # Before fork segfault /nix/store/znxwms4zx6fx2phlzwz1ka7x6m0fjj30-nix-2.2pre6526_9f99d624
+  nixUnstable = outdated nixTrunk super.nixUnstable;
 
   vimPlugins = super.vimPlugins or {} // {
     vim-nix = super.vimPlugins.vim-nix.overrideAttrs (drv: rec {
