@@ -11,9 +11,6 @@ set splitright
 set lazyredraw
 set ttyfast
 
-set clipboard=unnamed
-set mouse=a
-
 set backup
 set backupdir=~/.vim/tmp/backup//
 set backupskip=/tmp/*,/private/tmp/*

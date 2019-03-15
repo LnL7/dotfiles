@@ -27,6 +27,9 @@ in
         customRC = ''
           source ${../../vim/vimrc}
 
+          set clipboard=unnamed
+          set mouse=a
+
           set listchars=tab:»·,trail:·,extends:⟩,precedes:⟨
           set relativenumber
 
@@ -35,8 +38,6 @@ in
           inoremap <expr><C-l> deoplete#refresh()
           inoremap <silent><expr><C-Tab> deoplete#mappings#manual_complete()
           inoremap <silent><expr><Tab> pumvisible() ? "\<C-n>" : "\<TAB>"
-
-
 
           " LanguageClient-neovim
           nnoremap <C-Space> :call LanguageClient_contextMenu()<CR>
