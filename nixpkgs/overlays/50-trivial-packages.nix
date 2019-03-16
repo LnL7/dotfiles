@@ -47,6 +47,38 @@ self: super:
          git "$@" rev-parse origin/master
        '') {};
 
+    python = super.python3.pkgs.callPackage
+      ({ buildEnv, python, ipython, setuptools, jedi, decorator, pickleshare
+       , traitlets, prompt_toolkit, pygments, backcall, appnope, pexpect
+       , parso, ipython_genutils, six, wcwidth, ptyprocess
+       }:
+       buildEnv {
+         name = "python${python.version}-with-packages";
+         paths = [
+           python ipython setuptools jedi decorator pickleshare
+           traitlets prompt_toolkit pygments backcall appnope pexpect
+           parso ipython_genutils six wcwidth ptyprocess
+         ];
+         pathsToLink = [ "/lib/python3.7" ];
+         postBuild = ''
+           mkdir -p $out/bin
+           cat <<-EOF > $out/bin/ipython
+           #!$out/bin/python3.7
+           # -*- coding: utf-8 -*-
+           import re
+           import sys
+
+           from IPython import start_ipython
+
+           if __name__ == '__main__':
+               sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', ''', sys.argv[0])
+               sys.exit(start_ipython())
+           EOF
+           chmod +x $out/bin/ipython
+           cp --no-dereference ${python}/bin/python3.7 ${python}/bin/python3 $out/bin
+         '';
+       }) { };
+
     SFMono = super.callPackage
       ({ runCommandNoCC }:
        runCommandNoCC "SFMono-apple-10.14.0" {} ''
