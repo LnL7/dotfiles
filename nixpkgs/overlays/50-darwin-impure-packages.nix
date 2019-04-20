@@ -21,10 +21,10 @@ self: super:
       ({ stdenv, fetchzip, CommandLineTools }:
        stdenv.mkDerivation rec {
          name = "chunkwm-${version}";
-         version = "0.4.6";
+         version = "0.4.9";
          src = fetchzip {
            url = "http://github.com/koekeishiya/chunkwm/archive/v${version}.tar.gz";
-           sha256 = "0hqgdj1jsn1xwbj70izflqhvqnr4rk7mfzmgbnspdlassk3cbf78";
+           sha256 = "0w8q92q97fdvbwc3qb5w44jn4vi3m65ssdvjp5hh6b7llr17vspl";
          };
          outputs = [ "bin" "out" ];
          nativeBuildInputs = [ CommandLineTools ];  # impure
