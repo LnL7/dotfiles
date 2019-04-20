@@ -3,7 +3,7 @@ self: super:
 let
   nixTrunk = super.nixUnstable.overrideAttrs (drv: rec {
     name = "nix-${version}";
-    version = "${builtins.readFile /src/nix/version}${versionSuffix}";
+    version = "${builtins.readFile "${src}/.version"}${versionSuffix}";
     versionSuffix = "pre${toString src.revCount}.${src.shortRev}";
     src = builtins.fetchGit { url = /src/nix; ref = "lnl7-wip"; };
   });
