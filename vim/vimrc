@@ -55,6 +55,7 @@ let mapleader = ' '
 let g:is_bash=1
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_rust_cargo_check_tests = 1
+let g:ale_rust_rustc_options = '-A dead_code'
 let g:ale_virtualenv_dir_names = ['venv']
 
 " deoplete
@@ -75,8 +76,10 @@ let g:dispatch_compilers =
 
 " LanguageClient-nvim
 let g:LanguageClient_diagnosticsList = 'Location'
+let g:LanguageClient_useVirtualText = 0
 let g:LanguageClient_serverCommands =
       \ { 'cpp': ['clangd']
+      \ , 'elixir': ['elixir-ls']
       \ , 'python': ['pyls']
       \ , 'rust': ['rls']
       \ }
