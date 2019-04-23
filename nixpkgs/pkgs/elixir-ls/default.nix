@@ -22,10 +22,10 @@ stdenv.mkDerivation rec {
         --suffix PATH ":" "${elixir}/bin"
   '';
 
-  meta = {
+  meta = with stdenv.lib; {
     description = "A language server for Elixir";
     # license = stdenv.lib.licenses.unspecified;
     homepage = https://github.com/JakeBecker/elixir-ls;
-    platforfms = platforfms.unix;
+    platforms = platforms.unix;
   };
 }
