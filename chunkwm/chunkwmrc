@@ -4,6 +4,7 @@ chunkc set global_desktop_mode           bsp
 chunkc set 2_desktop_mode                monocle
 
 chunkc set custom_bar_enabled            1
+chunkc set custom_bar_all_monitors       1
 chunkc set custom_bar_offset_top         25
 
 chunkc set global_desktop_offset_top     15
