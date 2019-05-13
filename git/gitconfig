@@ -8,6 +8,9 @@
 [commit]
 	verbose = true
 
+[diff]
+	algorithm = patience
+
 [github]
 	email = daiderd@gmail.com
 	user = LnL7
