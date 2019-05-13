@@ -34,6 +34,14 @@ self: super:
          echo "[$mode] $window"
        '') { inherit (self.lnl) chunkwm; };
 
+    clangd = super.callPackage
+      ({ runCommandNoCC, clang-unwrapped }:
+       let parsed = builtins.parseDrvName clang-unwrapped.name; in
+       runCommandNoCC "clangd-${parsed.version}" {} ''
+         mkdir -p $out/bin
+         ln -s ${clang-unwrapped}/bin/clangd $out/bin
+       '') { inherit (self.llvmPackages_7) clang-unwrapped; };
+
     git-statusbar = super.callPackage
       ({ stdenv, writeScriptBin, coreutils, gawk, git }:
        writeScriptBin "git-statusbar" ''
