@@ -10,6 +10,8 @@
 
 [diff]
 	algorithm = patience
+	colorMoved = dimmed-zebra
+	colorMovedWS = allow-indentation-change
 
 [github]
 	email = daiderd@gmail.com
