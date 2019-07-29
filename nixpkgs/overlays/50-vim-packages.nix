@@ -16,12 +16,13 @@ in
     neovim = super.neovim.override {
       configure = {
         packages.darwin.start = startPackages
-          ++ (with super.vimPlugins; [ deoplete-nvim LanguageClient-neovim ale ]);
+          ++ (with super.vimPlugins; [ deoplete-nvim ale ]);
         packages.darwin.opt = with super.vimPlugins; [
           colors-solarized
           echodoc-vim
           splice-vim
 
+          LanguageClient-neovim
           neomake
         ];
         customRC = ''
@@ -33,17 +34,21 @@ in
           set listchars=tab:»·,trail:·,extends:⟩,precedes:⟨
           set relativenumber
 
+          " ale
+          set omnifunc=ale#completion#OmniFunc
+          nnoremap <Leader>d :ALEGoToDefinition<CR>
+          nnoremap <Leader>D :ALEGoToDefinitionInVSplit<CR>
+          nnoremap <Leader>K :ALEHover<CR>
+          nnoremap [a :ALEPreviousWrap<CR>
+          nnoremap ]a :ALENextWrap<CR>
+
+          " let g:ale_completion_enabled = 1
+
           " deoplete
           inoremap <expr><C-g> deoplete#undo_completion()
           inoremap <expr><C-l> deoplete#refresh()
           inoremap <silent><expr><C-Tab> deoplete#mappings#manual_complete()
           inoremap <silent><expr><Tab> pumvisible() ? "\<C-n>" : "\<TAB>"
-
-          " LanguageClient-neovim
-          nnoremap <C-Space> :call LanguageClient_contextMenu()<CR>
-          nnoremap <Leader>d :call LanguageClient#textDocument_definition()<CR>
-          nnoremap <Leader>D :call LanguageClient#textDocument_definition({'gotoCmd': 'vsplit'})<CR>
-          nnoremap <Leader>K :call LanguageClient#textDocument_hover()<CR>
 
           if filereadable($HOME . '/.vimrc')
             source ~/.vimrc
