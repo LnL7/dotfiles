@@ -64,6 +64,7 @@ let g:deoplete#enable_at_startup = 1
 " fzf
 nnoremap <silent> <Leader>p :FZF<CR>
 nnoremap <silent> <Leader>e :exe 'FZF ' . expand('%:h')<CR>
+nnoremap <silent> <Leader>g :GFiles?<CR>
 
 " vim-dispatch
 nnoremap <silent> <Leader><CR> :Dispatch!<CR>
