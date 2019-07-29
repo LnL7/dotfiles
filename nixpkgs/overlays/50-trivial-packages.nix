@@ -32,7 +32,7 @@ self: super:
          mode=$(chunkc tiling::query --desktop mode 2>/dev/null)
          window=$(chunkc tiling::query --window tag 2>/dev/null | head -c 80)
          echo "[$mode] $window"
-       '') { inherit (self.lnl) chunkwm; };
+       '') { };
 
     clangd = super.callPackage
       ({ runCommandNoCC, clang-unwrapped }:
