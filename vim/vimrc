@@ -60,7 +60,9 @@ let g:ale_virtualenv_dir_names = ['venv']
 
 let g:ale_linters =
       \ { 'cpp': ['clangd']
+      \ , 'elixir': ['elixir-ls']
       \ , 'python': ['mypy', 'pyls']
+      \ , 'rust': ['cargo', 'rls']
       \ }
 let g:ale_python_pyls_config =
       \ { 'pyls': {'plugins': {'pycodestyle': {'ignore': ['E501']}}}

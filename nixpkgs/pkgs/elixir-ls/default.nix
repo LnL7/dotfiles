@@ -15,10 +15,10 @@ stdenv.mkDerivation rec {
   '';
 
   installPhase = ''
-    mkdir -p $out/bin $out/libexec
-    cp -r elixir-ls $out/libexec
-    chmod +x $out/libexec/elixir-ls/language_server.sh
-    makeWrapper $out/libexec/elixir-ls/language_server.sh $out/bin/elixir-ls \
+    mkdir -p $out/bin $out/share
+    cp -r elixir-ls $out/share
+    chmod +x $out/share/elixir-ls/language_server.sh
+    makeWrapper $out/share/elixir-ls/language_server.sh $out/bin/elixir-ls \
         --suffix PATH ":" "${elixir}/bin"
   '';
 

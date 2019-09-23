@@ -41,6 +41,7 @@ in
           nnoremap <Leader>K :ALEHover<CR>
           nnoremap [a :ALEPreviousWrap<CR>
           nnoremap ]a :ALENextWrap<CR>
+          let g:ale_elixir_elixir_ls_release = '${self.lnl.elixir-ls}/share/elixir-ls'
 
           " let g:ale_completion_enabled = 1
 
