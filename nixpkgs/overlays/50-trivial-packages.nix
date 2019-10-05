@@ -53,7 +53,27 @@ self: super:
          head=$(git "$@" log --format=format:%h origin/master...HEAD 2> /dev/null | awk 'END {print NR}')
          echo "[$head/$fork] $(git "$@" log --oneline -1 origin/master | head -1)"
          git "$@" rev-parse origin/master
-       '') {};
+       '') { };
+
+    hnix = super.haskell.lib.justStaticExecutables super.haskellPackages.hnix;
+    hpack = super.haskell.lib.justStaticExecutables super.haskellPackages.hpack;
+
+    cabal-install_2_4_0_0 = super.haskell.lib.justStaticExecutables (super.haskell.lib.doJailbreak (super.haskellPackages.callPackage ../pkgs/cabal-install/2.4.0.0.nix {
+      inherit (super.haskellPackages) Cabal;
+    }));
+
+    hie = import /src/all-hies/pure.nix {
+      inherit (self) pkgs;
+    };
+
+    haskell = super.haskellPackages.callPackage
+     ({ buildEnv, cabal-install_2_4_0_0, ghc, hie }:
+      buildEnv {
+        name = "${ghc.name}-tools";
+        paths = [ ghc cabal-install_2_4_0_0 hie ];
+        pathsToLink = [ "/bin" "/share" ];
+        ignoreCollisions = true;
+      }) { inherit (self.lnl) cabal-install_2_4_0_0 hie; };
 
     python = super.python3.pkgs.callPackage
       ({ buildEnv, python, ipython, setuptools, jedi, decorator, pickleshare
@@ -61,7 +81,7 @@ self: super:
        , parso, ipython_genutils, six, wcwidth, ptyprocess
        }:
        buildEnv {
-         name = "python${python.version}-with-packages";
+         name = "${python.name}-tools";
          paths = [
            python ipython setuptools jedi decorator pickleshare
            traitlets prompt_toolkit pygments backcall appnope pexpect
