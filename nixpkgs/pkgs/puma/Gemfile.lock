@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     puma (3.12.0)
-    rack (2.0.6)
+    rack (2.0.8)
 
 PLATFORMS
   ruby
