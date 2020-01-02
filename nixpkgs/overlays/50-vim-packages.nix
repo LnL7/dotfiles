@@ -83,7 +83,7 @@ in
     vim = super.vim_configurable.customize {
       name = "vim";
       vimrcConfig.packages.darwin.start = startPackages
-        ++ (with super.vimPlugins; [ ale ]);
+        ++ (with super.vimPlugins; [ youcompleteme ale ]);
       vimrcConfig.packages.darwin.opt = with super.vimPlugins; [
         colors-solarized
         splice-vim

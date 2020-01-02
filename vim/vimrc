@@ -51,6 +51,8 @@ nnoremap // :nohlsearch<CR>
 
 let mapleader = ' '
 
+nnoremap <Leader><Leader> <C-^>
+
 
 
 " ale
@@ -75,6 +77,7 @@ let g:ale_python_pyls_config =
 " fzf
 nnoremap <silent> <Leader>p :FZF<CR>
 nnoremap <silent> <Leader>e :exe 'FZF ' . expand('%:h')<CR>
+nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <Leader>g :GFiles?<CR>
 
 " vim-dispatch
@@ -110,8 +113,12 @@ vmap s S
 " vim-test
 let test#strategy = "dispatch"
 let test#python#runner = 'nose'
-let test#rust#cargotest#options = '--lib'
+let test#rust#cargotest#options =
+            \ { 'all': '-q --lib'
+            \ , 'suite': '--tests'
+            \ }
 nnoremap t<CR> :TestNearest<CR>
+nnoremap T<CR> :TestSuite<CR>
 
 " youcompleteme
 let g:ycm_seed_identifiers_with_syntax = 1
