@@ -55,63 +55,59 @@ self: super:
          git "$@" rev-parse origin/master
        '') { };
 
-    hnix = super.haskell.lib.justStaticExecutables super.haskellPackages.hnix;
-    hpack = super.haskell.lib.justStaticExecutables super.haskellPackages.hpack;
-
-    cabal-install_2_4_0_0 = super.haskell.lib.justStaticExecutables (super.haskell.lib.doJailbreak (super.haskellPackages.callPackage ../pkgs/cabal-install/2.4.0.0.nix {
-      inherit (super.haskellPackages) Cabal;
-    }));
-
-    hie = import /src/all-hies/pure.nix {
-      inherit (self) pkgs;
-    };
-
     haskell = super.haskellPackages.callPackage
-     ({ buildEnv, cabal-install_2_4_0_0, ghc, hie }:
+     ({ buildEnv, ghc, cabal2nix, cabal-install, hoogle, ghcide, hie }:
       buildEnv {
         name = "${ghc.name}-tools";
-        paths = [ ghc cabal-install_2_4_0_0 hie ];
-        pathsToLink = [ "/bin" "/share" ];
-        ignoreCollisions = true;
-      }) { inherit (self.lnl) cabal-install_2_4_0_0 hie; };
+        paths = [ cabal2nix cabal-install hoogle /*ghcide*/ /*hie*/ ];
+        pathsToLink = [ "/bin" ];
+        postBuild = ''
+          mkdir -p $out/bin
+          ln -s ${ghc}/bin/ghci $out/bin
+        '';
+      }) { inherit (self.lnl) hoogle ghcide hie;
+           cabal-install = self.haskellPackages.cabal-install_2_4_0_0; };
 
     python = super.python3.pkgs.callPackage
-      ({ buildEnv, python, ipython, setuptools, jedi, decorator, pickleshare
-       , traitlets, prompt_toolkit, pygments, backcall, appnope, pexpect
-       , parso, ipython_genutils, six, wcwidth, ptyprocess
-       }:
+      ({ buildEnv, python, ipython, mypy, python-language-server }:
        buildEnv {
          name = "${python.name}-tools";
-         paths = [
-           python ipython setuptools jedi decorator pickleshare
-           traitlets prompt_toolkit pygments backcall appnope pexpect
-           parso ipython_genutils six wcwidth ptyprocess
-         ];
-         pathsToLink = [ "/lib/python3.7" ];
+         paths = [ ipython mypy python-language-server ];
+         pathsToLink = [ "/bin" ];
          postBuild = ''
            mkdir -p $out/bin
-           cat <<-EOF > $out/bin/ipython
-           #!$out/bin/python3.7
-           # -*- coding: utf-8 -*-
-           import re
-           import sys
-
-           from IPython import start_ipython
-
-           if __name__ == '__main__':
-               sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', ''', sys.argv[0])
-               sys.exit(start_ipython())
-           EOF
-           chmod +x $out/bin/ipython
            cp --no-dereference ${python}/bin/python3.7 ${python}/bin/python3 $out/bin
          '';
        }) { };
 
-    SFMono = super.callPackage
-      ({ runCommandNoCC }:
-       runCommandNoCC "SFMono-apple-10.14.0" {} ''
-         mkdir -p $out/share/fonts/opentype
-         cp ${../../fonts/sf-mono}/*.otf $out/share/fonts/opentype
-       '') {};
+    rust = super.rustPackages.callPackage
+      ({ buildEnv, rustc, cargo, clippy, rls }:
+       buildEnv {
+         name = "${rustc.name}-tools";
+         paths = [ cargo clippy rls ];
+         pathsToLink = [ "/bin" ];
+       }) { };
+
+    vault-zsh-completions = super.callPackage
+      ({ stdenv, fetchurl }:
+       stdenv.mkDerivation {
+         name = "vault-zsh-completions-2016-01-15";
+         src = fetchurl {
+           url = https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/b9ace281798c4c2565d57dc67d4c0687d9d36e82/plugins/vault/_vault;
+           sha256 = "16nmqlahpkffbiq0y615pkbd3blmfiyw37bxj738qfcz8bwxhkbj";
+         };
+         buildCommand = ''
+           mkdir -p $out/share/zsh/site-functions
+           cp $src $out/share/zsh/site-functions/_vault
+         '';
+       }) {};
+
+
+    # SFMono = super.callPackage
+    #   ({ runCommandNoCC }:
+    #    runCommandNoCC "SFMono-apple-10.14.0" {} ''
+    #      mkdir -p $out/share/fonts/opentype
+    #      cp ${../../fonts/sf-mono}/*.otf $out/share/fonts/opentype
+    #    '') {};
   };
 }
