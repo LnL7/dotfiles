@@ -55,6 +55,19 @@ self: super:
          git "$@" rev-parse origin/master
        '') { };
 
+    elixir = super.beam.packages.erlang.callPackage
+      ({ buildEnv, elixir, erlang }:
+       buildEnv {
+        name = "${elixir.name}-tools";
+        paths = [ ];
+        pathsToLink = [ "/bin" ];
+        postBuild = ''
+          mkdir -p $out/bin
+          ln -s ${elixir}/bin/iex $out/bin
+          ln -s ${elixir}/bin/mix $out/bin
+        '';
+       }) { };
+
     haskell = super.haskellPackages.callPackage
      ({ buildEnv, ghc, cabal2nix, cabal-install, hoogle, ghcide, hie }:
       buildEnv {
