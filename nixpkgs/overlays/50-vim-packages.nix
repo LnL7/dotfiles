@@ -17,7 +17,7 @@ let
     sensible repeat surround
     ReplaceWithRegister vim-indent-object vim-sort-motion
     fzfWrapper fzf-vim vim-dispatch vim-test vim-projectionist vim-gitgutter
-    vim-abolish commentary vim-eunuch fugitive vim-isort rhubarb vim-scriptease tabular vim-tbone
+    vim-abolish commentary vim-eunuch fugitive rhubarb vim-scriptease tabular vim-tbone
     gist-vim webapi-vim
     polyglot vim-nix bats-vim vim-docbk editorconfig-vim hoogle
 

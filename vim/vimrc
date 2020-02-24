@@ -63,6 +63,9 @@ let g:ale_rust_cargo_check_tests = 1
 let g:ale_rust_rustc_options = '-A dead_code'
 let g:ale_virtualenv_dir_names = ['venv']
 
+let g:ale_fixers =
+      \ { 'python': ['isort']
+      \ }
 let g:ale_linters =
       \ { 'cpp': ['clangd']
       \ , 'elixir': ['elixir-ls']
@@ -73,6 +76,8 @@ let g:ale_linters =
 let g:ale_python_pyls_config =
       \ { 'pyls': {'plugins': {'pycodestyle': {'ignore': ['E501']}}}
       \ }
+
+nmap <Leader>f :ALEFix<CR>
 
 " fzf
 nnoremap <silent> <Leader>p :FZF<CR>
@@ -111,8 +116,11 @@ let g:solarized_termcolors=16
 vmap s S
 
 " vim-test
-let test#strategy = "dispatch"
-let test#python#runner = 'nose'
+let test#strategy = 'dispatch'
+let test#python#runner = 'pytest'
+let test#python#pytest#options = {
+  \ 'all': '--quiet'
+  \ }
 let test#rust#cargotest#options =
             \ { 'all': '-q --lib'
             \ , 'suite': '--tests'
