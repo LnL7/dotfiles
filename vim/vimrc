@@ -90,8 +90,8 @@ nnoremap <silent> <Leader><CR> :Dispatch!<CR>
 nnoremap <silent> <Leader>q :cclose<CR> :lclose<CR> :pclose<CR>
 let g:dispatch_compilers =
       \ { 'bundle exec': 'ruby'
-      \ , 'nosetests': 'python'
       \ , 'mix test': 'exunit'
+      \ , 'poetry run pytest': 'pytest'
       \ }
 
 " LanguageClient-nvim
