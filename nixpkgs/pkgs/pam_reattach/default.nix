@@ -1,5 +1,9 @@
 { stdenv, fetchzip, cmake, pam, xpc }:
 
+# $ cat /etc/pam.d/sudo
+# auth       optional       /run/current-system/sw/lib/pam/pam_reattach.so
+# auth       sufficient     pam_tid.so
+
 stdenv.mkDerivation {
   name = "pam_reattach-2018-09-27";
 
