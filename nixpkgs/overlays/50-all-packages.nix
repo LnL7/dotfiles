@@ -16,5 +16,8 @@ in
       inherit (darwin.apple_sdk.libs) xpc;
     };
 
+    setledsmac = callPackage ../pkgs/setledsmac {
+      inherit (super.darwin.apple_sdk.frameworks) Carbon;
+    };
   };
 }
