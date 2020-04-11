@@ -7,6 +7,7 @@ in
 {
   lnl = super.lnl or {} // {
 
+    compileCommandsCC = callPackage ../pkgs/compile-commands-cc { };
     dev-tld-resolver = callPackage ../pkgs/dev-tld-resolver { };
     elixir-ls = callPackage ../pkgs/elixir-ls { };
     puma = callPackage ../pkgs/puma { };
