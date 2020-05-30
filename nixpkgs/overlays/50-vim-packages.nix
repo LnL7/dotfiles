@@ -18,7 +18,7 @@ let
     ReplaceWithRegister vim-indent-object vim-sort-motion
     fzfWrapper fzf-vim vim-dispatch vim-test vim-projectionist vim-gitgutter
     vim-abolish commentary vim-eunuch fugitive rhubarb vim-scriptease tabular vim-tbone
-    gist-vim webapi-vim
+    vim-gist webapi-vim
     polyglot vim-nix bats-vim pytest-vim-compiler editorconfig-vim
 
     # direnv-vim
@@ -48,8 +48,7 @@ in
           colors-solarized
           splice-vim
 
-          # LanguageClient-neovim coc-nvim neomake
-          echodoc-vim
+          echodoc-vim # context-vim
         ];
         customRC = ''
           ${plugins}
@@ -63,7 +62,7 @@ in
           set relativenumber
 
           " ale
-          let g:ale_elixir_elixir_ls_release = '${self.lnl.elixir-ls}/share/elixir-ls'
+          let g:ale_elixir_elixir_ls_release = '${super.lnl.elixir-ls}'
           set omnifunc=ale#completion#OmniFunc
           nnoremap <Leader>d :ALEGoToDefinition<CR>
           nnoremap <Leader>D :ALEGoToDefinitionInVSplit<CR>
@@ -96,7 +95,7 @@ in
     vim = super.vim_configurable.customize {
       name = "vim";
       vimrcConfig.packages.darwin.start = startPackages
-        ++ (with super.vimPlugins; [ youcompleteme ale ]);
+        ++ (with super.vimPlugins; [ /*YouCompleteMe*/ ale ]);
       vimrcConfig.packages.darwin.opt = with super.vimPlugins; [
         colors-solarized
         splice-vim

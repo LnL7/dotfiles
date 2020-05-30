@@ -58,13 +58,10 @@ nnoremap <Leader><Leader> <C-^>
 " ale
 let g:is_bash = 1
 let g:ale_lint_on_text_changed = 'normal'
-let g:ale_haskell_hie_executable = 'hie-wrapper'
-let g:ale_rust_cargo_check_tests = 1
-let g:ale_rust_rustc_options = '-A dead_code'
-let g:ale_virtualenv_dir_names = ['venv']
 
 let g:ale_fixers =
       \ { 'python': ['isort']
+      \ , 'rust': ['rustfmt']
       \ }
 let g:ale_linters =
       \ { 'cpp': ['clangd']
@@ -77,6 +74,12 @@ let g:ale_python_pyls_config =
       \ { 'pyls': {'plugins': {'pycodestyle': {'ignore': ['E501']}}}
       \ }
 
+let g:ale_haskell_hie_executable = 'hie-wrapper'
+let g:ale_rust_cargo_check_tests = 1
+let g:ale_rust_rls_executable = 'rust-analyzer'
+let g:ale_rust_rustfmt_options = '--edition 2018'
+let g:ale_virtualenv_dir_names = ['venv']
+
 nmap <Leader>f :ALEFix<CR>
 
 " fzf
@@ -88,6 +91,7 @@ nnoremap <silent> <Leader>g :GFiles?<CR>
 " vim-dispatch
 nnoremap <silent> <Leader><CR> :Dispatch!<CR>
 nnoremap <silent> <Leader>q :cclose<CR> :lclose<CR> :pclose<CR>
+let g:cargo_makeprg_params = 'check'
 let g:dispatch_compilers =
       \ { 'bundle exec': 'ruby'
       \ , 'mix test': 'exunit'
@@ -121,12 +125,9 @@ let test#python#runner = 'pytest'
 let test#python#pytest#options = {
   \ 'all': '--quiet'
   \ }
-let test#rust#cargotest#options =
-            \ { 'all': '-q --lib'
-            \ , 'suite': '--tests'
-            \ }
+nnoremap <Leader>t :TestVisit<CR>
+nnoremap T<CR> :TestLast<CR>
 nnoremap t<CR> :TestNearest<CR>
-nnoremap T<CR> :TestSuite<CR>
 
 " youcompleteme
 let g:ycm_seed_identifiers_with_syntax = 1

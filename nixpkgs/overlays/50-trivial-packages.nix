@@ -14,14 +14,6 @@ self: super:
          echo "[$mode] $window"
        '') { };
 
-    clangd = super.callPackage
-      ({ runCommandNoCC, clang-unwrapped }:
-       let parsed = builtins.parseDrvName clang-unwrapped.name; in
-       runCommandNoCC "clangd-${parsed.version}" {} ''
-         mkdir -p $out/bin
-         ln -s ${clang-unwrapped}/bin/clangd $out/bin
-       '') { inherit (self.llvmPackages_7) clang-unwrapped; };
-
     git-statusbar = super.callPackage
       ({ stdenv, writeScriptBin, coreutils, gawk, git }:
        writeScriptBin "git-statusbar" ''
@@ -29,11 +21,23 @@ self: super:
          set -e
          export PATH=${stdenv.lib.makeBinPath [coreutils gawk git]}
 
-         fork=$(git "$@" log --format=format:%h nixos/master...lnl/master 2> /dev/null | awk 'END {print NR}')
-         head=$(git "$@" log --format=format:%h nixos/master...HEAD 2> /dev/null | awk 'END {print NR}')
-         echo "[$head/$fork] $(git "$@" log --oneline -1 nixos/master | head -1)"
+         fork=$(git "$@" log --format=format:%h origin/master...lnl/master 2> /dev/null | awk 'END {print NR}')
+         head=$(git "$@" log --format=format:%h origin/master...HEAD 2> /dev/null | awk 'END {print NR}')
+         echo "[$head/$fork] $(git "$@" log --oneline -1 origin/master | head -1)"
          git "$@" rev-parse nixos/master
        '') { };
+
+    cpp = super.callPackage
+      ({ buildEnv, clang-unwrapped }:
+       buildEnv {
+        name = "${clang-unwrapped.name}-tools";
+        paths = [ ];
+        pathsToLink = [ "/bin" ];
+        postBuild = ''
+          mkdir -p $out/bin
+          ln -s ${clang-unwrapped}/bin/clangd $out/bin
+        '';
+       }) { inherit (super.llvmPackages_9) clang-unwrapped; };
 
     elixir = super.beam.packages.erlang.callPackage
       ({ buildEnv, elixir, erlang }:
@@ -62,10 +66,10 @@ self: super:
            cabal-install = self.haskellPackages.cabal-install_2_4_0_0; };
 
     python = super.python3.pkgs.callPackage
-      ({ buildEnv, python, ipython, mypy, python-language-server }:
+      ({ buildEnv, python, ipython, isort, mypy, python-language-server }:
        buildEnv {
          name = "${python.name}-tools";
-         paths = [ ipython mypy python-language-server ];
+         paths = [ ipython isort mypy python-language-server ];
          pathsToLink = [ "/bin" ];
          postBuild = ''
            mkdir -p $out/bin
@@ -74,10 +78,10 @@ self: super:
        }) { };
 
     rust = super.rustPackages.callPackage
-      ({ buildEnv, rustc, cargo, clippy, rls }:
+      ({ buildEnv, rustc, clippy, rust-analyzer }:
        buildEnv {
          name = "${rustc.name}-tools";
-         paths = [ cargo clippy rls ];
+         paths = [ clippy rust-analyzer ];
          pathsToLink = [ "/bin" ];
        }) { };
 
