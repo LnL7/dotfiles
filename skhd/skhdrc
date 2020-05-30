@@ -1,80 +1,78 @@
 # vim:ft=conf
 
 # focus window
-alt - h : chunkc tiling::window --focus west
-alt - j : chunkc tiling::window --focus south
-alt - k : chunkc tiling::window --focus north
-alt - l : chunkc tiling::window --focus east
+alt - h : yabai -m window --focus west
+alt - j : yabai -m window --focus south
+alt - k : yabai -m window --focus north
+alt - l : yabai -m window --focus east
 
-# swap window
-shift + alt - h : chunkc tiling::window --swap west
-shift + alt - j : chunkc tiling::window --swap south
-shift + alt - k : chunkc tiling::window --swap north
-shift + alt - l : chunkc tiling::window --swap east
+# swap managed window
+shift + alt - h : yabai -m window --swap west
+shift + alt - j : yabai -m window --swap south
+shift + alt - k : yabai -m window --swap north
+shift + alt - l : yabai -m window --swap east
 
-# move window
-ctrl + alt - h : chunkc tiling::window --warp west
-ctrl + alt - j : chunkc tiling::window --warp south
-ctrl + alt - k : chunkc tiling::window --warp north
-ctrl + alt - l : chunkc tiling::window --warp east
+# move managed window
+ctrl + alt - h : yabai -m window --warp west
+ctrl + alt - j : yabai -m window --warp south
+ctrl + alt - k : yabai -m window --warp north
+ctrl + alt - l : yabai -m window --warp east
+
+# make floating window fill screen
+ctrl + alt - up : yabai -m window --grid 1:1:0:0:1:1
+
+# make floating window fill half of screen
+ctrl + alt - left  : yabai -m window --grid 1:2:0:0:1:1
+ctrl + alt - right : yabai -m window --grid 1:2:1:0:1:1
 
 # focus monitor
-alt - 1 : chunkc tiling::monitor -f 1
-alt - 2 : chunkc tiling::monitor -f 2
-alt - 3 : chunkc tiling::monitor -f 3
+alt - 1 : yabai -m display --focus 1
+alt - 2 : yabai -m display --focus 2
+alt - 3 : yabai -m display --focus 3
 
-# send window to monitor
-shift + alt - 1 : chunkc tiling::window --send-to-monitor 1; chunkc tiling::monitor -f 1
-shift + alt - 2 : chunkc tiling::window --send-to-monitor 2; chunkc tiling::monitor -f 2
-shift + alt - 3 : chunkc tiling::window --send-to-monitor 3; chunkc tiling::monitor -f 3
+# send window to monitor and follow focus
+shift + alt - 1 : yabai -m window --display 1; yabai -m display --focus 1
+shift + alt - 2 : yabai -m window --display 2; yabai -m display --focus 2
+shift + alt - 3 : yabai -m window --display 3; yabai -m display --focus 3
 
 # send window to desktop
-ctrl + alt - 1 : chunkc tiling::window --send-to-desktop 1
-ctrl + alt - 2 : chunkc tiling::window --send-to-desktop 2
-ctrl + alt - 3 : chunkc tiling::window --send-to-desktop 3
+ctrl + alt - 1 : yabai -m window --space 1
+ctrl + alt - 2 : yabai -m window --space 2
+ctrl + alt - 3 : yabai -m window --space 3
 
-# mirror windows on desktop
-shift + alt - x : chunkc tiling::desktop --mirror vertical
-shift + alt - z : chunkc tiling::desktop --mirror horizontal
+# balance size of windows
+shift + alt - 0 : yabai -m space --balance
 
-# toggle window fullscreen
-shift + alt - f : chunkc tiling::window --toggle fullscreen
+# move floating window
+# shift + ctrl - a : yabai -m window --move rel:-20:0
+# shift + ctrl - s : yabai -m window --move rel:0:20
 
-# toggle window parent zoom
-shift + alt - d : chunkc tiling::window --toggle parent
+# increase window size
+# shift + alt - a : yabai -m window --resize left:-20:0
+# shift + alt - w : yabai -m window --resize top:0:-20
 
-# float / unfloat window and center on screen
-shift + alt - w : chunkc tiling::window --toggle float;\
-                  chunkc tiling::window --grid-layout 4:4:1:1:2:2
-
-# toggle sticky, float and resize to picture-in-picture size
-shift + alt - s : chunkc tiling::window --toggle sticky;\
-                  chunkc tiling::window --grid-layout 5:5:4:0:1:1
-
-# toggle desktop offset and window gap
-shift + alt - q : chunkc tiling::desktop --toggle offset
-
-# rotate tree
-shift + alt - r : chunkc tiling::desktop --rotate 90
-
-# change layout of desktop
-ctrl + alt - a : chunkc tiling::desktop --layout bsp
-ctrl + alt - s : chunkc tiling::desktop --layout monocle
-ctrl + alt - d : chunkc tiling::desktop --layout float
-
-# equalize size of all windows on desktop
-ctrl + alt - e : chunkc tiling::desktop --equalize
-
-# disable tiling, float next window to be tiled
-ctrl + alt - t : chunkc set window_float_next 1
+# decrease window size
+# shift + cmd - s : yabai -m window --resize bottom:0:-20
+# shift + cmd - w : yabai -m window --resize top:0:20
 
 # change split ratio
-ctrl + alt - z : chunkc set bsp_split_ratio 0.5
-ctrl + alt - x : chunkc set bsp_split_ratio 0.66
+ctrl + alt - z : yabai -m config split_ratio 0.66
+ctrl + alt - x : yabai -m config split_ratio 0.50
 
-ctrl + alt - return : kitty --single-instance -d ~
+# toggle window zoom
+alt + shift - d : yabai -m window --toggle zoom-parent
+alt + shift - f : yabai -m window --toggle zoom-fullscreen
+
+# float / unfloat window and center on screen
+alt + shift - t : yabai -m window --toggle float;\
+                  yabai -m window --grid 4:4:1:1:2:2
+
+# toggle sticky(+float), topmost, border and picture-in-picture
+alt + shift - p : yabai -m window --toggle sticky;\
+                  yabai -m window --toggle topmost;\
+                  yabai -m window --toggle border;\
+                  yabai -m window --toggle pip
 
 # quit/reload services
-ctrl + alt - q : pkill chunkwm;\
-                 pkill skhd;\
-                 pkill khd
+ctrl + alt - q : pkill skhd;\
+                 pkill yabai
