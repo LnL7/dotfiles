@@ -2,10 +2,10 @@
 
 stdenv.mkDerivation rec {
   name = "elixir-ls-${version}";
-  version = "0.2.25";
+  version = "0.4.0";
   src = fetchurl {
-    url = "https://github.com/JakeBecker/elixir-ls/releases/download/v${version}/elixir-ls.zip";
-    sha256 = "0q1dnlh07rzx34inxf7n40crh000xrvq2zyp3936nfi0plqv28db";
+    url = "https://github.com/elixir-lsp/elixir-ls/releases/download/v${version}/elixir-ls.zip";
+    sha256 = "18h1s8gdqsv7ssbx4qawxkzsjpfp7j15p69nwmf81pxlgqxsc94i";
   };
 
   nativeBuildInputs = [ makeWrapper unzip ];

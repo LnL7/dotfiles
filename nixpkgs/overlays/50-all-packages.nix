@@ -9,7 +9,7 @@ in
 
     compileCommandsCC = callPackage ../pkgs/compile-commands-cc { };
     dev-tld-resolver = callPackage ../pkgs/dev-tld-resolver { };
-    # elixir-ls = callPackage ../pkgs/elixir-ls { };
+    elixir-ls = callPackage ../pkgs/elixir-ls { };
     letty = callPackage ../pkgs/letty {
       inherit (super.darwin.apple_sdk.frameworks) IOKit;
     };

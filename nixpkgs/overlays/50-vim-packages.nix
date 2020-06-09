@@ -62,7 +62,7 @@ in
           set relativenumber
 
           " ale
-          let g:ale_elixir_elixir_ls_release = '${super.lnl.elixir-ls}'
+          let g:ale_elixir_elixir_ls_release = '${super.lnl.elixir-ls}/share/elixir-ls'
           set omnifunc=ale#completion#OmniFunc
           nnoremap <Leader>d :ALEGoToDefinition<CR>
           nnoremap <Leader>D :ALEGoToDefinitionInVSplit<CR>
