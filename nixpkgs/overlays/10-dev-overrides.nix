@@ -12,7 +12,7 @@ with import ../lib/versions.nix;
   # vimPlugins = super.vimPlugins or {} // {
   #   vim-nix = super.vimPlugins.vim-nix.overrideAttrs (drv: rec {
   #     name = "vim-nix-2019git${toString src.revCount}.${src.shortRev}";
-  #     src = builtins.fetchGit /src/vim-nix;
+  #     src = builtins.fetchGit <vim-nix-trunk>;
   #   });
   # };
 
