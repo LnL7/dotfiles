@@ -52,7 +52,7 @@ nnoremap // :nohlsearch<CR>
 let mapleader = ' '
 
 nnoremap <Leader><Leader> <C-^>
-
+nnoremap <Leader>r :Rg \b<C-R><C-W>\b<CR>
 
 
 " ale
