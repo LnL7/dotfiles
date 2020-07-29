@@ -6,10 +6,10 @@ self: super:
       ({ stdenv, fetchurl, unzip }:
        stdenv.mkDerivation rec {
          name = "vault-${version}";
-         version = "1.4.2";
+         version = "1.5.0";
          src = fetchurl {
            url = "https://releases.hashicorp.com/vault/${version}/vault_${version}_linux_amd64.zip";
-           sha256 = "1wdqj29l3rzzaf2bl4f470rv05n35i2wjfxhbqk111zvpyfaig7j";
+           sha256 = "183kpk6pf978hl54v3cvwmhsiwqs8sgxzqgrqlgp3i21w6p968rj";
          };
          strictDeps = true;
          nativeBuildInputs = [ unzip ];
