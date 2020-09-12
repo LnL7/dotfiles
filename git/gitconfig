@@ -13,6 +13,9 @@
 	colorMoved = dimmed-zebra
 	colorMovedWS = allow-indentation-change
 
+[pull]
+	ff = only
+
 [github]
 	email = daiderd@gmail.com
 	user = LnL7
@@ -30,6 +33,5 @@
 [user]
 	name = Daiderd Jordan
 
-[include]
-	path = .gitconfig.local
-
+# [include]
+# 	path = /etc/per-user/lnl/gitconfig
