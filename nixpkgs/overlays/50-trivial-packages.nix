@@ -27,64 +27,6 @@ self: super:
          git "$@" rev-parse nixos/master
        '') { };
 
-    cpp = super.callPackage
-      ({ buildEnv, clang-unwrapped }:
-       buildEnv {
-        name = "${clang-unwrapped.name}-tools";
-        paths = [ ];
-        pathsToLink = [ "/bin" ];
-        postBuild = ''
-          mkdir -p $out/bin
-          ln -s ${clang-unwrapped}/bin/clangd $out/bin
-        '';
-       }) { inherit (super.llvmPackages_9) clang-unwrapped; };
-
-    elixir = super.beam.packages.erlang.callPackage
-      ({ buildEnv, elixir, erlang }:
-       buildEnv {
-        name = "${elixir.name}-tools";
-        paths = [ ];
-        pathsToLink = [ "/bin" ];
-        postBuild = ''
-          mkdir -p $out/bin
-          ln -s ${elixir}/bin/iex $out/bin
-          ln -s ${elixir}/bin/mix $out/bin
-        '';
-       }) { };
-
-    haskell = super.haskellPackages.callPackage
-     ({ buildEnv, ghc, cabal2nix, cabal-install, hoogle, ghcide, hie }:
-      buildEnv {
-        name = "${ghc.name}-tools";
-        paths = [ cabal2nix cabal-install hoogle /*ghcide*/ /*hie*/ ];
-        pathsToLink = [ "/bin" ];
-        postBuild = ''
-          mkdir -p $out/bin
-          ln -s ${ghc}/bin/ghci $out/bin
-        '';
-      }) { inherit (self.lnl) hoogle ghcide hie;
-           cabal-install = self.haskellPackages.cabal-install_2_4_0_0; };
-
-    python = super.python3.pkgs.callPackage
-      ({ buildEnv, python, ipython, isort, mypy, python-language-server }:
-       buildEnv {
-         name = "${python.name}-tools";
-         paths = [ ipython isort mypy python-language-server ];
-         pathsToLink = [ "/bin" ];
-         postBuild = ''
-           mkdir -p $out/bin
-           cp --no-dereference ${python}/bin/python3.7 ${python}/bin/python3 $out/bin
-         '';
-       }) { };
-
-    rust = super.rustPackages.callPackage
-      ({ buildEnv, rustc, clippy, rust-analyzer }:
-       buildEnv {
-         name = "${rustc.name}-tools";
-         paths = [ clippy rust-analyzer ];
-         pathsToLink = [ "/bin" ];
-       }) { };
-
     vault-zsh-completions = super.callPackage
       ({ stdenv, fetchurl }:
        stdenv.mkDerivation {
