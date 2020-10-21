@@ -16,22 +16,26 @@
 [pull]
 	ff = only
 
-[github]
-	email = daiderd@gmail.com
-	user = LnL7
-
 [gpg]
 	program = gpg
+
+[rerere]
+	enabled = true
 
 [pretty]
 	color = format:%C(yellow)%h%C(red)%d%Creset %s   %C(green)%an, %ar%Creset
 	nocolor = format:%h%d %s   %an, %ar
 
-[rerere]
-	enabled = true
+[alias]
+	hide = update-index --assume-unchanged
+	unhide = update-index --no-assume-unchanged
 
 [user]
 	name = Daiderd Jordan
+
+[github]
+	email = daiderd@gmail.com
+	user = LnL7
 
 # [include]
 # 	path = /etc/per-user/lnl/gitconfig
