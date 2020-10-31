@@ -27,6 +27,10 @@ in
 
 {
   vimPlugins = super.vimPlugins // {
+    ale = super.vimPlugins.ale.overrideAttrs (drv: {
+      patches = drv. patches or [] ++ [ ../../patches/vim-ale.patch ];
+    });
+
     pytest-vim-compiler = super.vimUtils.buildVimPluginFrom2Nix {
       pname = "pytest-vim-compiler";
       version = "2015-05-28";
@@ -43,7 +47,7 @@ in
     neovim = super.neovim.override {
       configure = {
         packages.darwin.start = startPackages
-          ++ (with super.vimPlugins; [ ale deoplete-nvim ]);
+          ++ (with self.vimPlugins; [ ale deoplete-nvim ]);
         packages.darwin.opt = with super.vimPlugins; [
           colors-solarized
           splice-vim
@@ -62,6 +66,7 @@ in
           set relativenumber
 
           " ale
+          let g:ale_nix_instantiate_executable = '${super.nix}/bin/nix-instantiate'
           let g:ale_elixir_elixir_ls_release = '${super.lnl.elixir-ls}/share/elixir-ls'
           set omnifunc=ale#completion#OmniFunc
           nnoremap <Leader>d :ALEGoToDefinition<CR>
