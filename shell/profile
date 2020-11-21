@@ -6,6 +6,12 @@
     direnv reload
 }
 
+:p() {
+    export PATH="$(nix-instantiate --eval -E "with import <nixpkgs> {}; lib.makeBinPath [ $* ]" | jq -r .):$PATH"
+    IN_NIX_SHELL=direnv
+    name+="${name:+ }$*"
+}
+
 :u() {
    local i
    local -a refs
