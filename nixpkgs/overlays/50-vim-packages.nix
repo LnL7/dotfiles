@@ -66,8 +66,10 @@ in
           set relativenumber
 
           " ale
-          let g:ale_nix_instantiate_executable = '${super.nix}/bin/nix-instantiate'
+          let g:ale_c_ccls_executable = '${super.ccls}/bin/ccls'
+          let g:ale_cpp_ccls_executable = '${super.ccls}/bin/ccls'
           let g:ale_elixir_elixir_ls_release = '${super.lnl.elixir-ls}/share/elixir-ls'
+          let g:ale_nix_instantiate_executable = '${super.nix}/bin/nix-instantiate'
           set omnifunc=ale#completion#OmniFunc
           nnoremap <Leader>d :ALEGoToDefinition<CR>
           nnoremap <Leader>D :ALEGoToDefinitionInVSplit<CR>

@@ -64,7 +64,7 @@ let g:ale_fixers =
       \ , 'rust': ['rustfmt']
       \ }
 let g:ale_linters =
-      \ { 'cpp': ['clangd']
+      \ { 'cpp': ['ccls']
       \ , 'elixir': ['elixir-ls']
       \ , 'haskell': ['hie']
       \ , 'python': ['mypy', 'pyls']
