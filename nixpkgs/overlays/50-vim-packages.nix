@@ -27,10 +27,6 @@ in
 
 {
   vimPlugins = super.vimPlugins // {
-    ale = super.vimPlugins.ale.overrideAttrs (drv: {
-      patches = drv. patches or [] ++ [ ../../patches/vim-ale.patch ];
-    });
-
     pytest-vim-compiler = super.vimUtils.buildVimPluginFrom2Nix {
       pname = "pytest-vim-compiler";
       version = "2015-05-28";
