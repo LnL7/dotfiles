@@ -1,4 +1,4 @@
-{ stdenv, fetchzip, cmake, pam, xpc }:
+{ lib, stdenv, fetchzip, cmake, pam, xpc }:
 
 # $ cat /etc/pam.d/sudo
 # auth       optional       /run/current-system/sw/lib/pam/pam_reattach.so
@@ -15,7 +15,7 @@ stdenv.mkDerivation {
   nativeBuildInputs = [ cmake ];
   buildInputs = [ pam xpc ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     platforms = platforms.darwin;
   };
 }

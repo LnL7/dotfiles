@@ -1,4 +1,4 @@
-{ stdenv, buildGoPackage, fetchzip }:
+{ lib, stdenv, buildGoPackage, fetchzip }:
 
 buildGoPackage rec {
   name = "puma-dev-${version}";
@@ -13,11 +13,11 @@ buildGoPackage rec {
   goDeps = ./deps.nix;
 
   # darwin only package, breaks the linux build.
-  preBuild = stdenv.lib.optionalString stdenv.isLinux ''
+  preBuild = lib.optionalString stdenv.isLinux ''
     rm -rv go/src/$goPackagePath/dev/launch
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     maintainers = [ maintainers.lnl7 ];
     platforms = platforms.darwin ++ platforms.linux;
   };

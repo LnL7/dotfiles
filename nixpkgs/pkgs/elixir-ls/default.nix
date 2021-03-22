@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, makeWrapper, unzip, elixir }:
+{ lib, stdenv, fetchurl, makeWrapper, unzip, elixir }:
 
 stdenv.mkDerivation rec {
   name = "elixir-ls-${version}";
@@ -22,9 +22,9 @@ stdenv.mkDerivation rec {
         --suffix PATH ":" "${elixir}/bin"
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "A language server for Elixir";
-    # license = stdenv.lib.licenses.unspecified;
+    # license = lib.licenses.unspecified;
     homepage = https://github.com/JakeBecker/elixir-ls;
     platforms = platforms.unix;
   };

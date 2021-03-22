@@ -1,4 +1,4 @@
-{ rustPlatform, stdenv, fetchzip, IOKit }:
+{ lib, rustPlatform, stdenv, fetchzip, IOKit }:
 
 rustPlatform.buildRustPackage {
   name = "letty-0.0.1";
@@ -12,7 +12,7 @@ rustPlatform.buildRustPackage {
 
   buildInputs = [ IOKit ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     platforms = platforms.darwin;
   };
 }

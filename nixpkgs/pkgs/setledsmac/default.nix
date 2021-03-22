@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, Carbon }:
+{ lib, stdenv, fetchurl, Carbon }:
 
 stdenv.mkDerivation {
   name = "setledsmac-2020-04-04";
@@ -15,7 +15,7 @@ stdenv.mkDerivation {
     cp Source/SetLEDs/setleds $out/bin
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Set your keyboard LEDs from the Mac OS X command-line";
     homepage = "https://github.com/damieng/setledsmac";
     platforms = platforms.darwin;

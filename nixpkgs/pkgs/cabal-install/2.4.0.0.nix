@@ -1,4 +1,4 @@
-{ mkDerivation, array, async, base, base16-bytestring, binary
+{ lib, mkDerivation, array, async, base, base16-bytestring, binary
 , bytestring, Cabal, containers, cryptohash-sha256, deepseq
 , directory, echo, edit-distance, filepath, hackage-security
 , hashable, HTTP, mtl, network, network-uri, parsec, pretty
@@ -28,5 +28,5 @@ mkDerivation {
   '';
   homepage = "http://www.haskell.org/cabal/";
   description = "The command-line interface for Cabal and Hackage";
-  license = stdenv.lib.licenses.bsd3;
+  license = lib.licenses.bsd3;
 }

@@ -1,5 +1,7 @@
 self: super:
 
+let inherit (super) lib; in
+
 {
   lnl = super.lnl or {} // {
     chunkwm-statusbar = super.callPackage
@@ -7,7 +9,7 @@ self: super:
        writeScriptBin "chunkwm-statusbar" ''
          #!${stdenv.shell}
          set -e
-         export PATH=${stdenv.lib.makeBinPath [coreutils chunkwm]}
+         export PATH=${lib.makeBinPath [coreutils chunkwm]}
 
          mode=$(chunkc tiling::query --desktop mode 2>/dev/null)
          window=$(chunkc tiling::query --window tag 2>/dev/null | head -c 80)
@@ -19,7 +21,7 @@ self: super:
        writeScriptBin "git-statusbar" ''
          #!${stdenv.shell}
          set -e
-         export PATH=${stdenv.lib.makeBinPath [coreutils gawk git]}
+         export PATH=${lib.makeBinPath [coreutils gawk git]}
 
          fork=$(git "$@" log --format=format:%h origin/master...lnl/master 2> /dev/null | awk 'END {print NR}')
          head=$(git "$@" log --format=format:%h origin/master...HEAD 2> /dev/null | awk 'END {print NR}')
