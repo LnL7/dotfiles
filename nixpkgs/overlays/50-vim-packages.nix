@@ -1,19 +1,7 @@
 self: super:
 
 let
-  loadPlugin = p: ''
-    set rtp^=${p.rtp}
-    set rtp+=${p.rtp}/after
-  '';
-
-  plugins = ''
-    " Workaround for broken handling of packpath by vim8/neovim for ftplugins
-    filetype off | syn off
-    ${super.lib.concatStrings (map loadPlugin startPackages)}
-    filetype indent plugin on | syn on
-  '';
-
-  startPackages = with self.vimPlugins; [
+  defaultPackages = with self.vimPlugins; [
     sensible repeat surround
     ReplaceWithRegister vim-indent-object vim-sort-motion
     fzfWrapper fzf-vim vim-dispatch vim-test vim-projectionist vim-gitgutter
@@ -37,22 +25,25 @@ in
         sha256 = "1j4nn26yfl17aid85qahc7li95wmkp8lg2z4q1jq2q16lda14ws8";
       };
     };
+
+    vim-nix = super.vimPlugins.vim-nix.overrideAttrs (drv: {
+      name = with import ../lib/versions.nix; "vim-nix-${flakeVersion super.lnl.vim-nix}";
+      src = super.lnl.vim-nix;
+    });
   };
 
   lnl = super.lnl or {} // {
     neovim = super.neovim.override {
       configure = {
-        packages.darwin.start = startPackages
+        packages.nix.start = defaultPackages
           ++ (with self.vimPlugins; [ ale deoplete-nvim ]);
-        packages.darwin.opt = with super.vimPlugins; [
+        packages.nix.opt = with super.vimPlugins; [
           colors-solarized
           splice-vim
 
           echodoc-vim # context-vim
         ];
         customRC = ''
-          ${plugins}
-
           source ${../../vim/vimrc}
 
           set clipboard=unnamed
@@ -97,15 +88,13 @@ in
 
     vim = super.vim_configurable.customize {
       name = "vim";
-      vimrcConfig.packages.darwin.start = startPackages
+      vimrcConfig.packages.nix.start = defaultPackages
         ++ (with super.vimPlugins; [ /*YouCompleteMe*/ ale ]);
-      vimrcConfig.packages.darwin.opt = with super.vimPlugins; [
+      vimrcConfig.packages.nix.opt = with super.vimPlugins; [
         colors-solarized
         splice-vim
       ];
       vimrcConfig.customRC = ''
-        ${plugins}
-
         source ${../../vim/vimrc}
 
         if filereadable($HOME . '/.vimrc')

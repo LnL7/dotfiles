@@ -3,9 +3,12 @@
 
   inputs = {
     nixpkgs.url = "github:LnL7/nixpkgs";
+
+    vim-nix.url = "github:LnL7/vim-nix";
+    vim-nix.flake = false;
   };
 
-  outputs = { self, nixpkgs }: {
+  outputs = { self, nixpkgs, vim-nix }: {
 
     lib = {
       verisons = import ./nixpkgs/lib/versions.nix;
@@ -80,6 +83,12 @@
       };
 
     darwinOverlays = [
+      (self: super: {
+        lnl = super.lnl or {} // {
+          inherit vim-nix;
+        };
+      })
+
       (import ./nixpkgs/overlays/10-dev-overrides.nix)
       (import ./nixpkgs/overlays/20-haskell-overrides.nix)
       (import ./nixpkgs/overlays/20-trivial-overrides.nix)

@@ -109,9 +109,6 @@ let g:LanguageClient_serverCommands =
       \ , 'rust': ['rls']
       \ }
 
-" vim-polyglot
-let g:polyglot_disabled = ['nix']
-
 " colors-solarized
 let g:solarized_termcolors=16
 " let g:solarized_termtrans=1
