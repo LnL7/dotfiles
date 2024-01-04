@@ -6,7 +6,13 @@ set encoding=utf-8
 set hlsearch
 set list
 set number
+set relativenumber
 set splitright
+
+set expandtab shiftwidth=4 tabstop=4
+set listchars=tab:»·,trail:·,extends:⟩,precedes:⟨
+
+set scrolloff=8
 
 set lazyredraw
 set ttyfast
@@ -18,8 +24,6 @@ set directory=~/.vim/tmp/swap/
 set noswapfile
 set undodir=~/.vim/tmp/undo//
 set undofile
-
-set expandtab shiftwidth=4 tabstop=4
 
 if !isdirectory(expand(&undodir))
   call mkdir(expand(&undodir), "p")
@@ -49,14 +53,21 @@ cnoremap <C-g> <Esc><CR>
 cnoremap %% <C-r>=expand('%:h') . '/'<CR>
 nnoremap // :nohlsearch<CR>
 
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv
+
 let mapleader = ' '
 
 nnoremap <Leader><Leader> <C-^>
-nnoremap <Leader>r :Rg \b<C-R><C-W>\b<CR>
+nnoremap <silent> <Leader>q :cclose<CR> :lclose<CR> :pclose<CR>
 
 
 " ale
+let g:ale_sign_error = '▶'
+let g:ale_sign_warning = '--'
+
 let g:is_bash = 1
+let g:ale_completion_autoimport = 0
 let g:ale_lint_on_text_changed = 'normal'
 
 let g:ale_fixers =
@@ -67,30 +78,32 @@ let g:ale_linters =
       \ { 'cpp': ['ccls']
       \ , 'elixir': ['elixir-ls']
       \ , 'haskell': ['hie']
-      \ , 'python': ['mypy', 'pyls']
-      \ , 'rust': ['rls']
+      \ , 'python': ['pyright', 'pylsp']
+      \ , 'rust': ['analyzer']
       \ }
-let g:ale_python_pyls_config =
-      \ { 'pyls': {'plugins': {'pycodestyle': {'ignore': ['E501']}}}
-      \ }
+let g:ale_python_pylsp_executable = 'jedi-language-server'
 
-let g:ale_haskell_hie_executable = 'hie-wrapper'
 let g:ale_rust_cargo_check_tests = 1
-let g:ale_rust_rls_executable = 'rust-analyzer'
-let g:ale_rust_rustfmt_options = '--edition 2018'
 let g:ale_virtualenv_dir_names = ['venv']
 
-nmap <Leader>f :ALEFix<CR>
+nnoremap <silent> <Leader>f :ALEFix<CR>
+nnoremap <silent> <Leader>a :ALECodeAction<CR>
+nnoremap <silent> <Leader>d :ALEGoToDefinition<CR>
+nnoremap <silent> <Leader>D :ALEGoToDefinitionInVSplit<CR>
+nnoremap <silent> <Leader>R :ALEFindReferences<CR>
+nnoremap <silent> <Leader>k :ALESignature<CR>
+nnoremap <silent> <Leader>K :ALEHover<CR>
+nnoremap <silent> [a :ALEPreviousWrap<CR>
+nnoremap <silent> ]a :ALENextWrap<CR>
 
 " fzf
 nnoremap <silent> <Leader>p :FZF<CR>
 nnoremap <silent> <Leader>e :exe 'FZF ' . expand('%:h')<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <Leader>g :GFiles?<CR>
+nnoremap <silent> <Leader>r :Rg \b<C-R><C-W>\b<CR>
 
 " vim-dispatch
-nnoremap <silent> <Leader><CR> :Dispatch!<CR>
-nnoremap <silent> <Leader>q :cclose<CR> :lclose<CR> :pclose<CR>
 let g:cargo_makeprg_params = 'check'
 let g:dispatch_compilers =
       \ { 'bundle exec': 'ruby'
@@ -110,7 +123,7 @@ let g:LanguageClient_serverCommands =
       \ }
 
 " colors-solarized
-let g:solarized_termcolors=16
+" let g:solarized_termcolors=16
 " let g:solarized_termtrans=1
 
 " vim-surround

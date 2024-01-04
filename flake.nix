@@ -2,7 +2,7 @@
   description = "LnL's collection of dotfiles";
 
   inputs = {
-    nixpkgs.url = "github:LnL7/nixpkgs";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     vim-nix.url = "github:LnL7/vim-nix";
     vim-nix.flake = false;
@@ -14,14 +14,16 @@
       verisons = import ./nixpkgs/lib/versions.nix;
     };
 
-    packages.x86_64-darwin =
+    packages.aarch64-darwin =
       let
         pkgs = import nixpkgs {
           overlays = self.darwinOverlays;
-          system = "x86_64-darwin";
+          system = "aarch64-darwin";
         };
       in
       {
+        lnl = pkgs.lnl;
+
         cpp = pkgs.callPackage
           ({ buildEnv, clang-unwrapped }:
            buildEnv {

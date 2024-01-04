@@ -2,12 +2,12 @@
 
 buildGoPackage rec {
   name = "puma-dev-${version}";
-  version = "0.15";
+  version = "0.18.2";
   goPackagePath = "github.com/puma/puma-dev";
 
   src = fetchzip {
     url = "https://github.com/puma/puma-dev/archive/v${version}.tar.gz";
-    sha256 = "sha256-B3hBlMOYiapC3HOTvAAfSp0NYMrppVkuGW9yjkWPXgM=";
+    sha256 = "sha256-lEaPNRr/NTMFuT/FTsoy8UXK0eRXQy9sgCwAa1ZkiQs=";
   };
 
   goDeps = ./deps.nix;
