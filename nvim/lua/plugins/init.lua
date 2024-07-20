@@ -16,9 +16,6 @@ return {
   "tpope/vim-sleuth",
   "tpope/vim-surround",
 
-  -- nmap gr clashes with lsp goto references
-  -- "inkarkat/vim-ReplaceWithRegister",
-
   { "folke/which-key.nvim",
     opts = {},
   },

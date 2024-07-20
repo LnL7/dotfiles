@@ -1,38 +1,12 @@
 return {
 
-  -- "tartansandal/vim-compiler-pytest",
-  "5long/pytest-vim-compiler",
-
   "tpope/vim-tbone",
 
   { "tpope/vim-dispatch",
     dependencies = {"tpope/vim-tbone"},
     config = function ()
-      -- let g:dispatch_compilers =
-      --   \ { 'poetry run': ''
-      --   \ }
-      -- let g:cargo_makeprg_params = 'check'
     end,
   },
-
-  -- { "luissimas/eval.nvim",
-  --   cmd = "Eval",
-  --   config = function ()
-  --     local eval = require("eval")
-  --     eval.setup({
-  --       prefic_char = "> ",
-  --       filetype = {
-  --         lua = {cmd = "lua"},
-  --         python = {cmd = "python3"},
-  --       },
-  --     })
-  --   end,
-  -- },
-
-  -- { "neomake/neomake",
-  --   config = function ()
-  --   end,
-  -- },
 
   { "nvim-neotest/neotest",
     dependencies = {
@@ -55,11 +29,6 @@ return {
       neotest.setup({
         output = { open_on_run = false },
         output_panel = { open = "vsplit" },
-        -- quickfix = {
-        --   open = function ()
-        --     require("trouble").open({ mode = "quickfix", focus = false })
-        --   end
-        -- },
         adapters = {
           require("neotest-python")({ runner = "pytest", args = {"-vv"} }),
           require("neotest-elixir"),

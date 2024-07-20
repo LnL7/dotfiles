@@ -20,9 +20,6 @@ return {
       null_ls.setup({
         sources = {
           null_ls.builtins.hover.printenv,
-          -- null_ls.builtins.formatting.isort,
-          -- null_ls.builtins.formatting.ruff,
-          -- null_ls.builtins.formatting.black,
         },
       })
       null_ls.register(require("none-ls-shellcheck.diagnostics"))
@@ -61,7 +58,7 @@ return {
       end)
 
       require("mason-lspconfig").setup({
-        ensure_installed = {},
+        ensure_installed = {"clangd", "gopls", "ols", "rust_analyzer", "pyright", "tsserver"},
         handlers = {
           lsp_zero.default_setup,
           lua_ls = function ()
@@ -71,11 +68,10 @@ return {
           -- ols = function ()
           --   require("lspconfig").ols.setup({ cmd = {"/Users/djordan/Code/odin-lang/ols/ols", "-stdin"} })
           -- end,
-          -- ["rust_analyzer"] = function ()
-          --   -- require("rust-tools").setup({})
-          -- end,
         }
       })
+
+      require("lspconfig").gleam.setup({})
     end
   },
 
