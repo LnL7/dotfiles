@@ -35,10 +35,9 @@ yabai -m config window_gap                   4
 yabai -m config --space 3 layout             float
 
 # rules
-yabai -m rule --add app='Airmail' manage=off
-yabai -m rule --add app='Dash' manage=off
+yabai -m rule --add app='Home' manage=off
 yabai -m rule --add app='Finder' manage=off
 yabai -m rule --add app='Music' manage=off
-yabai -m rule --add app='System Preferences' manage=off
+yabai -m rule --add app='System Settings' manage=off
 
 echo "yabai configuration loaded.."
