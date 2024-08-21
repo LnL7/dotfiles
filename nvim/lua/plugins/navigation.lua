@@ -21,20 +21,19 @@ return {
 
       vim.keymap.set("n", "<Leader>pb", fzf.buffers)
       vim.keymap.set("n", "<Leader>pf", fzf.git_files)
-      vim.keymap.set("n", "<Leader>pg", fzf.grep)
-      vim.keymap.set("n", "<Leader>pl", fzf.git_commits)
+      vim.keymap.set("n", "<Leader>pg", fzf.live_grep)
+      vim.keymap.set("n", "<Leader>pl", fzf.grep_last)
+      vim.keymap.set("n", "<Leader>pc", fzf.git_commits)
       vim.keymap.set("n", "<Leader>pm", fzf.marks)
       vim.keymap.set("n", "<Leader>ps", fzf.git_status)
 
       vim.keymap.set("n", "<Leader>pw", fzf.grep_cword)
       vim.keymap.set("n", "<Leader>pW", fzf.grep_cWORD)
 
-      -- vim.keymap.set("n", "<Leader>ld", fzf.lsp_definitions)
-      -- vim.keymap.set("n", "<Leader>li", fzf.lsp_implementations)
-      -- vim.keymap.set("n", "<Leader>lr", fzf.lsp_references)
-      -- vim.keymap.set("n", "<Leader>ls", fzf.lsp_document_symbols)
-      -- vim.keymap.set("n", "<Leader>lw", fzf.lsp_live_workspace_symbols)
-      -- vim.keymap.set("n", "<Leader>lx", fzf.lsp_document_diagnostics)
+      vim.keymap.set("n", "<Leader>ld", fzf.lsp_document_symbols)
+      vim.keymap.set("n", "<Leader>lw", fzf.lsp_live_workspace_symbols)
+      -- vim.keymap.set("n", "<Leader>lC", function() fzf.lsp_live_workspace_symbols({ regex_filter = "Class" }) end)
+      -- vim.keymap.set("n", "<Leader>lM", function() fzf.lsp_live_workspace_symbols({ regex_filter = "Method" }) end)
     end,
   },
 
@@ -48,6 +47,10 @@ return {
     -- dev = true,
     branch = "harpoon2",
     dependencies = { "nvim-lua/plenary.nvim" },
+    keys = {
+      {"<C-\\>", "Harpoon toggle"},
+      {"<Leader>h", "Harpoon (sub)commands"},
+    },
     config = function ()
       local harpoon = require("harpoon");
       harpoon:setup()

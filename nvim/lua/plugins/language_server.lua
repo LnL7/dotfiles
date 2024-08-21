@@ -20,6 +20,9 @@ return {
       null_ls.setup({
         sources = {
           null_ls.builtins.hover.printenv,
+          -- null_ls.builtins.diagnostics.mypy,
+          null_ls.builtins.formatting.black,
+          null_ls.builtins.formatting.isort,
         },
       })
       null_ls.register(require("none-ls-shellcheck.diagnostics"))
@@ -35,6 +38,9 @@ return {
     },
     cmd = {"LspInfo", "LspInstall", "LspStart"},
     event = {"BufReadPre", "BufNewFile"},
+    keys = {
+      {"<Leader>l", "LSP (sub)commands"},
+    },
     config = function ()
       local lsp_zero = require("lsp-zero")
       lsp_zero.extend_lspconfig()
