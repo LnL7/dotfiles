@@ -26,6 +26,7 @@ return {
   },
 
   { "nvim-treesitter/nvim-treesitter",
+    lazy = false,
     build = ":TSUpdate",
     config = function ()
       require("nvim-treesitter.configs").setup({
@@ -47,7 +48,7 @@ return {
   },
 
   { "nvim-treesitter/nvim-treesitter-context",
-    dependencies = {"nvim-treesitter/nvim-treesitter-context"},
+    dependencies = {"nvim-treesitter/nvim-treesitter"},
   },
 
   -- { "RRethy/vim-illuminate",

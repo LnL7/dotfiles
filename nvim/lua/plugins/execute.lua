@@ -19,6 +19,7 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "rouge8/neotest-rust",
     },
+    lazy = false,
     cmd = "Neotest",
     keys = {
       {"t<CR>", desc = "Neotest run"},
@@ -35,6 +36,8 @@ return {
           require("neotest-go"),
           require("neotest-rust"),
           require("neotest-zig"),
+
+          require("lnl.neotest-odin"),
         }
       })
 
