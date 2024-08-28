@@ -40,23 +40,18 @@ style = "normal"
 family = "MesloLGS Nerd Font Mono"
 
 [[keyboard.bindings]]
-chars = "\u001Bc"
+chars = "\u001bc"
 key = "C"
 mods = "Alt"
 
 [[keyboard.bindings]]
-chars = "\u001Bp"
-key = "P"
+chars = "\u001bv"
+key = "V"
 mods = "Alt"
 
 [[keyboard.bindings]]
-chars = "\u001Br"
-key = "R"
-mods = "Alt"
-
-[[keyboard.bindings]]
-chars = "\u001Bs"
-key = "S"
+chars = "\u001b\\"
+key = "\\"
 mods = "Alt"
 
 [window]

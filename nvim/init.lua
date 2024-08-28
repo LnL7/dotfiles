@@ -48,6 +48,8 @@ vim.keymap.set("c", "%%", "<C-r>=expand('%:h') . '/'<CR>")
 
 vim.keymap.set({"n", "v"}, "<Leader>c", [["+y]])
 vim.keymap.set({"n", "v"}, "<Leader>v", [["+p]])
+vim.keymap.set({"n", "v"}, "<M-c>", [["+y]])
+vim.keymap.set({"n", "v"}, "<M-v>", [["+p]])
 
 vim.keymap.set("n", "<C-k>", ":cprev<CR>")
 vim.keymap.set("n", "<C-j>", ":cnext<CR>")
