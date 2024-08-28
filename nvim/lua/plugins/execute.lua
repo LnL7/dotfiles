@@ -28,6 +28,9 @@ return {
     config = function ()
       local neotest = require("neotest")
       neotest.setup({
+        discovery = {
+          enabled = false,
+        },
         output = { open_on_run = false },
         output_panel = { open = "vsplit" },
         adapters = {
