@@ -22,8 +22,10 @@ return {
     lazy = false,
     cmd = "Neotest",
     keys = {
-      {"t<CR>", desc = "Neotest run"},
       {"<Leader>t", desc = "Neotest (sub)commands"},
+      {"t<CR>", desc = "Neotest run"},
+      {"t[", desc = "Previous failed test"},
+      {"t]", desc = "Previous failed test"},
     },
     config = function ()
       local neotest = require("neotest")
@@ -44,12 +46,13 @@ return {
         }
       })
 
-      vim.keymap.set("n", "t<CR>", neotest.run.run)
-      vim.keymap.set("n", "t[", function() neotest.jump.prev({ status = "failed" }) end)
-      vim.keymap.set("n", "t]", function() neotest.jump.next({ status = "failed" }) end)
       vim.keymap.set("n", "<Leader>tf", function() neotest.run.run(vim.fn.expand("%:h")) end)
       vim.keymap.set("n", "<Leader>to", function() neotest.output.open({ enter = true }) end)
       vim.keymap.set("n", "<Leader>tO", function() neotest.output_panel.toggle() end)
+
+      vim.keymap.set("n", "t<CR>", neotest.run.run)
+      vim.keymap.set("n", "[t", function() neotest.jump.prev({ status = "failed" }) end)
+      vim.keymap.set("n", "]t", function() neotest.jump.next({ status = "failed" }) end)
 
     end,
   },

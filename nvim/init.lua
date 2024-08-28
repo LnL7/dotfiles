@@ -51,11 +51,6 @@ vim.keymap.set({"n", "v"}, "<Leader>v", [["+p]])
 vim.keymap.set({"n", "v"}, "<M-c>", [["+y]])
 vim.keymap.set({"n", "v"}, "<M-v>", [["+p]])
 
-vim.keymap.set("n", "<C-k>", ":cprev<CR>")
-vim.keymap.set("n", "<C-j>", ":cnext<CR>")
-vim.keymap.set("n", "[c", ":cprev<CR>")
-vim.keymap.set("n", "]c", ":cnext<CR>")
-
 vim.api.nvim_create_autocmd({"TextYankPost"}, {
   group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
   callback = function()

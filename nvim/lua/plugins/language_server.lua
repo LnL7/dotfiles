@@ -52,6 +52,8 @@ return {
         -- see :help lsp-zero-keybindings to learn the available actions
         lsp_zero.default_keymaps({ buffer = bufnr })
 
+        vim.diagnostic.config({ virtual_text = false })
+
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
         vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr })
         vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr })

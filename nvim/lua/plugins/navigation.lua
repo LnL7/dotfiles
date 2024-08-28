@@ -40,11 +40,18 @@ return {
       { "<Leader>q", desc = "Trouble quickfix" },
       { "gr", desc = "Trouble goto references" },
       { "gs", desc = "Trouble document symbols" },
+      { "]x", desc = "Trouble previous" },
+      { "]x", desc = "Trouble next" },
     },
     config = function ()
       local trouble = require("trouble")
+      trouble.setup({
+        focus = true,
+        auto_refresh = false,
+        auto_preview = false,
+      })
 
-      vim.keymap.set("n", "<Leader>x", trouble.toggle)
+      vim.keymap.set("n", "<Leader>x", trouble.close)
       vim.keymap.set("n", "<Leader>r", function() trouble.toggle("lsp_references") end)
       vim.keymap.set("n", "<Leader>s", function() trouble.toggle("lsp_document_symbols") end)
       vim.keymap.set("n", "<Leader>d", function() trouble.toggle("diagnostics") end)
@@ -53,8 +60,20 @@ return {
         trouble.toggle("quickfix")
       end)
 
-      vim.keymap.set("n", "<C-k>", function() trouble.prev({ skip_groups = true, jump = true }) end)
-      vim.keymap.set("n", "<C-j>", function() trouble.next({ skip_groups = true, jump = true }) end)
+      vim.keymap.set("n", "<C-k>", function()
+        if trouble.is_open() then
+          trouble.prev({ skip_groups = true, jump = true })
+        else
+          pcall(vim.cmd, "cprev")
+        end
+      end)
+      vim.keymap.set("n", "<C-j>", function()
+        if trouble.is_open() then
+          trouble.next({ skip_groups = true, jump = true })
+        else
+          pcall(vim.cmd, "cnext")
+        end
+      end)
       vim.keymap.set("n", "[x", trouble.prev)
       vim.keymap.set("n", "]x", trouble.next)
     end,
