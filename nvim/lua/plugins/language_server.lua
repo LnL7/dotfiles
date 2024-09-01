@@ -41,6 +41,7 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "williamboman/mason-lspconfig.nvim",
       "folke/neodev.nvim",
+      "simrat39/rust-tools.nvim",
     },
     cmd = { "LspInfo", "LspInstall", "LspStart" },
     event = { "BufReadPre", "BufNewFile" },
@@ -51,8 +52,6 @@ return {
       lsp_zero.on_attach(function(_, bufnr)
         -- see :help lsp-zero-keybindings to learn the available actions
         lsp_zero.default_keymaps({ buffer = bufnr })
-
-        vim.diagnostic.config({ virtual_text = false })
 
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
         vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr })
@@ -70,46 +69,41 @@ return {
         vim.keymap.set("n", "<Leader>F", function()
           vim.lsp.buf.format({ async = true })
         end, { buffer = bufnr })
-        vim.keymap.set("n", "<Leader>D", function()
+
+        vim.diagnostic.config({ virtual_text = false })
+
+        vim.keymap.set("n", "<Leader>D", vim.diagnostic.open_float)
+        vim.keymap.set("n", "<Leader>E", function()
           local config = vim.diagnostic.config()
           vim.diagnostic.config({ virtual_text = not config.virtual_text })
         end)
       end)
 
       require("mason-lspconfig").setup({
-        ensure_installed = { "clangd", "gopls", "ols", "rust_analyzer", "pyright", "tsserver" },
+        ensure_installed = { "gopls", "rust_analyzer", "pyright", "tsserver" },
         handlers = {
           lsp_zero.default_setup,
-          lua_ls = function()
+          ["lua_ls"] = function()
             local lua_opts = lsp_zero.nvim_lua_ls()
             require("lspconfig").lua_ls.setup(lua_opts)
           end,
-          -- ols = function ()
-          --   require("lspconfig").ols.setup({ cmd = {"/Users/djordan/Code/odin-lang/ols/ols", "-stdin"} })
-          -- end,
+          ["rust_analyzer"] = function()
+            local rust_tools = require('rust-tools')
+            rust_tools.setup({
+              server = {
+                on_attach = function(_, bufnr)
+                  vim.keymap.set("n", "K", rust_tools.hover_actions.hover_actions, { buffer = bufnr })
+                  vim.keymap.set("n", "<Leader>A", rust_tools.code_action_group.code_action_group, { buffer = bufnr })
+                end,
+              },
+            })
+          end,
         }
       })
+
+      require("lspconfig").ols.setup({})
+      require('lspconfig').gleam.setup({})
     end
-  },
-
-  { "folke/neodev.nvim",
-    opts = {}
-  },
-
-  {
-    "simrat39/rust-tools.nvim",
-    dependencies = { "simrat39/rust-tools.nvim" },
-    config = function()
-      local rust_tools = require('rust-tools')
-      rust_tools.setup({
-        server = {
-          on_attach = function(_, bufnr)
-            vim.keymap.set("n", "K", rust_tools.hover_actions.hover_actions, { buffer = bufnr })
-            vim.keymap.set("n", "<Leader>A", rust_tools.code_action_group.code_action_group, { buffer = bufnr })
-          end,
-        },
-      })
-    end,
   },
 
   {

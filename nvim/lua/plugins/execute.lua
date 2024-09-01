@@ -47,6 +47,7 @@ return {
       })
 
       vim.keymap.set("n", "<Leader>tf", function() neotest.run.run(vim.fn.expand("%:h")) end)
+      vim.keymap.set("n", "<Leader>tl", function() neotest.run.run_last() end)
       vim.keymap.set("n", "<Leader>to", function() neotest.output.open({ enter = true }) end)
       vim.keymap.set("n", "<Leader>tO", function() neotest.output_panel.toggle() end)
 
