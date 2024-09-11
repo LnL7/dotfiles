@@ -39,22 +39,8 @@ style = "normal"
 [font.normal]
 family = "MesloLGS Nerd Font Mono"
 
-[[keyboard.bindings]]
-chars = "\u001bc"
-key = "C"
-mods = "Alt"
-
-[[keyboard.bindings]]
-chars = "\u001bv"
-key = "V"
-mods = "Alt"
-
-[[keyboard.bindings]]
-chars = "\u001b\\"
-key = "\\"
-mods = "Alt"
-
 [window]
+option_as_alt = "Both"
 decorations = "none"
 opacity = 0.98
 

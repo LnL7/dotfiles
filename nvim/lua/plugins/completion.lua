@@ -68,21 +68,21 @@ return {
           -- end, { 'i', 's' }),
         }),
         sources = {
-          { name = "buffer", keyword_length = 5 },
-          { name = "nvim_lsp", keyword_length = 2 },
+          { name = "buffer", keyword_length = 6 },
+          { name = "nvim_lsp", keyword_length = 4 },
           { name = "luasnip", keyword_length = 2 },
         },
       })
       cmp.setup.cmdline({"/", "?"}, {
         mapping = cmp.mapping.preset.cmdline(),
         sources = {
-          { name = "buffer", keyword_length = 5 },
+          { name = "buffer", keyword_length = 2 },
         },
       })
       cmp.setup.cmdline(":", {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
-          { name = "path", keyword_length = 5 }
+          { name = "path", keyword_length = 6 }
         }, {
           { name = "cmdline", keyword_length = 2 }
         }),

@@ -1,3 +1,5 @@
+# vim:ft=zsh
+
 :d() {
     eval "$(direnv hook zsh)"
 }
@@ -30,8 +32,11 @@
 z() {
     local dir
 
-    dir=$(find ~/Code -mindepth 2 -maxdepth 2 | fzf --preview-window right:50% --preview 'git -C {} log --pretty=color --color=always -16')
+    dir=$(find ~/Code -maxdepth 3 -name '.git' | sed 's/\/.git$//' | fzf --preview-window right:50% --preview 'git -C {} log --pretty=color --color=always -16')
     cd "$dir"
+    if [ -f "$dir/.default-pwd" ]; then
+        cd "$(< .default-pwd)"
+    fi
 }
 
 fzf-store() {

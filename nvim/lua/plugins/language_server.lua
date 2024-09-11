@@ -22,8 +22,6 @@ return {
       null_ls.setup({
         sources = {
           null_ls.builtins.hover.printenv,
-          -- null_ls.builtins.diagnostics.mypy,
-          null_ls.builtins.formatting.black,
           null_ls.builtins.formatting.isort,
 
           require("none-ls-shellcheck.diagnostics"),
@@ -56,8 +54,9 @@ return {
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
         vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr })
         vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr })
-        vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr })
-        vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr })
+        vim.keymap.set("n", "gr", function()
+          vim.lsp.buf.references({ includeDeclaration = false })
+        end, { buffer = bufnr })
 
         vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { buffer = bufnr })
         vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { buffer = bufnr })
@@ -80,12 +79,26 @@ return {
       end)
 
       require("mason-lspconfig").setup({
-        ensure_installed = { "gopls", "rust_analyzer", "pyright", "tsserver" },
+        ensure_installed = { "gopls", "rust_analyzer", "pyright", "ts_ls" },
         handlers = {
           lsp_zero.default_setup,
           ["lua_ls"] = function()
             local lua_opts = lsp_zero.nvim_lua_ls()
             require("lspconfig").lua_ls.setup(lua_opts)
+          end,
+          ["pyright"] = function()
+            require("lspconfig").pyright.setup({
+              settings = {
+                pyright = {
+                  disableTaggedHints = true,
+                },
+              },
+            })
+          end,
+          ["ruff_lsp"] = function()
+            require("lspconfig").ruff_lsp.setup({
+              organizeImports = false,
+            })
           end,
           ["rust_analyzer"] = function()
             local rust_tools = require('rust-tools')
@@ -110,6 +123,7 @@ return {
     "github/copilot.vim",
     cmd = "Copilot",
     config = function()
+      -- vim.g.copilot_filetypes = {["*"] = false}
     end,
   }
 

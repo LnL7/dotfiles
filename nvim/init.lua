@@ -50,6 +50,7 @@ vim.keymap.set({"n", "v"}, "<Leader>c", [["+y]])
 vim.keymap.set({"n", "v"}, "<Leader>v", [["+p]])
 vim.keymap.set({"n", "v"}, "<M-c>", [["+y]])
 vim.keymap.set({"n", "v"}, "<M-v>", [["+p]])
+vim.keymap.set({"i"}, "<M-v>", [[<Esc>"+p]])
 
 vim.api.nvim_create_autocmd({"TextYankPost"}, {
   group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),

@@ -21,6 +21,7 @@ return {
       })
 
       vim.keymap.set("n", "<Leader>z", fzf.builtin)
+      vim.keymap.set("n", "<Leader>b", fzf.buffers)
       vim.keymap.set("n", "<Leader>f", fzf.files)
       vim.keymap.set("n", "<Leader>e", function() fzf.files({ cwd = vim.fn.expand("%:h") }) end)
       vim.keymap.set("n", "<Leader>g", fzf.live_grep)
