@@ -46,8 +46,6 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("n", "//", ":nohlsearch<CR>")
 vim.keymap.set("c", "%%", "<C-r>=expand('%:h') . '/'<CR>")
 
-vim.keymap.set({"n", "v"}, "<Leader>c", [["+y]])
-vim.keymap.set({"n", "v"}, "<Leader>v", [["+p]])
 vim.keymap.set({"n", "v"}, "<M-c>", [["+y]])
 vim.keymap.set({"n", "v"}, "<M-v>", [["+p]])
 vim.keymap.set({"i"}, "<M-v>", [[<Esc>"+p]])

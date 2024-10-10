@@ -114,7 +114,9 @@ return {
         }
       })
 
-      require("lspconfig").ols.setup({})
+      require("lspconfig").ols.setup({
+      --   cmd = { "~/.local/bin/ols", "-stdin" },
+      })
       require('lspconfig').gleam.setup({})
     end
   },
