@@ -8,6 +8,7 @@ return {
     init = function()
       vim.g.lsp_zero_extend_cmp = 0
       vim.g.lsp_zero_extend_lspconfig = 0
+      vim.g.lsp_zero_ui_float_border = "rounded"
     end,
   },
 
@@ -22,7 +23,9 @@ return {
       null_ls.setup({
         sources = {
           null_ls.builtins.hover.printenv,
+          null_ls.builtins.formatting.black,
           null_ls.builtins.formatting.isort,
+          -- null_ls.builtins.diagnostics.flake8,
 
           require("none-ls-shellcheck.diagnostics"),
           require("none-ls-shellcheck.code_actions"),
@@ -79,6 +82,7 @@ return {
       end)
 
       require("mason-lspconfig").setup({
+        automatic_enable = true,
         ensure_installed = { "gopls", "rust_analyzer", "pyright", "ts_ls" },
         handlers = {
           lsp_zero.default_setup,
@@ -95,9 +99,17 @@ return {
               },
             })
           end,
-          ["ruff_lsp"] = function()
-            require("lspconfig").ruff_lsp.setup({
-              organizeImports = false,
+          ["ruff"] = function()
+            require("lspconfig").ruff.setup({
+              init_options = {
+                settings = {
+                  organizeImports = false,
+                  lint = {
+                    enable = true,
+                    ignore = { "E203", "E501" },
+                  }
+                },
+              },
             })
           end,
           ["rust_analyzer"] = function()
@@ -112,6 +124,17 @@ return {
             })
           end,
         }
+      })
+
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        callback = function()
+          local mode = vim.api.nvim_get_mode().mode
+          local filetype = vim.bo.filetype
+          if vim.bo.modified == true and mode == 'n' and filetype == "python" then
+            vim.cmd('lua vim.lsp.buf.format()')
+          else
+          end
+        end
       })
 
       require("lspconfig").ols.setup({

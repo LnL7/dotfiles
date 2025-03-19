@@ -36,7 +36,7 @@ return {
         output = { open_on_run = false },
         output_panel = { open = "vsplit" },
         adapters = {
-          require("neotest-python")({ runner = "pytest", args = {"-vv"} }),
+          require("neotest-python")({ runner = "pytest", args = {"-vv", "--log-level=INFO"} }),
           require("neotest-elixir"),
           require("neotest-go"),
           require("neotest-rust"),
