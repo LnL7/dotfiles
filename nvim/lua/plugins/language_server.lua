@@ -22,6 +22,7 @@ return {
       null_ls.setup({
         sources = {
           null_ls.builtins.hover.printenv,
+          null_ls.builtins.formatting.black,
           null_ls.builtins.formatting.isort,
 
           require("none-ls-shellcheck.diagnostics"),
@@ -95,9 +96,17 @@ return {
               },
             })
           end,
-          ["ruff_lsp"] = function()
-            require("lspconfig").ruff_lsp.setup({
-              organizeImports = false,
+          ["ruff"] = function()
+            require("lspconfig").ruff.setup({
+              init_options = {
+                settings = {
+                  organizeImports = false,
+                  lint = {
+                    enable = true,
+                    ignore = { "E203", "E501" },
+                  }
+                },
+              },
             })
           end,
           ["rust_analyzer"] = function()
@@ -112,6 +121,17 @@ return {
             })
           end,
         }
+      })
+
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        callback = function()
+          local mode = vim.api.nvim_get_mode().mode
+          local filetype = vim.bo.filetype
+          if vim.bo.modified == true and mode == 'n' and filetype == "python" then
+            vim.cmd('lua vim.lsp.buf.format()')
+          else
+          end
+        end
       })
 
       require("lspconfig").ols.setup({

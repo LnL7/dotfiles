@@ -45,17 +45,48 @@ return {
       { "]x", desc = "Trouble next" },
     },
     config = function ()
+
+      -- This filter doesn't seem to apply consistently, also doesn't detect multi-line imports
+      local filter_python_lsp_imports = function(item)
+        -- eg. {source = "lsp", item = {client = "pylsp", text = "<line>"}}
+        return not string.find(item.item.text, "^from ")
+      end
+
       local trouble = require("trouble")
       trouble.setup({
         focus = true,
         auto_refresh = false,
         auto_preview = false,
+        modes = {
+          symbols = {
+            auto_refresh = true,
+          },
+          lsp_references = {
+            groups = {},
+            format = "{text:ts}\t\t{filename}:{pos}",
+            sort = { "filename", "pos" },
+            keys = {
+              C = {
+                action = function(view)
+                  view:filter({ any = {ft = "python", function(item) return string.find(item.item.text, "^class ") end} }, { toggle = true })
+                end,
+                desc = "Toggle class definition filter",
+              },
+            },
+            filter = {
+              any = { ft = "python", filter_python_lsp_imports },
+            },
+          },
+        },
       })
 
-      vim.keymap.set("n", "<Leader>x", trouble.close)
       vim.keymap.set("n", "<Leader>r", function() trouble.toggle("lsp_references") end)
-      vim.keymap.set("n", "<Leader>s", function() trouble.toggle("lsp_document_symbols") end)
+      vim.keymap.set("n", "<Leader>s", function() trouble.toggle("symbols") end)
       vim.keymap.set("n", "<Leader>d", function() trouble.toggle("diagnostics") end)
+      vim.keymap.set("n", "<Leader>x", function()
+        vim.cmd("cclose")
+        trouble.close()
+      end)
       vim.keymap.set("n", "<Leader>q", function()
         vim.cmd("cclose")
         trouble.toggle("quickfix")
