@@ -66,6 +66,8 @@ return {
 
         vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, { buffer = bufnr })
 
+        vim.keymap.set("n", "g.", vim.lsp.buf.code_action, { buffer = bufnr })
+        vim.keymap.set("n", "grn", vim.lsp.buf.rename, { buffer = bufnr })
         vim.keymap.set("n", "<Leader>A", vim.lsp.buf.code_action, { buffer = bufnr })
         vim.keymap.set("n", "<Leader>R", vim.lsp.buf.rename, { buffer = bufnr })
         vim.keymap.set("n", "<Leader>F", function()
@@ -147,8 +149,12 @@ return {
   {
     "github/copilot.vim",
     cmd = "Copilot",
+    keys = {
+      {"<M-Tab>", mode = "i", "Copilot suggestion"},
+    },
     config = function()
-      -- vim.g.copilot_filetypes = {["*"] = false}
+      vim.g.copilot_filetypes = {["*"] = false}
+      vim.keymap.set("i", "<M-Tab>", "<Plug>(copilot-suggest)", { silent = true })
     end,
   }
 
