@@ -1,0 +1,25 @@
+# This is the configuration file for Ghostty.
+#
+# This template file has been automatically created at the following
+# path since Ghostty couldn't find any existing config files on your system:
+#
+#   /Users/daiderd/Library/Application Support/com.mitchellh.ghostty/config
+#
+# The template does not set any default options, since Ghostty ships
+# with sensible defaults for all options. Users should only need to set
+# options that they want to change from the default.
+#
+# Run `ghostty +show-config --default --docs` to view a list of
+# all available config options and their default values.
+#
+# Additionally, each config option is also explained in detail
+# on Ghostty's website, at https://ghostty.org/docs/config.
+
+font-family = "MesloLGS Nerd Font Mono"
+background = #192330
+foreground = #cdcecf
+bold-is-bright = true
+
+# background-opacity = 0.95
+# macos-titlebar-style = transparent
+# macos-titlebar-proxy-icon = hidden
