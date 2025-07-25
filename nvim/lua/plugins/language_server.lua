@@ -25,13 +25,44 @@ return {
           null_ls.builtins.hover.printenv,
           null_ls.builtins.formatting.black,
           null_ls.builtins.formatting.isort,
-          -- null_ls.builtins.diagnostics.flake8,
 
           require("none-ls-shellcheck.diagnostics"),
           require("none-ls-shellcheck.code_actions"),
-
           -- require("lnl.odin-check.diagnostics"),
         },
+      })
+    end
+  },
+
+  {
+    "mason-org/mason-lspconfig.nvim",
+    dependencies = {
+      { "mason-org/mason.nvim", opts = {} },
+      "neovim/nvim-lspconfig",
+    },
+    config = function()
+      vim.lsp.config('pyright', {
+        settings = {
+          disableTaggedHints = true,
+        },
+      })
+      vim.lsp.config('ruff', {
+        init_options = {
+          settings = {
+            lineLength = 119,
+            organizeImports = false,
+            lint = {
+              enable = true,
+              select = { "E", "F", "W", "U", "C4", "LOG0", "ANN" },
+              ignore = { "E203", "E501", "E731", "E741", "UP032", "ANN401" },
+            }
+          },
+        },
+      })
+
+      require("mason-lspconfig").setup({
+        automatic_enable = true,
+        ensure_installed = { "gopls", "rust_analyzer", "pyright", "ts_ls" },
       })
     end
   },
@@ -40,9 +71,6 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
-      "williamboman/mason-lspconfig.nvim",
-      "folke/neodev.nvim",
-      "simrat39/rust-tools.nvim",
     },
     cmd = { "LspInfo", "LspInstall", "LspStart" },
     event = { "BufReadPre", "BufNewFile" },
@@ -56,77 +84,40 @@ return {
 
         vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
         vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr })
-        vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr })
-        vim.keymap.set("n", "gr", function()
-          vim.lsp.buf.references({ includeDeclaration = false })
+        vim.keymap.set("n", "gA", vim.lsp.buf.references, { buffer = bufnr })
+        vim.keymap.set("n", "gI", vim.lsp.buf.implementation, { buffer = bufnr })
+        vim.keymap.set("n", "gO", vim.lsp.buf.document_symbol, { buffer = bufnr })
+        vim.keymap.set("n", "gy", vim.lsp.buf.type_definition, { buffer = bufnr })
+
+        vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, { buffer = bufnr })
+        vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, { buffer = bufnr })
+
+        vim.keymap.set("n", "K", function()
+          vim.lsp.buf.hover({ border = "single", max_height = 25, max_width = 120 })
         end, { buffer = bufnr })
-
-        vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { buffer = bufnr })
-        vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { buffer = bufnr })
-
-        vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, { buffer = bufnr })
+        vim.keymap.set("i", "<C-h>", function()
+          vim.lsp.buf.signature_help({ border = "single" })
+        end, { buffer = bufnr })
 
         vim.keymap.set("n", "g.", vim.lsp.buf.code_action, { buffer = bufnr })
-        vim.keymap.set("n", "grn", vim.lsp.buf.rename, { buffer = bufnr })
-        vim.keymap.set("n", "<Leader>A", vim.lsp.buf.code_action, { buffer = bufnr })
-        vim.keymap.set("n", "<Leader>R", vim.lsp.buf.rename, { buffer = bufnr })
-        vim.keymap.set("n", "<Leader>F", function()
-          vim.lsp.buf.format({ async = true })
-        end, { buffer = bufnr })
-
-        vim.diagnostic.config({ virtual_text = false })
+        vim.keymap.set("n", "cd", vim.lsp.buf.rename, { buffer = bufnr })
 
         vim.keymap.set("n", "<Leader>D", vim.diagnostic.open_float)
         vim.keymap.set("n", "<Leader>E", function()
-          local config = vim.diagnostic.config()
+          local config = vim.diagnostic.config() or {}
           vim.diagnostic.config({ virtual_text = not config.virtual_text })
         end)
-      end)
 
-      require("mason-lspconfig").setup({
-        automatic_enable = true,
-        ensure_installed = { "gopls", "rust_analyzer", "pyright", "ts_ls" },
-        handlers = {
-          lsp_zero.default_setup,
-          ["lua_ls"] = function()
-            local lua_opts = lsp_zero.nvim_lua_ls()
-            require("lspconfig").lua_ls.setup(lua_opts)
-          end,
-          ["pyright"] = function()
-            require("lspconfig").pyright.setup({
-              settings = {
-                pyright = {
-                  disableTaggedHints = true,
-                },
-              },
-            })
-          end,
-          ["ruff"] = function()
-            require("lspconfig").ruff.setup({
-              init_options = {
-                settings = {
-                  organizeImports = false,
-                  lint = {
-                    enable = true,
-                    ignore = { "E203", "E501" },
-                  }
-                },
-              },
-            })
-          end,
-          ["rust_analyzer"] = function()
-            local rust_tools = require('rust-tools')
-            rust_tools.setup({
-              server = {
-                on_attach = function(_, bufnr)
-                  vim.keymap.set("n", "K", rust_tools.hover_actions.hover_actions, { buffer = bufnr })
-                  vim.keymap.set("n", "<Leader>A", rust_tools.code_action_group.code_action_group, { buffer = bufnr })
-                end,
-              },
-            })
-          end,
-        }
-      })
+        vim.diagnostic.config({
+          virtual_text = false,
+          signs = {
+            severity = { min = vim.diagnostic.severity.INFO },
+          },
+          jump = {
+            severity = { min = vim.diagnostic.severity.WARN },
+          },
+        })
+      end)
 
       vim.api.nvim_create_autocmd("BufWritePre", {
         callback = function()
@@ -138,11 +129,6 @@ return {
           end
         end
       })
-
-      require("lspconfig").ols.setup({
-      --   cmd = { "~/.local/bin/ols", "-stdin" },
-      })
-      require('lspconfig').gleam.setup({})
     end
   },
 

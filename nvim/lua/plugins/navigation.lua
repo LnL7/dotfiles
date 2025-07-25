@@ -29,6 +29,21 @@ return {
       vim.keymap.set("n", "<Leader>W", fzf.grep_cWORD)
 
       vim.keymap.set("n", [[<C-\>]], fzf.resume)
+
+      local symbol_filter = function(item, _)
+        if item.kind:match('Class') or item.kind:match('Struct') or item.kind:match('Enum') or item.kind:match('Method') or item.kind:match('Function') then
+          return true
+        else
+          return false
+        end
+      end
+      vim.keymap.set("n", "g/", fzf.live_grep)
+      vim.keymap.set("n", "gs", function()
+        fzf.lsp_document_symbols({ regex_filter = symbol_filter, exclude = true })
+      end)
+      vim.keymap.set("n", "<Leader>s", function()
+        fzf.lsp_document_symbols({ regex_filter = symbol_filter, exclude = true })
+      end)
     end,
   },
 
@@ -58,6 +73,13 @@ return {
         auto_refresh = false,
         auto_preview = false,
         modes = {
+          diagnostics = {
+            auto_refresh = true,
+            filter = { buf = 0 },
+            groups = { "severity", "filename" },
+            sort = { "pos" },
+            source = "diagnostics",
+          },
           symbols = {
             auto_refresh = true,
           },
@@ -82,7 +104,7 @@ return {
 
       vim.keymap.set("n", "<Leader>r", function() trouble.toggle("lsp_references") end)
       vim.keymap.set("n", "<Leader>s", function() trouble.toggle("symbols") end)
-      vim.keymap.set("n", "<Leader>d", function() trouble.toggle("diagnostics") end)
+      vim.keymap.set("n", "<Leader>d", function() trouble.toggle({ mode = "diagnostics" }) end)
       vim.keymap.set("n", "<Leader>x", function()
         vim.cmd("cclose")
         trouble.close()
