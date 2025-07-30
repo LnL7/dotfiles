@@ -16,7 +16,11 @@ return {
       local dap_python = require("dap-python")
       dap_go.setup()
       dap_lldb.setup()
-      dap_python.setup()
+      dap_python.setup("python3")
+
+      require("nvim-dap-virtual-text").setup({
+        enabled = false
+      })
 
       dap.configurations.odin = {
         {
@@ -29,9 +33,17 @@ return {
         },
       }
 
+      -- require('dap').set_exception_breakpoints({"raised", "uncaught"})
+
       vim.keymap.set("n", "<Leader>B", dap.toggle_breakpoint)
-      vim.keymap.set("n", "<Leader>X", dap.run_to_cursor)
-      vim.keymap.set("n", "<Leader>C", dap.continue)
+      vim.keymap.set("n", "<Leader>X", dap.continue)
+      vim.keymap.set("n", "<Leader>V", dap.run_to_cursor)
+      vim.keymap.set("n", "<Leader>C", function()
+        dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+      end)
+      vim.keymap.set("n", "<Leader>L", function()
+        dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
+      end)
     end
   },
 
@@ -46,18 +58,19 @@ return {
         layouts = {
           {
             elements = {
-              { id = "stacks", size = 0.7 },
-              { id = "breakpoints", size = 0.3 },
+              { id = "scopes", size = 0.6 },
+              { id = "stacks", size = 0.2 },
+              { id = "breakpoints", size = 0.2 },
             },
             position = "right",
-            size = 70,
+            size = 60,
           },
           {
             elements = {
               { id = "repl", size = 1 },
             },
             position = "bottom",
-            size = 20
+            size = 30
           },
         }
       })

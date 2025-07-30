@@ -19,6 +19,7 @@ return {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-cmdline",
       "hrsh7th/cmp-path",
+      "rcarriga/cmp-dap",
       "saadparwaiz1/cmp_luasnip",
     },
     events = {"CmdLineEnter", "InsertEnter"},
@@ -30,7 +31,13 @@ return {
       local cmp_action = lsp_zero.cmp_action()
 
       cmp.setup({
-        formatting = lsp_zero.cmp_format(),
+        enabled = function()
+          return (
+            vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+            or require("cmp_dap").is_dap_buffer()
+          )
+        end,
+        formatting = lsp_zero.cmp_format({}),
         mapping = cmp.mapping.preset.insert({
           ["<C-u>"] = cmp.mapping.scroll_docs(-4),
           ["<C-d>"] = cmp.mapping.scroll_docs(4),
@@ -42,6 +49,11 @@ return {
           { name = "buffer", keyword_length = 6 },
           { name = "nvim_lsp", keyword_length = 4 },
           { name = "luasnip", keyword_length = 2 },
+        },
+      })
+      cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+        sources = {
+          { name = "dap" },
         },
       })
       cmp.setup.cmdline({"/", "?"}, {
