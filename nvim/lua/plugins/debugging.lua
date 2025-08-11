@@ -8,7 +8,10 @@ return {
       "leoluz/nvim-dap-go",
       "mfussenegger/nvim-dap-python",
     },
-    cmds = { "DapContinue", "DapToggleBreakpoint" },
+    cmds = { "DapNew" },
+    keys = {
+      {"<Leader>d", desc = "Debugger"},
+    },
     config = function()
       local dap = require('dap')
       local dap_go = require("dap-go")
@@ -19,7 +22,7 @@ return {
       dap_python.setup("python3")
 
       require("nvim-dap-virtual-text").setup({
-        enabled = false
+        enabled = true
       })
 
       dap.configurations.odin = {
@@ -33,17 +36,25 @@ return {
         },
       }
 
-      -- require('dap').set_exception_breakpoints({"raised", "uncaught"})
-
-      vim.keymap.set("n", "<Leader>B", dap.toggle_breakpoint)
-      vim.keymap.set("n", "<Leader>X", dap.continue)
-      vim.keymap.set("n", "<Leader>V", dap.run_to_cursor)
-      vim.keymap.set("n", "<Leader>C", function()
+      -- debugger
+      vim.keymap.set("n", "<Leader>db", dap.toggle_breakpoint, { desc = "Toggle breakpoint" })
+      vim.keymap.set("n", "<Leader>dd", dap.clear_breakpoints, { desc = "Clear breakpoints" })
+      vim.keymap.set("n", "<Leader>dg", dap.run_to_cursor, { desc = "Run until cursor" })
+      vim.keymap.set("n", "<Leader>dh", dap.step_over, { desc = "Step over" })
+      vim.keymap.set("n", "<Leader>dj", dap.step_into, { desc = "Step into" })
+      vim.keymap.set("n", "<Leader>dk", dap.step_out, { desc = "Step out" })
+      vim.keymap.set("n", "<Leader>dx", dap.continue, { desc = "Continue debugger" })
+      vim.keymap.set("n", "<Leader>dc", function()
         dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-      end)
-      vim.keymap.set("n", "<Leader>L", function()
-        dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
-      end)
+      end, { desc = "Add condition" })
+      vim.keymap.set("n", "<Leader>dl", function()
+        local message = "TRACE {" .. vim.fn.expand("<cword>") .. "}"
+        dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: ", message))
+      end, { desc = "Add logpoint" })
+
+      vim.keymap.set("n", "<Leader>dA", function() dap.list_breakpoints(true) end, { desc = "Breakpoint list" })
+      vim.keymap.set("n", "<Leader>dQ", dap.terminate, { desc = "Terminate" })
+      vim.keymap.set("n", "<Leader>dR", dap.restart, { desc = "Restart" })
     end
   },
 
@@ -75,9 +86,12 @@ return {
         }
       })
 
-      vim.keymap.set("n", "<Leader>~", dapui.toggle)
-      vim.keymap.set("n", "<Leader>K", widgets.hover)
-      vim.keymap.set("n", "<Leader>S", function() widgets.centered_float(widgets.scopes) end)
+      -- debugger
+      vim.keymap.set("n", "<Leader>dv", dapui.toggle, { desc = "Toggle debugger UI" })
+      vim.keymap.set("n", "<Leader>dh", widgets.hover, { desc = "Hover value" })
+      vim.keymap.set("n", "<Leader>ds", function()
+        widgets.centered_float(widgets.scopes)
+      end, { desc = "Display scopes" })
     end
   },
 

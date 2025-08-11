@@ -34,11 +34,12 @@ return {
     end
   },
 
+  { "mason-org/mason.nvim", opts = {} },
+
   {
     "mason-org/mason-lspconfig.nvim",
     dependencies = {
-      { "mason-org/mason.nvim", opts = {} },
-      "neovim/nvim-lspconfig",
+      "mason-org/mason.nvim",
     },
     config = function()
       vim.lsp.config('pyright', {
@@ -71,6 +72,8 @@ return {
     "neovim/nvim-lspconfig",
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
+      "mason-org/mason.nvim",
+      "mason-org/mason-lspconfig.nvim",
     },
     cmd = { "LspInfo", "LspInstall", "LspStart" },
     event = { "BufReadPre", "BufNewFile" },
@@ -82,16 +85,6 @@ return {
         -- see :help lsp-zero-keybindings to learn the available actions
         lsp_zero.default_keymaps({ buffer = bufnr })
 
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
-        vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr })
-        vim.keymap.set("n", "gA", vim.lsp.buf.references, { buffer = bufnr })
-        vim.keymap.set("n", "gI", vim.lsp.buf.implementation, { buffer = bufnr })
-        vim.keymap.set("n", "gO", vim.lsp.buf.document_symbol, { buffer = bufnr })
-        vim.keymap.set("n", "gy", vim.lsp.buf.type_definition, { buffer = bufnr })
-
-        vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, { buffer = bufnr })
-        vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, { buffer = bufnr })
-
         vim.keymap.set("n", "K", function()
           vim.lsp.buf.hover({ border = "single", max_height = 25, max_width = 120 })
         end, { buffer = bufnr })
@@ -99,14 +92,26 @@ return {
           vim.lsp.buf.signature_help({ border = "single" })
         end, { buffer = bufnr })
 
-        vim.keymap.set("n", "g.", vim.lsp.buf.code_action, { buffer = bufnr })
-        vim.keymap.set("n", "cd", vim.lsp.buf.rename, { buffer = bufnr })
+        vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, { buffer = bufnr })
+        vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, { buffer = bufnr })
 
-        vim.keymap.set("n", "<Leader>D", vim.diagnostic.open_float)
-        vim.keymap.set("n", "<Leader>E", function()
+        vim.keymap.set("n", "g.", vim.lsp.buf.code_action, { buffer = bufnr, desc = "Code action" })
+        vim.keymap.set("n", "cd", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename" })
+
+        -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
+        -- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr })
+        -- vim.keymap.set("n", "gA", vim.lsp.buf.references, { buffer = bufnr })
+        -- vim.keymap.set("n", "gI", vim.lsp.buf.implementation, { buffer = bufnr })
+        -- vim.keymap.set("n", "gO", vim.lsp.buf.document_symbol, { buffer = bufnr })
+        -- vim.keymap.set("n", "gy", vim.lsp.buf.type_definition, { buffer = bufnr })
+
+        -- language server
+        vim.keymap.set("n", "<Leader>ld", vim.diagnostic.open_float, { buffer = bufnr, desc = "Hover diagnostics" })
+        vim.keymap.set("n", "<Leader>lF", vim.lsp.buf.format, { buffer = bufnr, desc = "Format" })
+        vim.keymap.set("n", "<Leader>lD", function()
           local config = vim.diagnostic.config() or {}
           vim.diagnostic.config({ virtual_text = not config.virtual_text })
-        end)
+        end, { buffer = bufnr, desc = "Toggle diagnostics virtual text" })
 
         vim.diagnostic.config({
           virtual_text = false,
@@ -136,7 +141,7 @@ return {
     "github/copilot.vim",
     cmd = "Copilot",
     keys = {
-      {"<M-Tab>", mode = "i", "Copilot suggestion"},
+      {"<M-Tab>", mode = "i"},
     },
     config = function()
       vim.g.copilot_filetypes = {["*"] = false}

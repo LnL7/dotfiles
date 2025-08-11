@@ -42,13 +42,14 @@ vim.keymap.set("v", "s", "S")
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 
-
 vim.keymap.set("n", "//", ":nohlsearch<CR>")
 vim.keymap.set("c", "%%", "<C-r>=expand('%:h') . '/'<CR>")
 
 vim.keymap.set({"n", "v"}, "<M-c>", [["+y]])
 vim.keymap.set({"n", "v"}, "<M-v>", [["+p]])
 vim.keymap.set({"i"}, "<M-v>", [[<Esc>"+p]])
+
+vim.keymap.set("n", "<Leader>q", "copen")
 
 vim.api.nvim_create_autocmd({"TextYankPost"}, {
   group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
