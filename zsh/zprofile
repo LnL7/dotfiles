@@ -1,4 +1,18 @@
 # vim:ft=zsh
+# This file is read for login shells.
+
+alias g='git log --pretty=color -32'
+alias ga='git log --pretty=color --all'
+alias gb='git branch'
+alias gc='git checkout'
+alias gcb='git checkout -B'
+alias gd='git diff --minimal --patch'
+alias gf='git fetch'
+alias gg='git log --pretty=color --graph'
+alias gl='git log --pretty=nocolor'
+alias grh='git reset --hard'
+alias l='ls -lh'
+
 
 :d() {
     eval "$(direnv hook zsh)"
@@ -39,42 +53,12 @@ z() {
     fi
 }
 
-fzf-store() {
-    find /nix/store -type d -mindepth 1 -maxdepth 1 | fzf -m --preview-window right:50% --preview 'nix-store -q --tree {}'
-}
-
-xi() {
-    curl -F 'f:1=<-' ix.io
-}
-
 vat() {
     TERM=vt100 nvim -R "$@" "+setl updatetime=0" "+autocmd CursorHold * :q"
 }
 
-nixq() {
-    nix eval --json "(
-    with builtins;
-    with import <nixpkgs/lib>;
-    let
-      _ = fromJSON (readFile /dev/stdin);
-      _0 = head _;
-      _1 = head _0;
-      _2 = head _1;
-    in
-    $*
-    )"
-}
-
 nix-unpack() {
     nix-shell --run 'phases=unpackPhase genericBuild' "$@"
-}
-
-gh-darwin-debug() {
-    curl -X POST -fsSL \
-        -H "Accept: application/vnd.github.everest-preview+json" \
-        -H "Authorization: token $GITHUB_TOKEN" \
-        --data '{"event_type": "debug"}' \
-        https://api.github.com/repos/LnL7/nix-darwin/dispatches
 }
 
 pushover() {
@@ -89,4 +73,36 @@ pushover() {
         --form-string "message=$*: completed with status $i" \
         https://api.pushover.net/1/messages.json > /dev/null
     return "$i"
+}
+
+
+reexec() {
+    exec $SHELL -c 'echo >&2 "reexecuting shell: $SHELL" && exec $SHELL -l'
+}
+
+reexec-tmux() {
+    exec tmux new-session -A -s _ "$@"
+}
+
+reexec-sandbox() {
+    export IN_NIX_SANDBOX=1
+    exec /usr/bin/sandbox-exec -f /etc/nix/user-sandbox.sb $SHELL -l
+}
+
+vi-sandbox() {
+    export IN_NIX_SANDBOX=1
+    /usr/bin/sandbox-exec -f /etc/nix/editor-sandbox.sb vi "$@"
+}
+
+zsh-sandbox() {
+    export IN_NIX_SANDBOX=1
+    /usr/bin/sandbox-exec -f /etc/nix/user-sandbox.sb zsh -l
+}
+
+nix() {
+    command nix --option experimental-features "flakes nix-command" "$@"
+}
+
+ls() {
+    command ls --color=auto "$@"
 }

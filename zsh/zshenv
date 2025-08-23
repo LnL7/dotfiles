@@ -1,0 +1,8 @@
+# vim:ft=zsh
+# This file is read for all shells.
+
+export CLICOLOR=1
+export EDITOR="nvim"
+export FZF_DEFAULT_COMMAND=$'rg --files --column --line-number --no-heading'
+export PAGER="less -R"
+export SHELLCHECK_OPTS=$'-e SC1008'

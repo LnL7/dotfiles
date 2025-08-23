@@ -1,0 +1,44 @@
+# vim:ft=zsh
+# This file is read for interactive shells.
+
+# history defaults
+SAVEHIST=2000
+HISTSIZE=2000
+HISTFILE=$HOME/.zsh_history
+
+setopt HIST_IGNORE_DUPS SHARE_HISTORY HIST_FCNTL_LOCK
+
+bindkey -e
+
+setopt AUTOCD AUTOPUSHD
+
+autoload -U down-line-or-beginning-search
+autoload -U up-line-or-beginning-search
+bindkey '^[[A' down-line-or-beginning-search
+bindkey '^[[A' up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+
+
+autoload -U promptinit && promptinit
+
+setopt PROMPTSUBST
+
+_prompt_nix() {
+  [ -z "$IN_NIX_SHELL" ] || echo "%F{yellow}%B[${name:+$name}]%b%f "
+}
+
+PS1='%F{red}%B%(?..%? )%b%f%# '
+RPS1='$(_prompt_nix)%F{green}%~%f'
+
+if [ -n "$IN_NIX_SANDBOX" ]; then
+  PS1+='%F{red}[sandbox]%f '
+fi
+
+
+autoload -U compinit && compinit
+autoload -U bashcompinit && bashcompinit
+
+source "$HOME/.config/zsh/functions/fzf-completion.zsh"
+# source "$HOME/.config/zsh/functions/fzf-git.zsh"
+source "$HOME/.config/zsh/functions/fzf-history.zsh"
