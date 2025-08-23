@@ -17,9 +17,10 @@ return {
       local dap_go = require("dap-go")
       local dap_lldb = require("dap-lldb")
       local dap_python = require("dap-python")
-      dap_go.setup()
-      dap_lldb.setup()
-      dap_python.setup("python3")
+      dap_go.setup({})
+      dap_lldb.setup({})
+      dap_python.setup("python3", {})
+      dap_python.test_runner = "pytest"
 
       require("nvim-dap-virtual-text").setup({
         enabled = true
