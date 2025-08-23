@@ -73,8 +73,8 @@ ctrl + alt - z : yabai -m config split_ratio 0.66
 ctrl + alt - x : yabai -m config split_ratio 0.50
 
 # new terminal instance
-ctrl + alt - return : open -na Alacritty
+ctrl + alt - return : open -a Ghostty
 
 # quit/reload services
-ctrl + alt - q : pkill skhd;\
-                 pkill yabai
+ctrl + alt - q : skhd --restart-service;\
+                 yabai --restart-service
