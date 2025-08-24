@@ -23,12 +23,13 @@ return {
       null_ls.setup({
         sources = {
           null_ls.builtins.hover.printenv,
-          null_ls.builtins.formatting.black,
+          -- null_ls.builtins.formatting.black,
           null_ls.builtins.formatting.isort,
 
           require("none-ls-shellcheck.diagnostics"),
           require("none-ls-shellcheck.code_actions"),
           -- require("lnl.odin-check.diagnostics"),
+          require("lnl.squawk.diagnostics"),
         },
       })
     end
