@@ -1,6 +1,15 @@
 return {
 
   {
+    "j-hui/fidget.nvim",
+    opts = {
+      notification = {
+        window = { winblend = 0 },
+      },
+    },
+  },
+
+  {
     "VonHeikemen/lsp-zero.nvim",
     branch = 'v3.x',
     lazy = true,
@@ -23,7 +32,6 @@ return {
       null_ls.setup({
         sources = {
           null_ls.builtins.hover.printenv,
-          -- null_ls.builtins.formatting.black,
           null_ls.builtins.formatting.isort,
 
           require("none-ls-shellcheck.diagnostics"),
@@ -43,7 +51,14 @@ return {
       "mason-org/mason.nvim",
     },
     config = function()
+      -- Handle manual installation
+      vim.lsp.config('ols', {
+        cmd = { "ols" },
+      })
+      vim.lsp.enable('ols', true)
+
       vim.lsp.config('pyright', {
+        cmd = { "pyright-langserver", "--stdio", "--threads", "4" },
         settings = {
           disableTaggedHints = true,
         },
@@ -64,7 +79,6 @@ return {
 
       require("mason-lspconfig").setup({
         automatic_enable = true,
-        ensure_installed = { "gopls", "rust_analyzer", "pyright", "ts_ls" },
       })
     end
   },
@@ -72,7 +86,6 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
       "mason-org/mason.nvim",
       "mason-org/mason-lspconfig.nvim",
     },
@@ -89,23 +102,12 @@ return {
         vim.keymap.set("n", "K", function()
           vim.lsp.buf.hover({ border = "single", max_height = 25, max_width = 120 })
         end, { buffer = bufnr })
-        vim.keymap.set("i", "<C-h>", function()
-          vim.lsp.buf.signature_help({ border = "single" })
-        end, { buffer = bufnr })
-
+        -- navigation
         vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, { buffer = bufnr })
         vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, { buffer = bufnr })
-
+        -- actions
         vim.keymap.set("n", "g.", vim.lsp.buf.code_action, { buffer = bufnr, desc = "Code action" })
         vim.keymap.set("n", "cd", vim.lsp.buf.rename, { buffer = bufnr, desc = "Rename" })
-
-        -- vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
-        -- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr })
-        -- vim.keymap.set("n", "gA", vim.lsp.buf.references, { buffer = bufnr })
-        -- vim.keymap.set("n", "gI", vim.lsp.buf.implementation, { buffer = bufnr })
-        -- vim.keymap.set("n", "gO", vim.lsp.buf.document_symbol, { buffer = bufnr })
-        -- vim.keymap.set("n", "gy", vim.lsp.buf.type_definition, { buffer = bufnr })
-
         -- language server
         vim.keymap.set("n", "<Leader>ld", vim.diagnostic.open_float, { buffer = bufnr, desc = "Hover diagnostics" })
         vim.keymap.set("n", "<Leader>lF", vim.lsp.buf.format, { buffer = bufnr, desc = "Format" })
@@ -130,24 +132,12 @@ return {
           local mode = vim.api.nvim_get_mode().mode
           local filetype = vim.bo.filetype
           if vim.bo.modified == true and mode == 'n' and filetype == "python" then
-            vim.cmd('lua vim.lsp.buf.format()')
+            vim.lsp.buf.format()
           else
           end
         end
       })
     end
   },
-
-  {
-    "github/copilot.vim",
-    cmd = "Copilot",
-    keys = {
-      {"<M-Tab>", mode = "i"},
-    },
-    config = function()
-      vim.g.copilot_filetypes = {["*"] = false}
-      vim.keymap.set("i", "<M-Tab>", "<Plug>(copilot-suggest)", { silent = true })
-    end,
-  }
 
 }

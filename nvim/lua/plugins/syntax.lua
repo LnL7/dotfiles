@@ -1,6 +1,7 @@
 return {
 
-  { "crispybaccoon/evergarden",
+  {
+    "crispybaccoon/evergarden",
     lazy = true,
     -- config = function ()
     --   require("evergarden").setup({
@@ -9,8 +10,9 @@ return {
     -- end
   },
 
-  { "EdenEast/nightfox.nvim",
-    config = function ()
+  {
+    "EdenEast/nightfox.nvim",
+    config = function()
       require('nightfox').setup({
         options = {
           transparent = true,
@@ -25,12 +27,13 @@ return {
     end,
   },
 
-  { "nvim-treesitter/nvim-treesitter",
+  {
+    "nvim-treesitter/nvim-treesitter",
     lazy = false,
     build = ":TSUpdate",
-    config = function ()
+    config = function()
       require("nvim-treesitter.configs").setup({
-        ensure_installed = {"bash", "c", "diff", "json", "lua", "python", "rust", "vim", "vimdoc"},
+        ensure_installed = { "bash", "c", "diff", "json", "lua", "python", "rust", "vim", "vimdoc" },
         highlight = {
           enable = true,
           -- additional_vim_regex_highlighting = false,
@@ -47,9 +50,15 @@ return {
     end,
   },
 
-  { "nvim-treesitter/nvim-treesitter-context",
-    dependencies = {"nvim-treesitter/nvim-treesitter"},
-  },
+  -- {
+  --   "nvim-treesitter/nvim-treesitter-context",
+  --   dependencies = {"nvim-treesitter/nvim-treesitter"},
+  --   config = function ()
+  --     require("treesitter-context").setup({
+  --       mode = "cursor",
+  --     })
+  --   end,
+  -- },
 
   -- { "RRethy/vim-illuminate",
   --   opts = {
