@@ -7,6 +7,8 @@ return {
         suggestion = { enabled = false },
         panel = { enabled = false },
       })
+
+      vim.keymap.set("n", "<Leader>lC", function() vim.cmd("Copilot toggle") end, { desc = "Copilot suggestions" })
     end
   },
 
@@ -44,11 +46,11 @@ return {
           default = { "lsp", "buffer", "copilot" },
           providers = {
             buffer = {
-              min_keyword_length = 4,
+              min_keyword_length = 5,
             },
             lsp = {
               score_offset = 100,
-              min_keyword_length = 2,
+              min_keyword_length = 1,
             },
             copilot = {
               name = "copilot",

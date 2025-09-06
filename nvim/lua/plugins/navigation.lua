@@ -18,6 +18,13 @@ return {
           },
         },
         fzf_opts = { ["--layout"] = "default" },
+        lsp = {
+          symbols = {
+            child_prefix = false,
+            symbol_style = 2,
+            fzf_opts = { },
+          }
+        },
       })
 
       local symbol_filter = function(item, _)
@@ -44,7 +51,7 @@ return {
       vim.keymap.set("n", "<Leader>bl", fzf.git_bcommits, { desc = "Commit log for buffer" })
       -- project
       vim.keymap.set("n", "<Leader>pf", fzf.files, { desc = "Find files" })
-      vim.keymap.set("n", "<Leader>pt", fzf.tags_live_grep, { desc = "Search tags" })
+      vim.keymap.set("n", "<Leader>pt", fzf.tags, { desc = "Search tags" })
       vim.keymap.set("n", "<Leader>pg", fzf.live_grep, { desc = "Search in project" })
       vim.keymap.set("n", "<Leader>pw", fzf.grep_cword, { desc = "Search current word" })
       vim.keymap.set("n", "<Leader>pW", fzf.grep_cWORD, { desc = "Search current WORD" })
@@ -63,17 +70,12 @@ return {
     },
     config = function ()
 
-      -- This filter doesn't seem to apply consistently, also doesn't detect multi-line imports
-      local filter_python_lsp_imports = function(item)
-        -- eg. {source = "lsp", item = {client = "pylsp", text = "<line>"}}
-        return not string.find(item.item.text, "^from ")
-      end
-
       local trouble = require("trouble")
       trouble.setup({
         focus = true,
         auto_refresh = false,
         auto_preview = false,
+        warn_no_results = false,
         modes = {
           diagnostics = {
             auto_refresh = true,
@@ -82,28 +84,19 @@ return {
             sort = { "pos" },
             source = "diagnostics",
           },
-          symbols = {
-            win = { position = "left" },
-          },
           lsp_base = {
             params = {
-              include_current = true,
+              include_current = false,
             },
           },
           lsp_references = {
             groups = {},
             format = "{text:ts}\t\t{filename}:{pos}",
             sort = { "filename", "pos" },
-            keys = {
-              C = {
-                action = function(view)
-                  view:filter({ any = {ft = "python", function(item) return string.find(item.item.text, "^class ") end} }, { toggle = true })
-                end,
-                desc = "Toggle class definition filter",
-              },
-            },
+          },
+          lsp_document_symbols = {
             filter = {
-              any = { ft = "python", filter_python_lsp_imports },
+              ["not"] = { ft = "python", kind = "Variable" },
             },
           },
         },
@@ -132,9 +125,13 @@ return {
       vim.keymap.set("n", "gO", function() trouble.toggle("lsp_document_symbols") end, { desc = "document_symbols" })
       vim.keymap.set("n", "gy", function() trouble.toggle("lsp_type_definitions") end, { desc = "type definitions" })
       -- trouble
+      vim.keymap.set("n", "<Leader>xf", function() trouble.toggle("fzf") end, { desc = "List files" })
       vim.keymap.set("n", "<Leader>xs", function() trouble.toggle("symbols") end, { desc = "List symbols" })
       vim.keymap.set("n", "<Leader>xd", function() trouble.toggle("diagnostics") end, { desc = "List diagnostics" })
-      vim.keymap.set("n", "<Leader>xq", function() trouble.toggle("quickfix") end, { desc = "List quickfix" })
+      vim.keymap.set("n", "<Leader>xq", function()
+        trouble.toggle("quickfix")
+        pcall(vim.cmd, "cclose")
+      end, { desc = "List quickfix" })
       vim.keymap.set("n", "<Leader>xx", function() trouble.close() end, { desc = "List close" })
     end,
   },
@@ -168,10 +165,10 @@ return {
     end,
   },
 
-  { "nvim-telescope/telescope.nvim",
-    branch = "0.1.x",
-    dependencies = {"nvim-lua/plenary.nvim"},
-    cmds = {"Telescope"},
-  },
+  -- { "nvim-telescope/telescope.nvim",
+  --   branch = "0.1.x",
+  --   dependencies = {"nvim-lua/plenary.nvim"},
+  --   cmds = {"Telescope"},
+  -- },
 
 }
