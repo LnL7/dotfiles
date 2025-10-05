@@ -1,16 +1,29 @@
 return {
 
   {
+    "jay-babu/mason-nvim-dap.nvim",
+    dependencies = { "mason-org/mason.nvim" },
+    cmd = { "DapInstall", "DapUninstall" },
+    config = function()
+      require("mason-nvim-dap").setup({
+        automatic_installation = false,
+        ensure_installed = {},
+      })
+    end,
+  },
+
+  {
     "mfussenegger/nvim-dap",
     dependencies = {
-      "theHamsta/nvim-dap-virtual-text",
+      "jay-babu/mason-nvim-dap.nvim",
       "julianolf/nvim-dap-lldb",
       "leoluz/nvim-dap-go",
       "mfussenegger/nvim-dap-python",
+      "theHamsta/nvim-dap-virtual-text",
     },
     cmds = { "DapNew" },
     keys = {
-      {"<Leader>d", desc = "Debugger"},
+      { "<Leader>d", desc = "Debugger" },
     },
     config = function()
       local dap = require('dap')
@@ -19,7 +32,7 @@ return {
       local dap_python = require("dap-python")
       dap_go.setup({})
       dap_lldb.setup({})
-      dap_python.setup("python3", {})
+      dap_python.setup()
       dap_python.test_runner = "pytest"
 
       require("nvim-dap-virtual-text").setup({
@@ -75,8 +88,8 @@ return {
         layouts = {
           {
             elements = {
-              { id = "scopes", size = 0.6 },
-              { id = "stacks", size = 0.2 },
+              { id = "scopes",      size = 0.6 },
+              { id = "stacks",      size = 0.2 },
               { id = "breakpoints", size = 0.2 },
             },
             position = "right",
@@ -99,6 +112,6 @@ return {
         widgets.centered_float(widgets.scopes)
       end, { desc = "Display scopes" })
     end
-  },
+  }
 
 }

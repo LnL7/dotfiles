@@ -69,7 +69,7 @@ return {
             lint = {
               enable = true,
               select = { "E", "F", "W", "U", "C4", "LOG0", "ANN" },
-              ignore = { "E203", "E501", "E731", "E741", "UP032", "ANN401" },
+              ignore = { "E203", "E501", "E731", "E741", "UP032", "UP046", "ANN401" },
             }
           },
         },
@@ -126,6 +126,7 @@ return {
       end)
 
       vim.api.nvim_create_autocmd("BufWritePre", {
+        group = vim.api.nvim_create_augroup("python-auto-format", { clear = true }),
         callback = function()
           local mode = vim.api.nvim_get_mode().mode
           local filetype = vim.bo.filetype
