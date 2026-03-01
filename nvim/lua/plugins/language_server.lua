@@ -32,13 +32,34 @@ return {
       null_ls.setup({
         sources = {
           null_ls.builtins.hover.printenv,
-          null_ls.builtins.formatting.isort,
 
           require("none-ls-shellcheck.diagnostics"),
           require("none-ls-shellcheck.code_actions"),
           -- require("lnl.odin-check.diagnostics"),
           require("lnl.squawk.diagnostics"),
         },
+      })
+    end
+  },
+
+  {
+    "stevearc/conform.nvim",
+    config = function()
+      require("conform").setup({
+        formatters_by_ft = {
+          python = { "isort", "black" },
+        }
+      })
+
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = vim.api.nvim_create_augroup("python-auto-format", { clear = true }),
+        callback = function(args)
+          local mode = vim.api.nvim_get_mode().mode
+          local filetype = vim.bo.filetype
+          if vim.bo.modified == true and mode == 'n' and filetype == "python" then
+            require("conform").format({ bufnr = args.buf })
+          end
+        end
       })
     end
   },
@@ -124,18 +145,6 @@ return {
           },
         })
       end)
-
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        group = vim.api.nvim_create_augroup("python-auto-format", { clear = true }),
-        callback = function()
-          local mode = vim.api.nvim_get_mode().mode
-          local filetype = vim.bo.filetype
-          if vim.bo.modified == true and mode == 'n' and filetype == "python" then
-            vim.lsp.buf.format()
-          else
-          end
-        end
-      })
     end
   },
 
