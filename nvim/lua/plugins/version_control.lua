@@ -34,8 +34,44 @@ return {
     end,
   },
 
+  {
+    "jceb/jiejie.nvim",
+    config = function()
+    end,
+  },
+
+  -- {
+  --   "NicolasGB/jj.nvim",
+  --   dependencies = { "MunifTanjim/nui.nvim" },
+  --   version = "v1.0.0",
+  --   config = function()
+  --     require("jj").setup({
+  --     })
+  --   end,
+  -- },
+
+  -- {
+  --   "martintrojer/jj-fugitive",
+  --   config = function()
+  --   end,
+  -- },
+
   { "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen" },
+  },
+
+  {
+    "julienvincent/hunk.nvim",
+    cmd = { "DiffEditor" },
+    config = function()
+      require("hunk").setup()
+    end,
+  },
+
+  {
+    "rafikdraoui/jj-diffconflicts",
+    config = function()
+    end,
   },
 
 }
