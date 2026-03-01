@@ -1,0 +1,24 @@
+{
+    "description": "Caps Lock → escape when is pressed alone, control modifier otherwise",
+    "manipulators": [
+        {
+            "from": {
+                "key_code": "caps_lock",
+                "modifiers": { "optional": ["any"] }
+            },
+            "to": [
+                {
+                    "hold_down_milliseconds": 100,
+                    "key_code": "left_control"
+                }
+            ],
+            "to_if_alone": [
+                {
+                    "hold_down_milliseconds": 100,
+                    "key_code": "escape"
+                }
+            ],
+            "type": "basic"
+        }
+    ]
+}
