@@ -44,21 +44,21 @@ return {
         additional_vim_regex_highlighting = false,
       })
 
-      -- vim.opt.foldmethod = "expr"
-      -- vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-      -- vim.opt.foldenable = false
+      vim.opt.foldmethod = "expr"
+      vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+      vim.opt.foldenable = false
     end,
   },
 
-  -- {
-  --   "nvim-treesitter/nvim-treesitter-context",
-  --   dependencies = {"nvim-treesitter/nvim-treesitter"},
-  --   config = function ()
-  --     require("treesitter-context").setup({
-  --       mode = "cursor",
-  --     })
-  --   end,
-  -- },
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    dependencies = {"nvim-treesitter/nvim-treesitter"},
+    config = function ()
+      require("treesitter-context").setup({
+        mode = "cursor",
+      })
+    end,
+  },
 
   -- { "RRethy/vim-illuminate",
   --   opts = {
