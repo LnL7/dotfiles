@@ -11,6 +11,8 @@ alias gf='git fetch'
 alias gg='git log --pretty=color --graph'
 alias gl='git log --pretty=nocolor'
 alias grh='git reset --hard'
+alias jd='jj diff'
+alias j='jj status'
 alias l='ls -lh'
 
 
