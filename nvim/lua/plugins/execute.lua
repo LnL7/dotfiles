@@ -44,7 +44,7 @@ return {
       vim.keymap.set("n", "<Leader>td", function() neotest.run.run({ strategy = "dap" }) end, { desc = "Neotest debug" })
       vim.keymap.set("n", "<Leader>tf", function() neotest.run.run(vim.fn.expand("%:h")) end,
         { desc = "Neotest run current file" })
-      vim.keymap.set("n", "<Leader>ts", function() neotest.summary() end, { desc = "Neotest show summary" })
+      vim.keymap.set("n", "<Leader>ts", function() neotest.summary.toggle() end, { desc = "Neotest show summary" })
       vim.keymap.set("n", "<Leader>to", function() neotest.output.open({ enter = true }) end,
         { desc = "Neotest show output" })
       vim.keymap.set("n", "<Leader>tO", function() neotest.output_panel.toggle() end,
