@@ -44,7 +44,7 @@ alt + shift - f : yabai -m window --toggle zoom-fullscreen
 
 # float / unfloat window and center on screen
 alt + shift - t : yabai -m window --toggle float;\
-                  yabai -m window --grid 6:6:1:1:4:4
+                  yabai -m window --grid 12:12:1:1:10:10
 
 # stacking windows
 alt + shift - s : yabai -m window --stack next
