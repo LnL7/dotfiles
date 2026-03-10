@@ -29,36 +29,38 @@ return {
 
   {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
     lazy = false,
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = { "bash", "c", "diff", "json", "lua", "python", "rust", "vim", "vimdoc" },
-        highlight = {
-          enable = true,
-          -- additional_vim_regex_highlighting = false,
-        },
-        indent = {
-          enable = true,
-        },
-        additional_vim_regex_highlighting = false,
+      require("nvim-treesitter").setup({
       })
 
-      vim.opt.foldmethod = "expr"
-      vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+      local languages = { "bash", "c", "diff", "elixir", "go", "json", "lua", "odin", "python", "vim", "vimdoc" }
+      require("nvim-treesitter").install(languages)
+
+      for _, lang in ipairs(languages) do
+        vim.api.nvim_create_autocmd('FileType', {
+          pattern = { lang },
+          callback = function() vim.treesitter.start() end,
+        })
+      end
+
+      vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+      vim.opt.foldmethod = 'expr'
       vim.opt.foldenable = false
     end,
   },
 
-  {
-    "nvim-treesitter/nvim-treesitter-context",
-    dependencies = {"nvim-treesitter/nvim-treesitter"},
-    config = function ()
-      require("treesitter-context").setup({
-        mode = "cursor",
-      })
-    end,
-  },
+  -- {
+  --   "nvim-treesitter/nvim-treesitter-context",
+  --   dependencies = { "nvim-treesitter/nvim-treesitter" },
+  --   config = function()
+  --     require("treesitter-context").setup({
+  --       mode = "cursor",
+  --     })
+  --   end,
+  -- },
 
   -- { "RRethy/vim-illuminate",
   --   opts = {
