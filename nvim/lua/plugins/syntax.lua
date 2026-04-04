@@ -36,15 +36,18 @@ return {
       require("nvim-treesitter").setup({
       })
 
-      local languages = { "bash", "c", "diff", "elixir", "go", "json", "lua", "odin", "python", "vim", "vimdoc" }
-      require("nvim-treesitter").install(languages)
+      require("nvim-treesitter").install({ "bash", "c", "diff", "json", "lua", "python", "vim", "vimdoc" })
 
-      for _, lang in ipairs(languages) do
-        vim.api.nvim_create_autocmd('FileType', {
-          pattern = { lang },
-          callback = function() vim.treesitter.start() end,
-        })
-      end
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          local buf, filetype = args.buf, args.match
+          local language = vim.treesitter.language.get_lang(filetype)
+          local parsers = require("nvim-treesitter").get_installed('parsers')
+          if vim.tbl_contains(parsers, filetype) then
+            vim.treesitter.start(buf, language)
+          end
+        end,
+      })
 
       vim.opt.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
       vim.opt.foldmethod = 'expr'
