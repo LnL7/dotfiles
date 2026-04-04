@@ -40,7 +40,8 @@ yabai -m rule --add app='Finder' manage=off
 yabai -m rule --add app='Music' manage=off
 yabai -m rule --add app='System Settings' manage=off
 
-yabai -m rule --add app='Zed' manage=off
 yabai -m rule --add app='DBeaver' manage=off
+yabai -m rule --add app='Ghostty' manage=off
+yabai -m rule --add app='Zed' manage=off
 
 echo "yabai configuration loaded.."

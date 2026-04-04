@@ -1,0 +1,85 @@
+#:schema https://docs.jj-vcs.dev/latest/config-schema.json
+
+[aliases]
+sq = ["squash", "-i"]
+l = ["log", "-T", "builtin_log_oneline"]
+p = ["log", "--patch", "-r", 'stack(@, 1)']
+s = ["log", "--summary", "-r", 'stack(@)']
+current = ["log", "-r", 'stack(mine() | @) | trunk() | @']
+
+blame = ["file", "annotate"]
+difft = ["diff", "--tool", "difft"]
+
+trunk = ["new", "trunk()"]
+retrunk = ["rebase", "-d", "trunk()"]
+sandwich = [ "rebase", "-B", "megamerge()", "-A", "trunk()", "-r"]
+
+add-parent = ["util", "exec", "--", "bash", "-c", """
+set -euo pipefail
+if [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ]; then
+  echo "Usage: jj add-parent <revision> <parent>"
+  echo ""
+  echo "Add a new parent to a revision while keeping existing parents."
+  echo ""
+  echo "Arguments:"
+  echo "  <revision>  The revision to modify"
+  echo "  <parent>    The parent revision to add"
+  exit 0
+fi
+jj rebase -s ${1} -d ${1}- -d ${2}
+jj simplify-parents -r ${1}
+""", ""]
+
+[colors]
+"diff token" = { underline = false }
+"diff removed token" = { bg = "#221111" }
+"diff added token" = { bg = "#002200" }
+
+[merge-tools.nvim]
+edit-args = [
+  "-c", "DiffEditor $left $right $output",
+]
+merge-args = [
+  "-c", "let g:jj_diffconflicts_marker_length=$marker_length",
+  "-c", "JJDiffConflicts!", "$output", "$base", "$left", "$right",
+]
+merge-tool-edits-conflict-markers = true
+
+[revsets]
+log = '@ | ancestors(trunk()..(visible_heads() & mine()), 2) | trunk()'
+
+[revset-aliases]
+'stack()' = 'stack(@)'
+'stack(from)' = 'stack(from, 2)'
+'stack(from, n)' = 'ancestors(reachable(from, mutable()), n)'
+
+'immutable_heads()' = 'builtin_immutable_heads() | extra_immutable_heads() | (trunk().. & ~mine())'
+'extra_immutable_heads()' = 'none()'
+'megamerge()' = 'coalesce(present(megamerge), reachable(stack() & mine(), merges()))'
+'open()' = 'stack(mine() | @, 1)'
+'private()' = 'description(glob:"WIP*") & mutable() & mine()'
+
+[templates]
+log = "builtin_log_compact"
+draft_commit_description = "builtin_draft_commit_description_with_diff"
+
+duplicate_description = '''
+concat(
+  description.trim_end(),
+  "\n\n(cherry picked from commit ",
+  commit_id,
+  ")\n"
+)
+'''
+
+[template-aliases]
+'format_timestamp(timestamp)' = 'timestamp.ago()'
+'format_short_signature(signature)' = 'signature.name()'
+'format_short_signature_oneline(signature)' = 'signature.email()'
+
+[user]
+name = "Daiderd Jordan"
+email = "daiderd@gmail.com"
+
+[ui]
+default-command = "current"

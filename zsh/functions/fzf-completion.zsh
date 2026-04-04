@@ -135,6 +135,11 @@ _fzf_complete_git() {
     _fzf_complete '-m' "$@" < <(git branch -v)
 }
 
+_fzf_complete_jj() {
+  FZF_DEFAULT_OPTS="--min-height 15 $FZF_DEFAULT_OPTS --preview 'jj show {+1}' --preview-window down:5:wrap" \
+    _fzf_complete '-m' "$@" < <(jj --ignore-working-copy bookmark list --all -T 'name ++ if(remote, "@" ++ remote) ++ "\n"')
+}
+
 _fzf_complete_git_post() {
   awk '{print $1}'
 }
