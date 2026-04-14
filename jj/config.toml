@@ -14,6 +14,8 @@ trunk = ["new", "trunk()"]
 retrunk = ["rebase", "-d", "trunk()"]
 sandwich = [ "rebase", "-B", "megamerge()", "-A", "trunk()", "-r"]
 
+tug = ["bookmark", "move", "--from", "heads(trunk()..@- & bookmarks())", "--to", "@-"]
+
 add-parent = ["util", "exec", "--", "bash", "-c", """
 set -euo pipefail
 if [ "${1:-}" = "-h" ] || [ "${1:-}" = "--help" ]; then
