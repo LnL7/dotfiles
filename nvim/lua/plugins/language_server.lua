@@ -79,7 +79,8 @@ return {
       })
 
       vim.lsp.config('pyright', {
-        cmd = { "pyright-langserver", "--stdio", "--threads", "12" },
+        cmd = { "pyright-langserver", "--stdio", "--threads", "6" },
+        -- cmd = { "basedpyright-langserver", "--stdio", "--threads", "12" },
         filetypes = { 'python' },
         settings = {
           python = {
