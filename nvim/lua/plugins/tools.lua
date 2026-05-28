@@ -7,8 +7,22 @@ return {
       "nvim-treesitter/nvim-treesitter",
     },
     config = function()
-      require("codecompanion").setup({
+      local codecompanion = require("codecompanion")
+      codecompanion.setup({
+        interactions = {
+          chat = {
+            keymaps = {
+              close = false
+            }
+          }
+        },
+        rules = { "AGENTS.md" }
       })
+
+      vim.keymap.set("n", "<Leader>at", codecompanion.toggle, {})
+      vim.keymap.set("n", "<Leader>an", codecompanion.chat, {})
+      vim.keymap.set("n", "<Leader>ax", codecompanion.close_last_chat, {})
+      vim.keymap.set("v", "<LocalLeader>a", codecompanion.add, { noremap = true, silent = true })
     end
   },
 
