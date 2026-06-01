@@ -52,6 +52,8 @@ vim.keymap.set({"i"}, "<M-v>", [[<Esc>"+p]])
 
 vim.keymap.set("n", "<Leader>q", "copen")
 
+vim.cmd.colorscheme("tiki")
+
 vim.api.nvim_create_autocmd({"TextYankPost"}, {
   group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
   callback = function()
