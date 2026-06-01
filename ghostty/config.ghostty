@@ -16,10 +16,6 @@
 # on Ghostty's website, at https://ghostty.org/docs/config.
 
 font-family = "MesloLGS Nerd Font Mono"
-background = #192330
-foreground = #cdcecf
 bold-is-bright = true
 
-# background-opacity = 0.95
-# macos-titlebar-style = transparent
-# macos-titlebar-proxy-icon = hidden
+theme = Nightfox
