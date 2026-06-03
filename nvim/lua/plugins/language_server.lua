@@ -51,7 +51,6 @@ return {
     lazy = false,
     -- event = { "BufReadPre", "BufNewFile" },
     config = function()
-
       vim.diagnostic.config({
         virtual_text = false,
         signs = {
@@ -64,7 +63,7 @@ return {
 
       vim.lsp.config("ctags_lsp", {
         cmd = { "ctags-lsp" },
-        filetypes = { },
+        filetypes = {},
       })
       vim.lsp.enable("ctags_lsp")
 
@@ -74,23 +73,9 @@ return {
       })
       vim.lsp.enable('ols', true)
 
-      vim.lsp.config('elixirls', {
-        filetypes = { 'elixir' },
-      })
-
-      vim.lsp.config('pyright', {
-        cmd = { "pyright-langserver", "--stdio", "--threads", "6" },
-        -- cmd = { "basedpyright-langserver", "--stdio", "--threads", "12" },
+      vim.lsp.config('pyrefly', {
         filetypes = { 'python' },
-        settings = {
-          python = {
-            analysis = {
-              diagnosticMode = "openFilesOnly",
-            }
-          }
-        },
       })
-      vim.lsp.enable('pyright', true)
 
       vim.lsp.config('ruff', {
         filetypes = { 'python' },
@@ -123,7 +108,7 @@ return {
           vim.keymap.set("n", "cd", vim.lsp.buf.rename, { buffer = ev.buf, desc = "Rename" })
           -- language server
           vim.keymap.set("n", "<Leader>ld", function()
-            vim.diagnostic.open_float({ border = "single"})
+            vim.diagnostic.open_float({ border = "single" })
           end, { buffer = ev.buf, desc = "Hover diagnostics" })
 
           if client:supports_method('textDocument/formatting') then
@@ -137,18 +122,20 @@ return {
   {
     "stevearc/conform.nvim",
     config = function()
-      require("conform").setup({
+      local opts = {
         formatters_by_ft = {
+          javascript = { "oxfmt", "oxlint" },
           python = { "isort", "black" },
         }
-      })
+      }
+      require("conform").setup(opts)
 
       vim.api.nvim_create_autocmd("BufWritePre", {
-        group = vim.api.nvim_create_augroup("python-auto-format", { clear = true }),
+        group = vim.api.nvim_create_augroup("conform-auto-format", { clear = true }),
         callback = function(args)
           local mode = vim.api.nvim_get_mode().mode
           local filetype = vim.bo.filetype
-          if vim.bo.modified == true and mode == 'n' and filetype == "python" then
+          if vim.bo.modified == true and mode == 'n' and vim.tbl_contains(vim.tbl_keys(opts.formatters_by_ft), filetype) then
             require("conform").format({ bufnr = args.buf })
           end
         end
