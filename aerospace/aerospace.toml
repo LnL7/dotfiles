@@ -229,16 +229,8 @@ on-mode-changed = []
 #     run = ['layout floating']
 
 [[on-window-detected]]
-    if.app-id = 'com.mitchellh.ghostty'
-    run = 'move-node-to-workspace G'
-
-[[on-window-detected]]
-    if.app-id = 'md.obsidian'
-    run = 'move-node-to-workspace O'
-
-[[on-window-detected]]
-    if.app-id = 'notion.id'
-    run = 'move-node-to-workspace N'
+    if.app-id = 'com.apple.finder'
+    run = 'layout floating'
 
 [[on-window-detected]]
     if.app-id = 'com.apple.Safari'
@@ -249,5 +241,17 @@ on-mode-changed = []
     run = 'move-node-to-workspace 2'
 
 [[on-window-detected]]
-    if.app-id = 'com.apple.finder'
-    run = 'layout floating'
+    if.app-id = 'notion.id'
+    run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+    if.app-id = 'com.tinyspeck.slackmacgap'
+    run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+    if.app-id = 'com.mitchellh.ghostty'
+    run = 'move-node-to-workspace G'
+
+[[on-window-detected]]
+    if.app-id = 'md.obsidian'
+    run = 'move-node-to-workspace O'
