@@ -1,7 +1,6 @@
 #:schema https://docs.jj-vcs.dev/latest/config-schema.json
 
 [aliases]
-sq = ["squash", "-i"]
 l = ["log", "-T", "builtin_log_oneline"]
 p = ["log", "--patch", "-r", 'stack(@, 1)']
 s = ["log", "--summary", "-r", 'stack(@)']
@@ -13,6 +12,8 @@ difft = ["diff", "--tool", "difft"]
 trunk = ["new", "trunk()"]
 retrunk = ["rebase", "-d", "trunk()"]
 sandwich = [ "rebase", "-B", "megamerge()", "-A", "trunk()", "-r"]
+
+tug = ["bookmark", "move", "--from", "heads(trunk()..@- & bookmarks())", "--to", "@-"]
 
 add-parent = ["util", "exec", "--", "bash", "-c", """
 set -euo pipefail
